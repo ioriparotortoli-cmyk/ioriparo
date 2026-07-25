@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { GestionaleProvider } from '@/data/store'
 import { Dashboard } from '@/pages/Dashboard'
@@ -19,7 +19,14 @@ import { Impostazioni } from '@/pages/Impostazioni'
 import { Backup } from '@/pages/Backup'
 import { NonTrovata } from '@/pages/NonTrovata'
 
-const router = createBrowserRouter([
+/**
+ * Su hosting statico senza riscrittura degli URL (anteprime, GitHub Pages)
+ * si compila con `VITE_ROUTER=hash` e la navigazione passa dal fragment.
+ */
+const creaRouter =
+  import.meta.env.VITE_ROUTER === 'hash' ? createHashRouter : createBrowserRouter
+
+const router = creaRouter([
   {
     path: '/',
     element: <AppLayout />,

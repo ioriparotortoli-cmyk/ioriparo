@@ -1,0 +1,520 @@
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import {
+  AlertTriangle,
+  Boxes,
+  Download,
+  Minus,
+  Package,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
+  TrendingUp,
+} from 'lucide-react'
+import { Card } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
+import { Button, IconButton } from '@/components/ui/Button'
+import { Campo, Input, Select } from '@/components/ui/Form'
+import { StatChip } from '@/components/ui/StatCard'
+import { Modal } from '@/components/ui/Modal'
+import {
+  Paginazione,
+  StatoVuoto,
+  Tabella,
+  TabellaHead,
+  Td,
+  Th,
+  Tr,
+} from '@/components/ui/Tabella'
+import { useIntestazione } from '@/components/layout/intestazione'
+import { useGestionale } from '@/data/store'
+import { articoliSottoScorta, valoreMagazzino } from '@/data/metriche'
+import { useElenco } from '@/lib/useElenco'
+import { esportaCsv, nomeFileConData } from '@/lib/esporta'
+import { margine } from '@/lib/calcoli'
+import { formatEuro } from '@/lib/format'
+import type { ArticoloMagazzino } from '@/types'
+
+const VUOTO = {
+  codice: '',
+  nome: '',
+  categoria: '',
+  fornitore: '',
+  quantita: '0',
+  scorta_minima: '2',
+  prezzoAcquisto: '',
+  prezzoVendita: '',
+  ubicazione: '',
+}
+
+export function Magazzino() {
+  useIntestazione({
+    titolo: 'Magazzino',
+    sottotitolo: 'Ricambi, accessori e disponibilità',
+  })
+
+  const { db, aggiungiArticolo, aggiornaArticolo, eliminaArticolo } = useGestionale()
+  const [parametri, setParametri] = useSearchParams()
+
+  const [ricerca, setRicerca] = useState('')
+  const [categoria, setCategoria] = useState('tutte')
+  const [soloSottoScorta, setSoloSottoScorta] = useState(false)
+  const [form, setForm] = useState<typeof VUOTO | null>(null)
+  const [inModifica, setInModifica] = useState<string | null>(null)
+  const [daEliminare, setDaEliminare] = useState<ArticoloMagazzino | null>(null)
+  const [errore, setErrore] = useState('')
+
+  useEffect(() => {
+    if (parametri.get('nuovo') === '1') {
+      setForm({ ...VUOTO })
+      setParametri({}, { replace: true })
+    }
+  }, [parametri, setParametri])
+
+  const categorie = useMemo(
+    () => [...new Set(db.magazzino.map((a) => a.categoria))].sort((a, b) => a.localeCompare(b, 'it')),
+    [db.magazzino],
+  )
+
+  const sottoScorta = useMemo(() => articoliSottoScorta(db), [db])
+
+  const filtrati = useMemo(() => {
+    const termine = ricerca.trim().toLowerCase()
+    return db.magazzino.filter((articolo) => {
+      if (categoria !== 'tutte' && articolo.categoria !== categoria) return false
+      if (soloSottoScorta && articolo.quantita > articolo.scorta_minima) return false
+      if (!termine) return true
+      return [articolo.codice, articolo.nome, articolo.fornitore ?? '', articolo.ubicazione ?? '']
+        .join(' ')
+        .toLowerCase()
+        .includes(termine)
+    })
+  }, [db.magazzino, ricerca, categoria, soloSottoScorta])
+
+  const elenco = useElenco(filtrati, {
+    perPaginaIniziale: 10,
+    ordinamentoIniziale: { campo: 'nome', direzione: 'asc' },
+  })
+
+  function salva() {
+    if (!form) return
+    const quantita = Number.parseInt(form.quantita, 10)
+    const scorta = Number.parseInt(form.scorta_minima, 10)
+    const acquisto = Number.parseFloat(form.prezzoAcquisto.replace(',', '.'))
+    const vendita = Number.parseFloat(form.prezzoVendita.replace(',', '.'))
+
+    if (!form.nome.trim() || !Number.isFinite(vendita)) {
+      setErrore('Nome e prezzo di vendita sono obbligatori.')
+      return
+    }
+
+    const dati = {
+      codice: form.codice.trim() || form.nome.trim().slice(0, 8).toUpperCase(),
+      nome: form.nome.trim(),
+      categoria: form.categoria.trim() || 'Varie',
+      fornitore: form.fornitore.trim() || undefined,
+      quantita: Number.isFinite(quantita) ? quantita : 0,
+      scorta_minima: Number.isFinite(scorta) ? scorta : 0,
+      prezzoAcquisto: Number.isFinite(acquisto) ? acquisto : 0,
+      prezzoVendita: vendita,
+      ubicazione: form.ubicazione.trim() || undefined,
+    }
+
+    if (inModifica) aggiornaArticolo(inModifica, dati)
+    else aggiungiArticolo(dati)
+
+    setForm(null)
+    setInModifica(null)
+    setErrore('')
+  }
+
+  function apriModifica(articolo: ArticoloMagazzino) {
+    setInModifica(articolo.id)
+    setForm({
+      codice: articolo.codice,
+      nome: articolo.nome,
+      categoria: articolo.categoria,
+      fornitore: articolo.fornitore ?? '',
+      quantita: String(articolo.quantita),
+      scorta_minima: String(articolo.scorta_minima),
+      prezzoAcquisto: String(articolo.prezzoAcquisto),
+      prezzoVendita: String(articolo.prezzoVendita),
+      ubicazione: articolo.ubicazione ?? '',
+    })
+  }
+
+  /** Carico e scarico rapido dalla riga della tabella. */
+  function muoviGiacenza(articolo: ArticoloMagazzino, delta: number) {
+    aggiornaArticolo(articolo.id, { quantita: Math.max(0, articolo.quantita + delta) })
+  }
+
+  function esporta() {
+    esportaCsv(
+      nomeFileConData('magazzino', 'csv'),
+      [
+        'Codice',
+        'Articolo',
+        'Categoria',
+        'Fornitore',
+        'Giacenza',
+        'Scorta minima',
+        'Prezzo acquisto',
+        'Prezzo vendita',
+        'Ubicazione',
+      ],
+      filtrati.map((a) => [
+        a.codice,
+        a.nome,
+        a.categoria,
+        a.fornitore,
+        a.quantita,
+        a.scorta_minima,
+        a.prezzoAcquisto.toFixed(2),
+        a.prezzoVendita.toFixed(2),
+        a.ubicazione,
+      ]),
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Button onClick={esporta}>
+          <Download size={15} />
+          Esporta
+        </Button>
+        <Button
+          variante="primario"
+          onClick={() => {
+            setInModifica(null)
+            setForm({ ...VUOTO })
+          }}
+        >
+          <Plus size={16} />
+          Nuovo articolo
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <StatChip
+          etichetta="Articoli a catalogo"
+          valore={db.magazzino.length}
+          icona={Boxes}
+          colore="#2563eb"
+          attivo={!soloSottoScorta && categoria === 'tutte'}
+          onClick={() => {
+            setSoloSottoScorta(false)
+            setCategoria('tutte')
+          }}
+        />
+        <StatChip
+          etichetta="Sotto scorta"
+          valore={sottoScorta.length}
+          icona={AlertTriangle}
+          colore="#f43f5e"
+          attivo={soloSottoScorta}
+          onClick={() => setSoloSottoScorta((attivo) => !attivo)}
+        />
+        <Card>
+          <p className="text-[10px] font-bold tracking-wider text-ink-faint uppercase">
+            Pezzi in giacenza
+          </p>
+          <p className="mt-1 flex items-center gap-2 text-xl font-bold text-ink">
+            <Package size={18} className="text-ink-faint" />
+            {db.magazzino.reduce((somma, a) => somma + a.quantita, 0)}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-[10px] font-bold tracking-wider text-ink-faint uppercase">
+            Valore di magazzino
+          </p>
+          <p className="mt-1 flex items-center gap-2 text-xl font-bold text-ink">
+            <TrendingUp size={18} className="text-ink-faint" />
+            {formatEuro(valoreMagazzino(db))}
+          </p>
+        </Card>
+      </div>
+
+      <Card padding={false}>
+        <div className="flex flex-col gap-3 border-b border-line p-4 sm:flex-row">
+          <div className="relative sm:w-80">
+            <Search
+              size={16}
+              className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-faint"
+            />
+            <Input
+              value={ricerca}
+              onChange={(e) => {
+                setRicerca(e.target.value)
+                elenco.azzeraPagina()
+              }}
+              placeholder="Cerca articolo, codice, fornitore…"
+              aria-label="Cerca articolo"
+              className="pl-9"
+            />
+          </div>
+
+          <Select
+            value={categoria}
+            onChange={(e) => {
+              setCategoria(e.target.value)
+              elenco.azzeraPagina()
+            }}
+            aria-label="Filtra per categoria"
+            className="sm:w-52"
+          >
+            <option value="tutte">Tutte le categorie</option>
+            {categorie.map((valore) => (
+              <option key={valore} value={valore}>
+                {valore}
+              </option>
+            ))}
+          </Select>
+        </div>
+
+        {elenco.totale === 0 ? (
+          <StatoVuoto titolo="Nessun articolo trovato" />
+        ) : (
+          <>
+            <Tabella className="min-w-[900px]">
+              <TabellaHead>
+                <Th>Codice</Th>
+                <Th>Articolo</Th>
+                <Th>Categoria</Th>
+                <Th allineamento="center">Giacenza</Th>
+                <Th allineamento="right">Acquisto</Th>
+                <Th allineamento="right">Vendita</Th>
+                <Th allineamento="center">Margine</Th>
+                <Th allineamento="right">Azioni</Th>
+              </TabellaHead>
+              <tbody>
+                {elenco.visibili.map((articolo) => {
+                  const critico = articolo.quantita <= articolo.scorta_minima
+                  return (
+                    <Tr key={articolo.id}>
+                      <Td className="font-mono text-xs whitespace-nowrap">{articolo.codice}</Td>
+                      <Td>
+                        <span className="block text-[13px] font-medium text-ink">
+                          {articolo.nome}
+                        </span>
+                        <span className="block text-[11px] text-ink-faint">
+                          {articolo.fornitore ?? 'Fornitore non indicato'}
+                          {articolo.ubicazione ? ` · ${articolo.ubicazione}` : ''}
+                        </span>
+                      </Td>
+                      <Td className="text-[13px]">{articolo.categoria}</Td>
+                      <Td allineamento="center">
+                        <span className="flex items-center justify-center gap-1.5">
+                          <IconButton
+                            etichetta="Scarica un pezzo"
+                            onClick={() => muoviGiacenza(articolo, -1)}
+                          >
+                            <Minus size={14} />
+                          </IconButton>
+                          <span
+                            className={
+                              critico
+                                ? 'w-8 font-semibold text-rose-400'
+                                : 'w-8 font-semibold text-ink'
+                            }
+                          >
+                            {articolo.quantita}
+                          </span>
+                          <IconButton
+                            etichetta="Carica un pezzo"
+                            onClick={() => muoviGiacenza(articolo, 1)}
+                          >
+                            <Plus size={14} />
+                          </IconButton>
+                        </span>
+                        {critico && (
+                          <span className="mt-1.5 block">
+                            <Badge className="border-rose-500/30 bg-rose-500/12 text-rose-300">
+                              Sotto scorta
+                            </Badge>
+                          </span>
+                        )}
+                      </Td>
+                      <Td allineamento="right">{formatEuro(articolo.prezzoAcquisto)}</Td>
+                      <Td allineamento="right" className="font-semibold text-ink">
+                        {formatEuro(articolo.prezzoVendita)}
+                      </Td>
+                      <Td allineamento="center" className="text-[13px] text-emerald-400">
+                        {margine(articolo.prezzoAcquisto, articolo.prezzoVendita).toFixed(0)}%
+                      </Td>
+                      <Td allineamento="right">
+                        <span className="flex justify-end gap-1.5">
+                          <Button
+                            dimensione="sm"
+                            variante="primario"
+                            onClick={() => apriModifica(articolo)}
+                            aria-label="Modifica articolo"
+                          >
+                            <Pencil size={14} />
+                          </Button>
+                          <Button
+                            dimensione="sm"
+                            variante="pericolo"
+                            onClick={() => setDaEliminare(articolo)}
+                            aria-label="Elimina articolo"
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </span>
+                      </Td>
+                    </Tr>
+                  )
+                })}
+              </tbody>
+            </Tabella>
+
+            <Paginazione
+              pagina={elenco.pagina}
+              pagine={elenco.pagine}
+              totale={elenco.totale}
+              primoElemento={elenco.primoElemento}
+              ultimoElemento={elenco.ultimoElemento}
+              perPagina={elenco.perPagina}
+              etichettaElementi="articoli"
+              onCambiaPagina={elenco.vaiAPagina}
+              onCambiaPerPagina={elenco.cambiaPerPagina}
+            />
+          </>
+        )}
+      </Card>
+
+      <Modal
+        aperta={form !== null}
+        titolo={inModifica ? 'Modifica articolo' : 'Nuovo articolo'}
+        onChiudi={() => {
+          setForm(null)
+          setInModifica(null)
+          setErrore('')
+        }}
+        piede={
+          <>
+            <Button
+              onClick={() => {
+                setForm(null)
+                setInModifica(null)
+              }}
+            >
+              Annulla
+            </Button>
+            <Button variante="primario" onClick={salva}>
+              Salva articolo
+            </Button>
+          </>
+        }
+      >
+        {form && (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Campo etichetta="Nome articolo" obbligatorio className="sm:col-span-2">
+              <Input
+                value={form.nome}
+                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                autoFocus
+              />
+            </Campo>
+            <Campo etichetta="Codice">
+              <Input
+                value={form.codice}
+                onChange={(e) => setForm({ ...form, codice: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Categoria">
+              <Input
+                value={form.categoria}
+                onChange={(e) => setForm({ ...form, categoria: e.target.value })}
+                list="categorie-magazzino"
+              />
+            </Campo>
+            <Campo etichetta="Fornitore" className="sm:col-span-2">
+              <Input
+                value={form.fornitore}
+                onChange={(e) => setForm({ ...form, fornitore: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Giacenza">
+              <Input
+                type="number"
+                min={0}
+                value={form.quantita}
+                onChange={(e) => setForm({ ...form, quantita: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Scorta minima">
+              <Input
+                type="number"
+                min={0}
+                value={form.scorta_minima}
+                onChange={(e) => setForm({ ...form, scorta_minima: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Prezzo acquisto (€)">
+              <Input
+                type="number"
+                min={0}
+                step="0.01"
+                value={form.prezzoAcquisto}
+                onChange={(e) => setForm({ ...form, prezzoAcquisto: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Prezzo vendita (€)" obbligatorio>
+              <Input
+                type="number"
+                min={0}
+                step="0.01"
+                value={form.prezzoVendita}
+                onChange={(e) => setForm({ ...form, prezzoVendita: e.target.value })}
+              />
+            </Campo>
+            <Campo etichetta="Ubicazione" className="sm:col-span-2">
+              <Input
+                value={form.ubicazione}
+                onChange={(e) => setForm({ ...form, ubicazione: e.target.value })}
+                placeholder="A1-03"
+              />
+            </Campo>
+
+            {errore && <p className="text-xs text-rose-400 sm:col-span-2">{errore}</p>}
+          </div>
+        )}
+      </Modal>
+
+      <datalist id="categorie-magazzino">
+        {categorie.map((valore) => (
+          <option key={valore} value={valore} />
+        ))}
+      </datalist>
+
+      <Modal
+        aperta={daEliminare !== null}
+        titolo="Eliminare l'articolo?"
+        sottotitolo={daEliminare?.nome}
+        onChiudi={() => setDaEliminare(null)}
+        larghezza="sm"
+        piede={
+          <>
+            <Button onClick={() => setDaEliminare(null)}>Annulla</Button>
+            <Button
+              variante="pericolo"
+              onClick={() => {
+                if (daEliminare) eliminaArticolo(daEliminare.id)
+                setDaEliminare(null)
+              }}
+            >
+              <Trash2 size={15} />
+              Elimina
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-ink-muted">
+          L'articolo sparisce dal catalogo; i documenti già emessi non vengono modificati.
+        </p>
+      </Modal>
+    </div>
+  )
+}

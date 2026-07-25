@@ -1,0 +1,203 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Superfici del tema scuro */
+  --color-base: #0a0e17;
+  --color-surface: #111927;
+  --color-surface-2: #17202f;
+  --color-surface-3: #1d2839;
+  --color-line: #1e2937;
+  --color-line-soft: #263349;
+
+  /* Testo */
+  --color-ink: #e8edf5;
+  --color-ink-muted: #93a1b8;
+  --color-ink-faint: #6b7a92;
+
+  /* Accento */
+  --color-brand: #2563eb;
+  --color-brand-hover: #1d4ed8;
+  --color-brand-soft: #1e3a8a;
+
+  --radius-card: 0.875rem;
+
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-line);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-base);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbar coerente col tema */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-3);
+    border-radius: 9999px;
+    border: 2px solid var(--color-base);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-line-soft);
+  }
+
+  /* Il picker nativo delle date va schiarito sul fondo scuro */
+  input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /*
+   * Stile base di input, select e textarea. Sta nel layer `components` così le
+   * utility passate via className (w-48, h-8, pl-9…) hanno sempre la precedenza.
+   */
+  .ui-field {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-line-soft);
+    background-color: var(--color-surface-2);
+    padding-inline: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .ui-field::placeholder {
+    color: var(--color-ink-faint);
+  }
+
+  .ui-field:focus {
+    outline: none;
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 1px var(--color-brand);
+  }
+
+  .ui-field:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* Controlli di selezione ridisegnati per il tema scuro */
+  .ui-check,
+  .ui-radio {
+    appearance: none;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    border: 1px solid var(--color-line-soft);
+    background-color: var(--color-surface-2);
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
+  }
+
+  .ui-check {
+    border-radius: 0.25rem;
+  }
+
+  .ui-check:checked {
+    border-color: var(--color-brand);
+    background-color: var(--color-brand);
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m5 13 4 4L19 7'/%3E%3C/svg%3E");
+    background-size: 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .ui-radio {
+    border-radius: 9999px;
+  }
+
+  .ui-radio:checked {
+    border-width: 5px;
+    border-color: var(--color-brand);
+    background-color: var(--color-base);
+  }
+
+  .ui-check:focus-visible,
+  .ui-radio:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Stampa della scheda di accettazione: solo il contenuto, su fondo bianco */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  aside,
+  header.sticky {
+    display: none !important;
+  }
+
+  .lg\:pl-64 {
+    padding-left: 0 !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  section {
+    border-color: #d4d4d8 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+  }
+
+  /* Il testo del tema scuro va riportato su carta bianca */
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  td,
+  th,
+  dt,
+  dd,
+  li,
+  a {
+    color: #111 !important;
+  }
+}

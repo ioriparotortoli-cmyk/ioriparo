@@ -24,6 +24,8 @@ import {
   Th,
   Tr,
 } from '@/components/ui/Tabella'
+import { AnteprimaStampa } from '@/components/stampa/AnteprimaStampa'
+import { DocumentoCommerciale } from '@/components/stampa/DocumentoCommerciale'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
 import { useElenco } from '@/lib/useElenco'
@@ -55,6 +57,7 @@ export function Preventivi() {
   const [ricerca, setRicerca] = useState('')
   const [stato, setStato] = useState<StatoPreventivo | 'tutti'>('tutti')
   const [dettaglio, setDettaglio] = useState<Preventivo | null>(null)
+  const [daStampare, setDaStampare] = useState<Preventivo | null>(null)
 
   const conteggi = useMemo(() => {
     const mappa = Object.fromEntries(ORDINE.map((s) => [s, 0])) as Record<StatoPreventivo, number>
@@ -241,7 +244,7 @@ export function Preventivi() {
                   Apri riparazione
                 </Button>
               )}
-              <Button variante="primario" onClick={() => window.print()}>
+              <Button variante="primario" onClick={() => setDaStampare(dettaglio)}>
                 Stampa
               </Button>
             </>
@@ -299,6 +302,24 @@ export function Preventivi() {
           </div>
         )}
       </Modal>
+
+      <AnteprimaStampa
+        aperta={daStampare !== null}
+        titolo={daStampare ? `Preventivo ${daStampare.numero}` : ''}
+        nomeFile={`preventivo-${daStampare?.numero.replace(/[^\w-]/g, '') ?? ''}.html`}
+        documento={
+          daStampare && (
+            <DocumentoCommerciale
+              azienda={db.azienda}
+              cliente={db.clienti.find((c) => c.id === daStampare.clienteId)}
+              documento={daStampare}
+              tipo="preventivo"
+              statoLabel={STATI_PREVENTIVO[daStampare.stato].label}
+            />
+          )
+        }
+        onChiudi={() => setDaStampare(null)}
+      />
     </div>
   )
 }

@@ -16,6 +16,8 @@ import { Campo, Input, Select } from '@/components/ui/Form'
 import { DeviceIcon } from '@/components/ui/DeviceIcon'
 import { Modal } from '@/components/ui/Modal'
 import { Tabella, TabellaHead, Td, Th, Tr } from '@/components/ui/Tabella'
+import { AnteprimaStampa } from '@/components/stampa/AnteprimaStampa'
+import { DocumentoScheda } from '@/components/stampa/DocumentoScheda'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale, nuovoId } from '@/data/store'
 import { imponibile, saldoRiparazione, scorporoIva, totaleRiparazione } from '@/lib/calcoli'
@@ -34,6 +36,7 @@ export function DettaglioRiparazione() {
   const [aggiuntaAperta, setAggiuntaAperta] = useState(false)
   const [nuovaRiga, setNuovaRiga] = useState({ descrizione: '', quantita: '1', prezzo: '', articoloId: '' })
   const [confermaEliminazione, setConfermaEliminazione] = useState(false)
+  const [anteprimaAperta, setAnteprimaAperta] = useState(false)
 
   useIntestazione({
     titolo: riparazione ? `${riparazione.marca} ${riparazione.modello}` : 'Riparazione non trovata',
@@ -44,15 +47,12 @@ export function DettaglioRiparazione() {
     ],
   })
 
-  // «Salva e Stampa» arriva qui con ?stampa=1 e apre la finestra di stampa.
+  // «Salva e Stampa» arriva qui con ?stampa=1 e apre subito l'anteprima.
   const stampaRichiesta = parametri.get('stampa') === '1'
   useEffect(() => {
     if (!stampaRichiesta || !riparazione) return
-    const timer = window.setTimeout(() => {
-      window.print()
-      setParametri({}, { replace: true })
-    }, 400)
-    return () => window.clearTimeout(timer)
+    setAnteprimaAperta(true)
+    setParametri({}, { replace: true })
   }, [stampaRichiesta, riparazione, setParametri])
 
   if (!riparazione) return <Navigate to="/riparazioni" replace />
@@ -107,7 +107,7 @@ export function DettaglioRiparazione() {
         </Button>
 
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => window.print()}>
+          <Button onClick={() => setAnteprimaAperta(true)}>
             <Printer size={15} />
             Stampa scheda
           </Button>
@@ -530,6 +530,16 @@ export function DettaglioRiparazione() {
           L'operazione rimuove la scheda dall'archivio e non può essere annullata.
         </p>
       </Modal>
+
+      <AnteprimaStampa
+        aperta={anteprimaAperta}
+        titolo={`Scheda di accettazione ${riparazione.codice}`}
+        nomeFile={`scheda-${riparazione.codice.replace(/[^\w-]/g, '')}.html`}
+        documento={
+          <DocumentoScheda azienda={db.azienda} cliente={cliente} riparazione={riparazione} />
+        }
+        onChiudi={() => setAnteprimaAperta(false)}
+      />
     </div>
   )
 }

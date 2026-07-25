@@ -15,6 +15,8 @@ import {
   Th,
   Tr,
 } from '@/components/ui/Tabella'
+import { AnteprimaStampa } from '@/components/stampa/AnteprimaStampa'
+import { DocumentoCommerciale } from '@/components/stampa/DocumentoCommerciale'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
 import { useElenco } from '@/lib/useElenco'
@@ -53,6 +55,7 @@ export function Fatture() {
   const [stato, setStato] = useState<StatoFattura | 'tutti'>('tutti')
   const [mese, setMese] = useState('')
   const [dettaglio, setDettaglio] = useState<Fattura | null>(null)
+  const [daStampare, setDaStampare] = useState<Fattura | null>(null)
 
   const conteggi = useMemo(() => {
     const mappa = Object.fromEntries(ORDINE.map((s) => [s, 0])) as Record<StatoFattura, number>
@@ -275,7 +278,7 @@ export function Fatture() {
                   ))}
                 </Select>
               )}
-              <Button variante="primario" onClick={() => window.print()}>
+              <Button variante="primario" onClick={() => setDaStampare(dettaglio)}>
                 Stampa
               </Button>
             </>
@@ -339,6 +342,24 @@ export function Fatture() {
           </div>
         )}
       </Modal>
+
+      <AnteprimaStampa
+        aperta={daStampare !== null}
+        titolo={daStampare ? `Fattura ${daStampare.numero}` : ''}
+        nomeFile={`fattura-${daStampare?.numero.replace(/[^\w-]/g, '') ?? ''}.html`}
+        documento={
+          daStampare && (
+            <DocumentoCommerciale
+              azienda={db.azienda}
+              cliente={db.clienti.find((c) => c.id === daStampare.clienteId)}
+              documento={daStampare}
+              tipo="fattura"
+              statoLabel={STATI_FATTURA[daStampare.stato].label}
+            />
+          )
+        }
+        onChiudi={() => setDaStampare(null)}
+      />
     </div>
   )
 }

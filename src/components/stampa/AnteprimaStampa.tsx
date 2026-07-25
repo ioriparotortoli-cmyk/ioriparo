@@ -17,13 +17,18 @@ function incorporata(): boolean {
  * Rende il documento in un nodo scollegato e ne estrae l'HTML.
  * Si usa il renderer del client, già presente nel bundle, invece di
  * `react-dom/server` che peserebbe qualche centinaio di kilobyte in più.
- * L'attesa di un tick lascia a React il tempo di completare il commit.
+ * Il commit di una radice concorrente è asincrono e può slittare di più tick
+ * quando il thread è occupato: si attende finché il nodo non è popolato.
  */
 async function markupDi(documento: ReactElement): Promise<string> {
   const contenitore = document.createElement('div')
   const radice = createRoot(contenitore)
   radice.render(documento)
-  await new Promise((risolvi) => setTimeout(risolvi, 0))
+
+  for (let tentativo = 0; tentativo < 60 && !contenitore.firstChild; tentativo++) {
+    await new Promise((risolvi) => setTimeout(risolvi, 16))
+  }
+
   const markup = contenitore.innerHTML
   radice.unmount()
   return markup

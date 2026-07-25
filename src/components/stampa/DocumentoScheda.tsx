@@ -185,10 +185,20 @@ export function DocumentoScheda({
               ) : null}
             </div>
           ) : (
-            <p>
-              Da definire dopo la diagnosi. Il cliente sarà contattato prima di procedere con
-              l’intervento.
-            </p>
+            <>
+              <p>
+                Da definire dopo la diagnosi. Il cliente sarà contattato prima di procedere con
+                l’intervento.
+              </p>
+              {riparazione.acconto ? (
+                <div className="doc-campi" style={{ marginTop: 8 }}>
+                  <div className="doc-campo">
+                    <span>Acconto versato</span>
+                    <span>{formatEuro(riparazione.acconto)}</span>
+                  </div>
+                </div>
+              ) : null}
+            </>
           )}
         </Sezione>
       </div>
@@ -231,7 +241,13 @@ export function DocumentoScheda({
             <Campo etichetta="Consegna prevista" valore={formatData(riparazione.consegnaPrevista)} />
             <Campo
               etichetta="Da saldare al ritiro"
-              valore={totale > 0 ? formatEuro(saldoRiparazione(riparazione)) : 'Da definire'}
+              valore={
+                totale > 0
+                  ? formatEuro(saldoRiparazione(riparazione))
+                  : riparazione.acconto
+                    ? `Da definire — acconto ${formatEuro(riparazione.acconto)}`
+                    : 'Da definire'
+              }
             />
             <Campo etichetta="Contatti" valore={azienda.telefono} />
           </div>

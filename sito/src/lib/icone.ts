@@ -1,0 +1,68 @@
+import type { LucideIcon } from 'lucide-react'
+import {
+  BadgeCheck,
+  Battery,
+  Bug,
+  Cable,
+  Camera,
+  Cctv,
+  ClipboardCheck,
+  Cpu,
+  DatabaseBackup,
+  Gamepad2,
+  Handshake,
+  HardDrive,
+  Headset,
+  Laptop,
+  LifeBuoy,
+  Monitor,
+  MonitorSmartphone,
+  Network,
+  RefreshCw,
+  ScanSearch,
+  ShieldCheck,
+  Smartphone,
+  Tablet,
+  Timer,
+  Truck,
+  Wifi,
+  Wrench,
+  Zap,
+} from 'lucide-react'
+
+/**
+ * Registro delle icone usate da servizi e vantaggi: i dati restano
+ * serializzabili (solo stringhe) e i componenti si risolvono qui.
+ */
+export const icone = {
+  badge: BadgeCheck,
+  batteria: Battery,
+  cavo: Cable,
+  cctv: Cctv,
+  chip: Cpu,
+  diagnosi: ScanSearch,
+  fotocamera: Camera,
+  gaming: Gamepad2,
+  garanzia: ShieldCheck,
+  laptop: Laptop,
+  mano: Handshake,
+  monitor: Monitor,
+  postvendita: Headset,
+  preventivo: ClipboardCheck,
+  recupero: HardDrive,
+  remoto: LifeBuoy,
+  rete: Network,
+  ricambi: Wrench,
+  ripristino: RefreshCw,
+  salvataggio: DatabaseBackup,
+  schermo: MonitorSmartphone,
+  smartphone: Smartphone,
+  tablet: Tablet,
+  tempo: Timer,
+  velocita: Zap,
+  virus: Bug,
+  wifi: Wifi,
+  domicilio: Truck,
+} satisfies Record<string, LucideIcon>
+
+export type NomeIcona = keyof typeof icone

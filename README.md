@@ -1,4 +1,15 @@
-# IO RIPARO — Gestionale Assistenza e Riparazioni
+# IO RIPARO
+
+Il repository contiene due progetti indipendenti:
+
+| Cartella | Progetto |
+| --- | --- |
+| `.` (radice) | **Gestionale** interno: accettazione, riparazioni, clienti, magazzino, fatture (Vite + React) |
+| [`sito/`](./sito) | **Sito web pubblico**: vetrina, preventivi, prenotazioni e pannello amministratore (Next.js 15 + Supabase) |
+
+---
+
+## Gestionale Assistenza e Riparazioni
 
 Gestionale per un centro di assistenza e riparazione di dispositivi mobili e computer:
 accettazione dispositivi, avanzamento delle riparazioni, anagrafica clienti, preventivi,
@@ -6,7 +17,7 @@ fatture, magazzino ricambi, ordini fornitori, scadenze e statistiche.
 
 Applicazione **Vite + React + TypeScript + Tailwind CSS**, interfaccia in italiano con tema scuro.
 
-## Avvio rapido
+### Avvio rapido
 
 ```bash
 npm install
@@ -21,7 +32,7 @@ npm run preview    # anteprima della build
 npm run lint       # oxlint
 ```
 
-## Stack
+### Stack
 
 | Ambito | Scelta |
 | --- | --- |
@@ -33,7 +44,7 @@ npm run lint       # oxlint
 | Icone | lucide-react |
 | Dati | archivio locale in `localStorage`, nessun backend |
 
-## Pagine
+### Pagine
 
 | Percorso | Contenuto |
 | --- | --- |
@@ -53,7 +64,7 @@ npm run lint       # oxlint
 | `/impostazioni` | Dati aziendali, IVA e numerazione predefinite |
 | `/backup` | Backup JSON completo (esporta/importa) ed esportazioni CSV |
 
-## Struttura del progetto
+### Struttura del progetto
 
 ```
 src/
@@ -71,7 +82,7 @@ src/
   pages/          una cartella per area funzionale
 ```
 
-## Dati
+### Dati
 
 L'app non ha backend: all'avvio carica un archivio dimostrativo (24 riparazioni, 24 clienti,
 18 articoli di magazzino e circa tre mesi di fatture) e salva ogni modifica in `localStorage`
@@ -81,7 +92,7 @@ Le date del dataset sono calcolate rispetto al giorno corrente, così dashboard,
 e scadenze restano sempre significativi. Da *Impostazioni* si possono ripristinare i dati
 dimostrativi, da *Backup* esportare e reimportare l'archivio.
 
-## Convenzioni
+### Convenzioni
 
 - Interfaccia, nomi di dominio e commenti in italiano.
 - I prezzi di riparazioni, preventivi e fatture sono **IVA inclusa**: l'imposta viene scorporata
@@ -90,3 +101,18 @@ dimostrativi, da *Backup* esportare e reimportare l'archivio.
   `src/lib/stati.ts` e riusati da badge, filtri, grafici e stampe.
 - Gli stili base dei campi stanno nel layer `components` (`.ui-field` in `index.css`) così le
   utility Tailwind passate via `className` mantengono la precedenza.
+
+---
+
+## Sito web pubblico
+
+Il sito vetrina con preventivi, prenotazioni e pannello amministratore vive in [`sito/`](./sito):
+Next.js 15, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Supabase.
+
+```bash
+cd sito
+npm install
+npm run dev        # http://localhost:3000
+```
+
+Dettagli, configurazione e schema del database: [`sito/README.md`](./sito/README.md).

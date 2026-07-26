@@ -1,0 +1,230 @@
+@import 'tailwindcss';
+
+/* Il tema scuro è pilotato dall'attributo data-theme sull'elemento <html>. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-sans: var(--carattere-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Blu elettrico: colore guida del marchio. */
+  --color-elettrico-50: #eef4ff;
+  --color-elettrico-100: #d9e6ff;
+  --color-elettrico-200: #bcd3ff;
+  --color-elettrico-300: #8eb5ff;
+  --color-elettrico-400: #598eff;
+  --color-elettrico-500: #2f6bff;
+  --color-elettrico-600: #1548f5;
+  --color-elettrico-700: #1036e1;
+  --color-elettrico-800: #132fb6;
+  --color-elettrico-900: #152d8f;
+
+  /* Neri profondi con una punta di blu. */
+  --color-notte-700: #131a2a;
+  --color-notte-800: #0c1220;
+  --color-notte-900: #070b15;
+  --color-notte-950: #04060d;
+
+  --radius-4xl: 2rem;
+
+  --animate-scorri: scorri 40s linear infinite;
+  --animate-pulsazione: pulsazione 2.4s ease-in-out infinite;
+  --animate-fluttua: fluttua 7s ease-in-out infinite;
+
+  --shadow-bagliore: 0 0 0 1px rgb(47 107 255 / 0.25), 0 20px 60px -20px rgb(47 107 255 / 0.55);
+}
+
+@keyframes scorri {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulsazione {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes fluttua {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@layer base {
+  :root {
+    --superficie: #ffffff;
+    --superficie-alt: #f5f7fb;
+    --testo: #0b1020;
+    --testo-tenue: #55607a;
+    --bordo: rgb(11 16 32 / 0.1);
+    --vetro: rgb(255 255 255 / 0.82);
+    color-scheme: light;
+  }
+
+  [data-theme='dark'] {
+    --superficie: #04060d;
+    --superficie-alt: #0a1020;
+    --testo: #f2f5ff;
+    --testo-tenue: #9aa6c4;
+    --bordo: rgb(255 255 255 / 0.1);
+    --vetro: rgb(10 16 32 / 0.72);
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: var(--bordo);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--superficie);
+    color: var(--testo);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-elettrico-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-elettrico-500);
+    outline-offset: 2px;
+    border-radius: 0.35rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Contenitore standard delle sezioni. */
+  .contenitore {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .contenitore {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Effetto vetro usato da header, card e pannelli. */
+  .vetro {
+    background-color: var(--vetro);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--bordo);
+  }
+
+  .testo-tenue {
+    color: var(--testo-tenue);
+  }
+
+  .superficie-alt {
+    background-color: var(--superficie-alt);
+  }
+
+  /* Gradiente del marchio per titoli e dettagli. */
+  .testo-gradiente {
+    background-image: linear-gradient(100deg, var(--color-elettrico-400), #7aa7ff 45%, var(--color-elettrico-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .campo {
+    width: 100%;
+    border-radius: 0.85rem;
+    border: 1px solid var(--bordo);
+    background-color: color-mix(in srgb, var(--superficie-alt) 70%, transparent);
+    padding: 0.75rem 0.95rem;
+    font-size: 0.95rem;
+    color: var(--testo);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+
+  .campo::placeholder {
+    color: var(--testo-tenue);
+  }
+
+  .campo:focus {
+    outline: none;
+    border-color: var(--color-elettrico-500);
+    box-shadow: 0 0 0 4px rgb(47 107 255 / 0.18);
+  }
+
+  .etichetta {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--testo-tenue);
+  }
+
+  /* Griglia decorativa di sfondo. */
+  .griglia-tecnica {
+    background-image:
+      linear-gradient(to right, rgb(47 107 255 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(47 107 255 / 0.08) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+}
+
+@layer utilities {
+  .scorrimento-nascosto::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scorrimento-nascosto {
+    scrollbar-width: none;
+  }
+
+  .bilancia-testo {
+    text-wrap: balance;
+  }
+}
+
+/* Non stampare gli elementi flottanti. */
+@media print {
+  .no-stampa {
+    display: none !important;
+  }
+}

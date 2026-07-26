@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Sostituzione batteria certificata">
+  <defs>
+    <linearGradient id="sfondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1224"/><stop offset="100%" stop-color="#04060d"/>
+    </linearGradient>
+    <linearGradient id="blu" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2f6bff"/><stop offset="100%" stop-color="#1036e1"/>
+    </linearGradient>
+    <pattern id="griglia" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2f6bff" stroke-opacity="0.12"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#sfondo)"/>
+  <rect width="800" height="600" fill="url(#griglia)"/>
+  <circle cx="640" cy="90" r="150" fill="#2f6bff" fill-opacity="0.14"/>
+  <rect x="180" y="180" width="380" height="240" rx="24" fill="#0c1424" stroke="#2f6bff" stroke-opacity="0.5" stroke-width="2"/>
+  <rect x="560" y="255" width="34" height="90" rx="10" fill="#2f6bff" fill-opacity="0.6"/>
+  <rect x="210" y="212" width="150" height="176" rx="14" fill="url(#blu)"/>
+  <rect x="376" y="212" width="150" height="176" rx="14" fill="#2f6bff" fill-opacity="0.25" stroke="#2f6bff" stroke-opacity="0.5" stroke-dasharray="8 6"/>
+  <path d="M300 240l-40 70h44l-16 60 60-84h-46z" fill="#ffffff" fill-opacity="0.9"/>
+  <g stroke="#8eb5ff" stroke-width="4" fill="none" stroke-linecap="round"><path d="M400 260h100"/><path d="M400 300h70"/><path d="M400 340h90"/></g>
+  <g><rect x="180" y="40" width="242" height="34" rx="17" fill="#2f6bff" fill-opacity="0.18" stroke="#2f6bff" stroke-opacity="0.55"/><text x="301.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">BATTERIA CERTIFICATA</text></g>
+</svg>

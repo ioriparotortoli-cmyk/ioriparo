@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "anteprima": "node scripts/genera-anteprima.mjs",
+    "immagini": "node scripts/genera-immagini.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
@@ -26,6 +28,7 @@
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "playwright-core": "^1.62.0",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"

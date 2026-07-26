@@ -21,10 +21,35 @@ Altri comandi:
 
 ```bash
 npm run build      # build di produzione
-npm run start      # avvio della build
+npm run start      # avvio della build (http://localhost:3000)
 npm run typecheck  # controllo dei tipi
-node scripts/genera-immagini.mjs   # rigenera og.png e le icone PWA
+npm run immagini   # rigenera og.png e le icone PWA
+npm run anteprima  # genera anteprima/index.html (vedi sotto)
 ```
+
+Gli stessi comandi sono richiamabili dalla radice del repository:
+
+```bash
+npm run sito:install
+npm run sito:dev
+npm run sito:build && npm run sito:start
+```
+
+## Anteprima in un unico file
+
+`npm run anteprima` produce `anteprima/index.html`: una copia autonoma della home
+(CSS, caratteri e immagini incorporati, nessuna richiesta esterna) che si apre con un doppio clic
+o si pubblica su qualsiasi hosting statico. Riusa il markup e il CSS della build reale, quindi non
+va tenuta allineata a mano; va rigenerata dopo le modifiche, con il sito in esecuzione:
+
+```bash
+npm run build && npm run start   # in un terminale
+npm run anteprima                # in un altro
+```
+
+Restano attivi tema chiaro/scuro, filtri dei servizi e della galleria, domande frequenti e
+ingrandimento delle foto. Non essendoci un server, i moduli e le altre pagine non sono
+raggiungibili: è un'anteprima della home, non un sostituto del sito.
 
 > Il sito funziona **anche senza alcuna variabile d'ambiente**: usa i contenuti statici e i moduli
 > rispondono in "modalità dimostrativa" (nessun dato salvato). Configurando Supabase e Resend

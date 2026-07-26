@@ -110,9 +110,21 @@ Il sito vetrina con preventivi, prenotazioni e pannello amministratore vive in [
 Next.js 15, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Supabase.
 
 ```bash
-cd sito
-npm install
-npm run dev        # http://localhost:3000
+npm run sito:install
+npm run sito:dev              # http://localhost:3000
 ```
 
+Oppure, per la build di produzione:
+
+```bash
+npm run sito:build
+npm run sito:start            # anche con `npm start` dalla radice
+```
+
+Una copia autonoma della home in un unico file HTML (utile per un'anteprima rapida senza
+eseguire Next.js) si ottiene con `npm run sito:anteprima`, che scrive `sito/anteprima/index.html`.
+
 Dettagli, configurazione e schema del database: [`sito/README.md`](./sito/README.md).
+
+> Nota: `npm run dev` nella radice avvia il **gestionale** (Vite, porta 5173); il sito pubblico
+> ha i propri comandi `sito:*` e gira sulla porta 3000.

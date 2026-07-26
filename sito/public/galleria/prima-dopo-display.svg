@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Display smartphone prima e dopo la riparazione">
   <defs>
     <linearGradient id="sfondo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1224"/><stop offset="100%" stop-color="#04060d"/>
+      <stop offset="0%" stop-color="#0a1526"/><stop offset="100%" stop-color="#04070f"/>
     </linearGradient>
     <linearGradient id="blu" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2f6bff"/><stop offset="100%" stop-color="#1036e1"/>
+      <stop offset="0%" stop-color="#1792d1"/><stop offset="100%" stop-color="#0a68a3"/>
     </linearGradient>
     <pattern id="griglia" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#2f6bff" stroke-opacity="0.12"/>
+      <path d="M40 0H0V40" fill="none" stroke="#1792d1" stroke-opacity="0.12"/>
     </pattern>
   </defs>
   <rect width="800" height="600" fill="url(#sfondo)"/>
   <rect width="800" height="600" fill="url(#griglia)"/>
-  <circle cx="640" cy="90" r="150" fill="#2f6bff" fill-opacity="0.14"/>
-  <line x1="400" y1="60" x2="400" y2="540" stroke="#2f6bff" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="10 8"/>
-  <rect x="120" y="140" width="180" height="330" rx="26" fill="#111a2c" stroke="#2f6bff" stroke-opacity="0.4" stroke-width="2"/>
-  <rect x="132" y="152" width="156" height="306" rx="18" fill="#0a1120"/>
+  <circle cx="640" cy="90" r="150" fill="#1792d1" fill-opacity="0.14"/>
+  <line x1="400" y1="60" x2="400" y2="540" stroke="#1792d1" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="10 8"/>
+  <rect x="120" y="140" width="180" height="330" rx="26" fill="#0d1b30" stroke="#1792d1" stroke-opacity="0.4" stroke-width="2"/>
+  <rect x="132" y="152" width="156" height="306" rx="18" fill="#081426"/>
   <g stroke="#ffffff" stroke-opacity="0.75" stroke-width="2" fill="none"><path d="M120 210l52 46-30 60 64-22 26 66 18-74 62 16-40-56 44-42-66 4-14-62-30 58z"/><path d="M172 256L96 320"/><path d="M236 300l-40 108"/><path d="M298 276l70-40"/><path d="M290 350l52 74"/></g>
-  <rect x="500" y="140" width="180" height="330" rx="26" fill="#111a2c" stroke="#2f6bff" stroke-opacity="0.6" stroke-width="2"/>
+  <rect x="500" y="140" width="180" height="330" rx="26" fill="#0d1b30" stroke="#1792d1" stroke-opacity="0.6" stroke-width="2"/>
   <rect x="512" y="152" width="156" height="306" rx="18" fill="url(#blu)" fill-opacity="0.85"/>
-  <rect x="560" y="158" width="60" height="10" rx="5" fill="#04060d"/>
+  <rect x="560" y="158" width="60" height="10" rx="5" fill="#04070f"/>
   <g stroke="#ffffff" stroke-opacity="0.6" stroke-width="5" stroke-linecap="round"><path d="M540 250h100"/><path d="M540 280h70"/><path d="M540 360h100"/><path d="M540 390h80"/></g>
-  <g><rect x="120" y="40" width="77" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="158.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">PRIMA</text></g>
-  <g><rect x="500" y="40" width="66" height="34" rx="17" fill="#2f6bff" fill-opacity="0.18" stroke="#2f6bff" stroke-opacity="0.55"/><text x="533.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">DOPO</text></g>
+  <g><rect x="120" y="40" width="77" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="158.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">PRIMA</text></g>
+  <g><rect x="500" y="40" width="66" height="34" rx="17" fill="#1792d1" fill-opacity="0.18" stroke="#1792d1" stroke-opacity="0.55"/><text x="533.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">DOPO</text></g>
 </svg>

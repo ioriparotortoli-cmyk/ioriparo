@@ -9,8 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "anteprima": "node scripts/genera-anteprima.mjs",
-    "immagini": "node scripts/genera-immagini.mjs",
-    "verifica-online": "node scripts/verifica-online.mjs"
+    "verifica-online": "node scripts/verifica-online.mjs",
+    "marchio": "node scripts/prepara-marchio.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",

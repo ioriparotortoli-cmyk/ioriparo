@@ -25,6 +25,7 @@ const pagina = await contesto.newPage()
 await pagina.goto(BASE, { waitUntil: 'networkidle' })
 await pagina.waitForTimeout(1200)
 
+
 /* --- risposte delle FAQ: nel DOM ne esiste una sola per volta ------------- */
 const faq = []
 const bottoniFaq = pagina.locator('#faq button[aria-controls^="risposta-"]')
@@ -54,7 +55,7 @@ async function mappaCategorie(sezione, selettoreVoce, chiave) {
       `${sezione} ${selettoreVoce}`,
       (voci, attributo) =>
         voci.map((voce) =>
-          attributo === 'id' ? voce.id : voce.querySelector('img')?.getAttribute('src') ?? '',
+          attributo === 'id' ? voce.id : (voce.textContent ?? '').trim(),
         ),
       chiave,
     )
@@ -69,12 +70,11 @@ async function mappaCategorie(sezione, selettoreVoce, chiave) {
 }
 
 const categorieServizi = await mappaCategorie('#servizi', 'li[id^="servizio-"]', 'id')
-const categorieGalleria = await mappaCategorie('#galleria', 'li', 'img')
+const categorieGalleria = await mappaCategorie('#galleria', 'li', 'testo')
 
 /* --- didascalie della galleria per la finestra di ingrandimento ----------- */
 const galleria = await pagina.$$eval('#galleria li button', (bottoni) =>
   bottoni.map((bottone) => ({
-    src: bottone.querySelector('img')?.getAttribute('src') ?? '',
     titolo: bottone.querySelector('span:last-child span:last-child')?.textContent ?? '',
   })),
 )
@@ -89,6 +89,33 @@ await pagina.evaluate(async () => {
   window.scrollTo(0, 0)
 })
 await pagina.waitForTimeout(1500)
+
+/* --- immagini incorporate: l'anteprima non deve fare richieste esterne ---- */
+await pagina.evaluate(async () => {
+  const inLinea = async (url) => {
+    const risposta = await fetch(url)
+    const contenuto = await risposta.blob()
+    return new Promise((risolvi) => {
+      const lettore = new FileReader()
+      lettore.onload = () => risolvi(lettore.result)
+      lettore.readAsDataURL(contenuto)
+    })
+  }
+
+  for (const immagine of document.querySelectorAll('img')) {
+    const sorgente = immagine.currentSrc || immagine.src
+    if (!sorgente || sorgente.startsWith('data:')) continue
+    immagine.removeAttribute('srcset')
+    immagine.removeAttribute('sizes')
+    immagine.removeAttribute('loading')
+    try {
+      immagine.src = await inLinea(sorgente)
+    } catch {
+      // Se una risorsa non è raggiungibile si lascia il riferimento originale.
+    }
+  }
+})
+await pagina.waitForTimeout(600)
 
 const documento = await pagina.content()
 await browser.close()
@@ -142,19 +169,6 @@ for (const [intero, percorso] of caratteri) {
   css = css.replace(intero, `url(data:font/woff2;base64,${dati.toString('base64')})`)
 }
 
-// Immagini della galleria incorporate: nessuna richiesta esterna.
-const immagini = [...new Set([...html.matchAll(/src="(\/galleria\/[^"]+)"/g)].map((m) => m[1]))]
-for (const percorso of immagini) {
-  const dati = await readFile(path.join(RADICE, 'public', percorso.replace(/^\//, '')))
-  const dataUri = `data:image/svg+xml;base64,${dati.toString('base64')}`
-  html = html.replaceAll(`src="${percorso}"`, `src="${dataUri}"`)
-  for (const voce of galleria) if (voce.src === percorso) voce.src = dataUri
-  if (categorieGalleria[percorso]) {
-    categorieGalleria[dataUri] = categorieGalleria[percorso]
-    delete categorieGalleria[percorso]
-  }
-}
-
 const dati = {
   faq,
   categorieServizi,
@@ -196,7 +210,7 @@ const script = `
             : ' border-[color:var(--bordo)] testo-tenue');
         });
         voci.forEach(function (voce) {
-          var id = chiave === 'id' ? voce.id : (voce.querySelector('img') || {}).src;
+          var id = chiave === 'id' ? voce.id : (voce.textContent || '').trim();
           var categoria = mappa[id];
           var mostra = /^Tutt/.test(scelta) || categoria === scelta;
           voce.style.display = mostra ? '' : 'none';
@@ -206,7 +220,7 @@ const script = `
   }
 
   filtra('#servizi', dati.categorieServizi, 'id');
-  filtra('#galleria', dati.categorieGalleria, 'img');
+  filtra('#galleria', dati.categorieGalleria, 'testo');
 
   /* Domande frequenti */
   document.querySelectorAll('#faq button[aria-controls^="risposta-"]').forEach(function (bottone, indice) {

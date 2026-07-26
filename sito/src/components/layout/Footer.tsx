@@ -1,6 +1,6 @@
 import { Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import Link from 'next/link'
-import { Logo } from './Logo'
+import { Lockup } from './Logo'
 import { linkEmail, linkMappa, linkTelefono, linkWhatsapp, sito } from '@/lib/config/sito'
 import { servizi } from '@/lib/dati/servizi'
 
@@ -22,7 +22,7 @@ export function Footer() {
 
       <div className="contenitore grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo />
+          <Lockup />
           <p className="mt-5 max-w-xs text-sm leading-relaxed testo-tenue">
             Centro assistenza informatica a Tortolì: riparazioni rapide, ricambi di qualità e
             supporto professionale per privati e aziende in tutta l’Ogliastra.

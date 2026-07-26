@@ -10,6 +10,7 @@ import {
   Wrench,
   FileText,
   MessageCircle,
+  Users,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -22,6 +23,7 @@ const voci = [
   { href: '/admin/preventivi', etichetta: 'Preventivi', icona: FileText },
   { href: '/admin/appuntamenti', etichetta: 'Appuntamenti', icona: CalendarClock },
   { href: '/admin/messaggi', etichetta: 'Messaggi', icona: MessageCircle },
+  { href: '/admin/clienti', etichetta: 'Clienti', icona: Users },
   { href: '/admin/servizi', etichetta: 'Servizi e prezzi', icona: Wrench },
   { href: '/admin/offerte', etichetta: 'Offerte', icona: Percent },
   { href: '/admin/recensioni', etichetta: 'Recensioni', icona: Star },

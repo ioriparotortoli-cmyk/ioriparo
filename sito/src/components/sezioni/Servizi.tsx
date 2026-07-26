@@ -38,7 +38,7 @@ export function Servizi({ elenco }: { elenco: Servizio[] }) {
             className={cn(
               'rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-200',
               categoria === voce
-                ? 'border-elettrico-500 bg-elettrico-600 text-white shadow-[0_8px_24px_-12px_rgba(47,107,255,0.9)]'
+                ? 'border-elettrico-500 bg-elettrico-600 text-white shadow-[0_8px_24px_-12px_rgba(23,146,209,0.9)]'
                 : 'border-[color:var(--bordo)] testo-tenue hover:border-elettrico-500/50 hover:text-elettrico-400',
             )}
           >

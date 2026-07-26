@@ -128,7 +128,7 @@ export function Galleria() {
               <img src={ingrandita.file} alt={ingrandita.titolo} width={800} height={600} className="w-full" />
               <figcaption className="p-6">
                 <h3 className="text-lg font-bold text-white">{ingrandita.titolo}</h3>
-                <p className="mt-2 text-sm text-[#9aa6c4]">{ingrandita.descrizione}</p>
+                <p className="mt-2 text-sm text-[#93a4bd]">{ingrandita.descrizione}</p>
               </figcaption>
             </motion.figure>
           </motion.div>

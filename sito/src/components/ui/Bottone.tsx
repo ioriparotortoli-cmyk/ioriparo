@@ -6,7 +6,7 @@ type Dimensione = 'md' | 'lg'
 
 const varianti: Record<Variante, string> = {
   primario:
-    'bg-elettrico-600 text-white hover:bg-elettrico-500 shadow-[0_10px_30px_-10px_rgba(47,107,255,0.85)]',
+    'bg-elettrico-600 text-white hover:bg-elettrico-500 shadow-[0_10px_30px_-10px_rgba(23,146,209,0.85)]',
   whatsapp: 'bg-[#25D366] text-[#04120a] hover:bg-[#1fbe5b] shadow-[0_10px_30px_-12px_rgba(37,211,102,0.8)]',
   contorno:
     'border border-[color:var(--bordo)] vetro text-[color:var(--testo)] hover:border-elettrico-500/60 hover:text-elettrico-400',

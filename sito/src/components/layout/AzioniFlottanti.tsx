@@ -40,7 +40,7 @@ export function AzioniFlottanti() {
       <a
         href={linkTelefono}
         aria-label={`Chiama ora ${sito.contatti.telefonoVisibile}`}
-        className="group flex h-13 items-center gap-2 rounded-full bg-elettrico-600 pl-3.5 pr-4 text-white shadow-[0_12px_34px_-12px_rgba(47,107,255,0.95)] transition-all hover:bg-elettrico-500 active:scale-95 md:h-14"
+        className="group flex h-13 items-center gap-2 rounded-full bg-elettrico-600 pl-3.5 pr-4 text-white shadow-[0_12px_34px_-12px_rgba(23,146,209,0.95)] transition-all hover:bg-elettrico-500 active:scale-95 md:h-14"
       >
         <Phone className="h-5 w-5" aria-hidden="true" />
         <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold opacity-0 transition-all duration-300 group-hover:max-w-[9rem] group-hover:opacity-100 md:group-hover:pr-1">

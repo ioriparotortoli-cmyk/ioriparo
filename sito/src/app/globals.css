@@ -5,24 +5,26 @@
 
 @theme {
   --font-sans: var(--carattere-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: var(--carattere-display), var(--carattere-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-marchio: var(--carattere-marchio), var(--carattere-sans), ui-sans-serif, system-ui, sans-serif;
 
-  /* Blu elettrico: colore guida del marchio. */
-  --color-elettrico-50: #eef4ff;
-  --color-elettrico-100: #d9e6ff;
-  --color-elettrico-200: #bcd3ff;
-  --color-elettrico-300: #8eb5ff;
-  --color-elettrico-400: #598eff;
-  --color-elettrico-500: #2f6bff;
-  --color-elettrico-600: #1548f5;
-  --color-elettrico-700: #1036e1;
-  --color-elettrico-800: #132fb6;
-  --color-elettrico-900: #152d8f;
+  /* Blu del marchio, campionati dal logo Io Riparo. */
+  --color-elettrico-50: #e9f6fd;
+  --color-elettrico-100: #cdeafa;
+  --color-elettrico-200: #a3d9f4;
+  --color-elettrico-300: #6cc4ec;
+  --color-elettrico-400: #29a8e0;
+  --color-elettrico-500: #1792d1;
+  --color-elettrico-600: #0f7fc2;
+  --color-elettrico-700: #0a68a3;
+  --color-elettrico-800: #0a5484;
+  --color-elettrico-900: #0b4569;
 
-  /* Neri profondi con una punta di blu. */
-  --color-notte-700: #131a2a;
-  --color-notte-800: #0c1220;
-  --color-notte-900: #070b15;
-  --color-notte-950: #04060d;
+  /* Neri profondi con la stessa dominante blu del marchio. */
+  --color-notte-700: #12203a;
+  --color-notte-800: #0a1526;
+  --color-notte-900: #060d1a;
+  --color-notte-950: #04070f;
 
   --radius-4xl: 2rem;
 
@@ -30,7 +32,7 @@
   --animate-pulsazione: pulsazione 2.4s ease-in-out infinite;
   --animate-fluttua: fluttua 7s ease-in-out infinite;
 
-  --shadow-bagliore: 0 0 0 1px rgb(47 107 255 / 0.25), 0 20px 60px -20px rgb(47 107 255 / 0.55);
+  --shadow-bagliore: 0 0 0 1px rgb(23 146 209 / 0.3), 0 20px 60px -20px rgb(23 146 209 / 0.6);
 }
 
 @keyframes scorri {
@@ -67,21 +69,21 @@
 @layer base {
   :root {
     --superficie: #ffffff;
-    --superficie-alt: #f5f7fb;
-    --testo: #0b1020;
-    --testo-tenue: #55607a;
-    --bordo: rgb(11 16 32 / 0.1);
+    --superficie-alt: #f3f8fc;
+    --testo: #071120;
+    --testo-tenue: #4c5c72;
+    --bordo: rgb(6 13 26 / 0.12);
     --vetro: rgb(255 255 255 / 0.82);
     color-scheme: light;
   }
 
   [data-theme='dark'] {
-    --superficie: #04060d;
-    --superficie-alt: #0a1020;
-    --testo: #f2f5ff;
-    --testo-tenue: #9aa6c4;
+    --superficie: #04070f;
+    --superficie-alt: #0a1526;
+    --testo: #eef5fb;
+    --testo-tenue: #93a4bd;
     --bordo: rgb(255 255 255 / 0.1);
-    --vetro: rgb(10 16 32 / 0.72);
+    --vetro: rgb(10 21 38 / 0.72);
     color-scheme: dark;
   }
 
@@ -156,13 +158,28 @@
     color: var(--testo-tenue);
   }
 
+  /* I titoli usano il carattere del wordmark. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* Payoff del marchio: geometrico leggero, come nel logo. */
+  .payoff {
+    font-family: var(--font-marchio);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
   .superficie-alt {
     background-color: var(--superficie-alt);
   }
 
   /* Gradiente del marchio per titoli e dettagli. */
   .testo-gradiente {
-    background-image: linear-gradient(100deg, var(--color-elettrico-400), #7aa7ff 45%, var(--color-elettrico-600));
+    background-image: linear-gradient(100deg, #4ec0ee, var(--color-elettrico-400) 45%, var(--color-elettrico-600));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -186,7 +203,7 @@
   .campo:focus {
     outline: none;
     border-color: var(--color-elettrico-500);
-    box-shadow: 0 0 0 4px rgb(47 107 255 / 0.18);
+    box-shadow: 0 0 0 4px rgb(23 146 209 / 0.2);
   }
 
   .etichetta {
@@ -201,8 +218,8 @@
   /* Griglia decorativa di sfondo. */
   .griglia-tecnica {
     background-image:
-      linear-gradient(to right, rgb(47 107 255 / 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(47 107 255 / 0.08) 1px, transparent 1px);
+      linear-gradient(to right, rgb(41 168 224 / 0.09) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(41 168 224 / 0.09) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
   }

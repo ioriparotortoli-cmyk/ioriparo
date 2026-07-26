@@ -20,9 +20,10 @@ const formattaTelefono = (numero: string) =>
 export const sito = {
   nome: 'Io Riparo',
   nomeCompleto: 'Io Riparo — Assistenza Informatica',
-  slogan: 'Riparazioni rapide, ricambi di qualità e assistenza professionale.',
+  slogan: 'Riparazioni professionali, ricambi di qualità e assistenza veloce.',
+  payoff: 'come posso aiutare?',
   descrizione:
-    'Centro assistenza informatica a Tortolì: riparazione smartphone, tablet, PC e Mac, sostituzione display e batteria, recupero dati, videosorveglianza e reti aziendali.',
+    'Centro assistenza informatica a Tortolì: riparazione smartphone, tablet, iPhone, Samsung, PC, Mac e console, cambio display e batteria, recupero dati, videosorveglianza e reti aziendali.',
   url: env('NEXT_PUBLIC_SITE_URL', 'https://www.ioriparo.it'),
   lingua: 'it-IT',
   partitaIva: env('NEXT_PUBLIC_PARTITA_IVA', '00000000000'),

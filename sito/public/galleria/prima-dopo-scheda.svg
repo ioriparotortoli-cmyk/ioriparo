@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Scheda madre prima e dopo la bonifica">
   <defs>
     <linearGradient id="sfondo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1224"/><stop offset="100%" stop-color="#04060d"/>
+      <stop offset="0%" stop-color="#0a1526"/><stop offset="100%" stop-color="#04070f"/>
     </linearGradient>
     <linearGradient id="blu" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2f6bff"/><stop offset="100%" stop-color="#1036e1"/>
+      <stop offset="0%" stop-color="#1792d1"/><stop offset="100%" stop-color="#0a68a3"/>
     </linearGradient>
     <pattern id="griglia" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#2f6bff" stroke-opacity="0.12"/>
+      <path d="M40 0H0V40" fill="none" stroke="#1792d1" stroke-opacity="0.12"/>
     </pattern>
   </defs>
   <rect width="800" height="600" fill="url(#sfondo)"/>
   <rect width="800" height="600" fill="url(#griglia)"/>
-  <circle cx="640" cy="90" r="150" fill="#2f6bff" fill-opacity="0.14"/>
-  <line x1="400" y1="60" x2="400" y2="540" stroke="#2f6bff" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="10 8"/>
+  <circle cx="640" cy="90" r="150" fill="#1792d1" fill-opacity="0.14"/>
+  <line x1="400" y1="60" x2="400" y2="540" stroke="#1792d1" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="10 8"/>
   <rect x="90" y="170" width="240" height="260" rx="14" fill="#0f1a12" stroke="#6b8f3a" stroke-opacity="0.6" stroke-width="2"/>
   <g fill="#8a6b2f" fill-opacity="0.75"><circle cx="150" cy="230" r="26"/><circle cx="240" cy="300" r="34"/><circle cx="180" cy="370" r="22"/><circle cx="285" cy="215" r="18"/></g>
   <g stroke="#6b8f3a" stroke-opacity="0.7" stroke-width="3" fill="none"><path d="M110 200h200"/><path d="M110 260h60"/><path d="M200 400h110"/></g>
-  <rect x="470" y="170" width="240" height="260" rx="14" fill="#0a1626" stroke="#2f6bff" stroke-opacity="0.7" stroke-width="2"/>
-  <g stroke="#2f6bff" stroke-opacity="0.85" stroke-width="3" fill="none"><path d="M490 200h200"/><path d="M490 240h120"/><path d="M560 240v120"/><path d="M490 400h200"/><path d="M640 260v140"/></g>
-  <g fill="#8eb5ff"><rect x="520" y="270" width="70" height="50" rx="8"/><rect x="620" y="200" width="60" height="44" rx="8"/><circle cx="510" cy="380" r="12"/></g>
-  <g><rect x="90" y="40" width="143" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="161.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">OSSIDAZIONE</text></g>
-  <g><rect x="470" y="40" width="154" height="34" rx="17" fill="#2f6bff" fill-opacity="0.18" stroke="#2f6bff" stroke-opacity="0.55"/><text x="547.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">RIPRISTINATA</text></g>
+  <rect x="470" y="170" width="240" height="260" rx="14" fill="#0a1526" stroke="#1792d1" stroke-opacity="0.7" stroke-width="2"/>
+  <g stroke="#1792d1" stroke-opacity="0.85" stroke-width="3" fill="none"><path d="M490 200h200"/><path d="M490 240h120"/><path d="M560 240v120"/><path d="M490 400h200"/><path d="M640 260v140"/></g>
+  <g fill="#6cc4ec"><rect x="520" y="270" width="70" height="50" rx="8"/><rect x="620" y="200" width="60" height="44" rx="8"/><circle cx="510" cy="380" r="12"/></g>
+  <g><rect x="90" y="40" width="143" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="161.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">OSSIDAZIONE</text></g>
+  <g><rect x="470" y="40" width="154" height="34" rx="17" fill="#1792d1" fill-opacity="0.18" stroke="#1792d1" stroke-opacity="0.55"/><text x="547.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">RIPRISTINATA</text></g>
 </svg>

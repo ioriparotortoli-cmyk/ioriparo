@@ -28,13 +28,13 @@ export function IllustrazioneDispositivi() {
       >
         <defs>
           <linearGradient id="scocca" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#1b2437" />
-            <stop offset="100%" stopColor="#080d18" />
+            <stop offset="0%" stopColor="#122238" />
+            <stop offset="100%" stopColor="#050c18" />
           </linearGradient>
           <linearGradient id="schermo" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#2f6bff" stopOpacity="0.95" />
-            <stop offset="55%" stopColor="#1548f5" stopOpacity="0.75" />
-            <stop offset="100%" stopColor="#0a1020" stopOpacity="0.95" />
+            <stop offset="0%" stopColor="#1792d1" stopOpacity="0.95" />
+            <stop offset="55%" stopColor="#0f7fc2" stopOpacity="0.75" />
+            <stop offset="100%" stopColor="#0a1526" stopOpacity="0.95" />
           </linearGradient>
           <linearGradient id="riflesso" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#ffffff" stopOpacity="0.28" />
@@ -49,7 +49,7 @@ export function IllustrazioneDispositivi() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.g {...fluttua(0)}>
-            <rect x="132" y="96" width="268" height="176" rx="14" fill="url(#scocca)" stroke="#2f6bff" strokeOpacity="0.35" />
+            <rect x="132" y="96" width="268" height="176" rx="14" fill="url(#scocca)" stroke="#1792d1" strokeOpacity="0.35" />
             <rect x="144" y="108" width="244" height="152" rx="8" fill="url(#schermo)" />
             <rect x="144" y="108" width="244" height="152" rx="8" fill="url(#riflesso)" />
             <g stroke="#ffffff" strokeOpacity="0.55" strokeWidth="3" strokeLinecap="round">
@@ -66,8 +66,8 @@ export function IllustrazioneDispositivi() {
               strokeLinejoin="round"
               fill="none"
             />
-            <path d="M112 272h308l16 22H96z" fill="url(#scocca)" stroke="#2f6bff" strokeOpacity="0.3" />
-            <rect x="232" y="278" width="68" height="6" rx="3" fill="#2f6bff" fillOpacity="0.5" />
+            <path d="M112 272h308l16 22H96z" fill="url(#scocca)" stroke="#1792d1" strokeOpacity="0.3" />
+            <rect x="232" y="278" width="68" height="6" rx="3" fill="#1792d1" fillOpacity="0.5" />
           </motion.g>
         </motion.g>
 
@@ -78,7 +78,7 @@ export function IllustrazioneDispositivi() {
           transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.g {...fluttua(1.2)}>
-            <rect x="376" y="152" width="126" height="172" rx="16" fill="url(#scocca)" stroke="#2f6bff" strokeOpacity="0.4" />
+            <rect x="376" y="152" width="126" height="172" rx="16" fill="url(#scocca)" stroke="#1792d1" strokeOpacity="0.4" />
             <rect x="386" y="164" width="106" height="148" rx="9" fill="url(#schermo)" />
             <rect x="386" y="164" width="106" height="148" rx="9" fill="url(#riflesso)" />
             <g fill="#ffffff" fillOpacity="0.5">
@@ -98,10 +98,10 @@ export function IllustrazioneDispositivi() {
           transition={{ duration: 0.7, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.g {...fluttua(0.6)}>
-            <rect x="26" y="140" width="104" height="196" rx="22" fill="url(#scocca)" stroke="#2f6bff" strokeOpacity="0.45" />
+            <rect x="26" y="140" width="104" height="196" rx="22" fill="url(#scocca)" stroke="#1792d1" strokeOpacity="0.45" />
             <rect x="35" y="150" width="86" height="176" rx="15" fill="url(#schermo)" />
             <rect x="35" y="150" width="86" height="176" rx="15" fill="url(#riflesso)" />
-            <rect x="62" y="156" width="32" height="7" rx="3.5" fill="#04060d" fillOpacity="0.85" />
+            <rect x="62" y="156" width="32" height="7" rx="3.5" fill="#04070f" fillOpacity="0.85" />
             <g stroke="#ffffff" strokeOpacity="0.6" strokeWidth="3" strokeLinecap="round">
               <path d="M50 196h56" />
               <path d="M50 212h38" />
@@ -126,7 +126,7 @@ export function IllustrazioneDispositivi() {
               cx={punto.cx}
               cy={punto.cy}
               r={punto.r}
-              fill="#598eff"
+              fill="#29a8e0"
               initial={{ opacity: 0.2 }}
               animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.35, 1] }}
               transition={{ duration: 2.6, repeat: Infinity, delay: punto.d }}

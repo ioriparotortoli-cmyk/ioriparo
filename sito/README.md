@@ -23,7 +23,7 @@ Altri comandi:
 npm run build      # build di produzione
 npm run start      # avvio della build (http://localhost:3000)
 npm run typecheck  # controllo dei tipi
-npm run immagini   # rigenera og.png e le icone PWA
+npm run marchio    # rigenera logo, favicon, icone PWA e og.png dal logo originale
 npm run anteprima  # genera anteprima/index.html (vedi sotto)
 ```
 
@@ -83,7 +83,9 @@ sito/
     validazione.ts        schemi zod dei moduli
     email.ts              notifiche via Resend
   supabase/schema.sql     tabelle, policy RLS e bucket storage
-  public/                 logo, favicon, og.png, immagini della galleria
+  marchio/                file originali del logo (PNG e PDF forniti dal cliente)
+  public/marchio/         asset derivati: lockup chiaro/scuro e simbolo
+  public/                 favicon, icone PWA, og.png, immagini della galleria
 ```
 
 ## Configurazione
@@ -144,11 +146,21 @@ Area protetta su `/admin` (login Supabase, sessione via cookie, accesso filtrato
 - Dati strutturati `LocalBusiness`/`ComputerRepairService`, `WebSite`, `FAQPage` e `BreadcrumbList`.
 - `sitemap.xml`, `robots.txt` e `manifest.webmanifest` generati da Next.
 - Home statica con rigenerazione oraria (ISR); nessuna libreria di grafici o UI pesante.
-- Font `Inter` self-hosted da `next/font`, immagini vettoriali, JavaScript iniziale ridotto
-  (~100 kB condivisi).
+- Caratteri self-hosted da `next/font` (Archivo per i titoli, Inter per il testo, Poppins per il
+  payoff del marchio), immagini vettoriali, JavaScript iniziale ridotto (~100 kB condivisi).
 - Animazioni disattivate automaticamente con `prefers-reduced-motion`.
 - Intestazioni di sicurezza (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
   `Permissions-Policy`) e protezione anti-spam sui moduli (campo trappola + limite di frequenza).
+
+## Marchio
+
+I file originali del logo stanno in `marchio/`. Da lì `npm run marchio` genera tutto il resto:
+lockup con testo chiaro e scuro, simbolo isolato (il testo bianco viene rimosso a livello di
+pixel, perché nel logo si sovrappone allo smartphone), favicon, icone PWA e immagine Open Graph.
+Se il logo cambia, basta sostituire i file in `marchio/` e rilanciare il comando.
+
+La palette del sito è campionata dal logo (`#29a8e0` → `#0274be`) e i titoli usano Archivo, il
+grottesco più vicino al wordmark "IO RIPARO"; il payoff "come posso aiutare?" usa Poppins Light.
 
 ## Sostituire le immagini della galleria
 

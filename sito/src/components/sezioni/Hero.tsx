@@ -41,7 +41,7 @@ export function Hero() {
 
           <Rivela direzione="destra" ritardo={0.16}>
             <p className="mt-6 max-w-xl text-base leading-relaxed testo-tenue md:text-lg">
-              Riparazioni rapide, ricambi di qualità e assistenza professionale per privati e
+              Riparazioni professionali, ricambi di qualità e assistenza veloce per privati e
               aziende.
             </p>
           </Rivela>

@@ -90,7 +90,7 @@ function CampiServizio({ riga }: { riga?: RigaServizio }) {
 
       <div className="flex flex-wrap items-center gap-6">
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" name="attivo" defaultChecked={riga?.attivo ?? true} className="h-4 w-4 accent-[#2f6bff]" />
+          <input type="checkbox" name="attivo" defaultChecked={riga?.attivo ?? true} className="h-4 w-4 accent-[#1792d1]" />
           Visibile sul sito
         </label>
         <label className="flex items-center gap-2 text-sm">

@@ -37,7 +37,7 @@ export function Consenso({ nome = 'privacy' }: { nome?: string }) {
         type="checkbox"
         name={nome}
         required
-        className="mt-0.5 h-4.5 w-4.5 shrink-0 rounded border-[color:var(--bordo)] accent-[#2f6bff]"
+        className="mt-0.5 h-4.5 w-4.5 shrink-0 rounded border-[color:var(--bordo)] accent-[#1792d1]"
       />
       <span>
         Ho letto e accetto la{' '}

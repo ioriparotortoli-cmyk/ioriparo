@@ -19,9 +19,9 @@ const escape = (valore: string) =>
     .replace(/"/g, '&quot;')
 
 const corpo = (titolo: string, righe: Array<[string, string]>) => `
-  <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#04060d;padding:32px">
-    <div style="max-width:560px;margin:0 auto;background:#0a1020;border:1px solid rgba(47,107,255,.35);border-radius:18px;overflow:hidden">
-      <div style="padding:20px 26px;background:linear-gradient(100deg,#1548f5,#2f6bff)">
+  <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:#04070f;padding:32px">
+    <div style="max-width:560px;margin:0 auto;background:#0a1526;border:1px solid rgba(23,146,209,.35);border-radius:18px;overflow:hidden">
+      <div style="padding:20px 26px;background:linear-gradient(100deg,#0f7fc2,#1792d1)">
         <span style="color:#fff;font-size:18px;font-weight:700;letter-spacing:.02em">Io Riparo</span>
       </div>
       <div style="padding:26px">
@@ -31,7 +31,7 @@ const corpo = (titolo: string, righe: Array<[string, string]>) => `
             .map(
               ([etichetta, valore]) => `
             <tr>
-              <td style="padding:8px 0;color:#9aa6c4;font-size:13px;width:38%;vertical-align:top">${escape(
+              <td style="padding:8px 0;color:#93a4bd;font-size:13px;width:38%;vertical-align:top">${escape(
                 etichetta,
               )}</td>
               <td style="padding:8px 0;color:#f2f5ff;font-size:14px">${escape(valore).replace(

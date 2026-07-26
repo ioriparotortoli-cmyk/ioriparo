@@ -63,7 +63,7 @@ function CampiOfferta({ riga }: { riga?: RigaOfferta }) {
           type="checkbox"
           name="pubblicata"
           defaultChecked={riga?.pubblicata ?? true}
-          className="h-4 w-4 accent-[#2f6bff]"
+          className="h-4 w-4 accent-[#1792d1]"
         />
         Pubblicata in home
       </label>

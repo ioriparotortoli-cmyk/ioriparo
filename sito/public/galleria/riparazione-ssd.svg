@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Sostituzione hard disk con SSD">
   <defs>
     <linearGradient id="sfondo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0b1224"/><stop offset="100%" stop-color="#04060d"/>
+      <stop offset="0%" stop-color="#0a1526"/><stop offset="100%" stop-color="#04070f"/>
     </linearGradient>
     <linearGradient id="blu" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2f6bff"/><stop offset="100%" stop-color="#1036e1"/>
+      <stop offset="0%" stop-color="#1792d1"/><stop offset="100%" stop-color="#0a68a3"/>
     </linearGradient>
     <pattern id="griglia" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M40 0H0V40" fill="none" stroke="#2f6bff" stroke-opacity="0.12"/>
+      <path d="M40 0H0V40" fill="none" stroke="#1792d1" stroke-opacity="0.12"/>
     </pattern>
   </defs>
   <rect width="800" height="600" fill="url(#sfondo)"/>
   <rect width="800" height="600" fill="url(#griglia)"/>
-  <circle cx="640" cy="90" r="150" fill="#2f6bff" fill-opacity="0.14"/>
-  <rect x="120" y="180" width="560" height="250" rx="18" fill="#0c1424" stroke="#2f6bff" stroke-opacity="0.45" stroke-width="2"/>
-  <rect x="160" y="230" width="220" height="150" rx="12" fill="#111c30" stroke="#8eb5ff" stroke-opacity="0.4"/>
-  <circle cx="270" cy="305" r="52" fill="none" stroke="#8eb5ff" stroke-opacity="0.5" stroke-width="6"/>
-  <circle cx="270" cy="305" r="12" fill="#8eb5ff" fill-opacity="0.6"/>
-  <path d="M410 305h70m0 0-18-18m18 18-18 18" stroke="#2f6bff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="640" cy="90" r="150" fill="#1792d1" fill-opacity="0.14"/>
+  <rect x="120" y="180" width="560" height="250" rx="18" fill="#0a1526" stroke="#1792d1" stroke-opacity="0.45" stroke-width="2"/>
+  <rect x="160" y="230" width="220" height="150" rx="12" fill="#122238" stroke="#6cc4ec" stroke-opacity="0.4"/>
+  <circle cx="270" cy="305" r="52" fill="none" stroke="#6cc4ec" stroke-opacity="0.5" stroke-width="6"/>
+  <circle cx="270" cy="305" r="12" fill="#6cc4ec" fill-opacity="0.6"/>
+  <path d="M410 305h70m0 0-18-18m18 18-18 18" stroke="#1792d1" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   <rect x="510" y="245" width="150" height="120" rx="12" fill="url(#blu)" fill-opacity="0.9"/>
-  <g fill="#04060d" fill-opacity="0.55"><rect x="530" y="270" width="110" height="14" rx="7"/><rect x="530" y="298" width="80" height="14" rx="7"/><rect x="530" y="326" width="95" height="14" rx="7"/></g>
-  <g><rect x="160" y="40" width="55" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="187.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">HDD</text></g>
-  <g><rect x="510" y="40" width="110" height="34" rx="17" fill="#2f6bff" fill-opacity="0.18" stroke="#2f6bff" stroke-opacity="0.55"/><text x="565.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#8eb5ff">SSD NVMe</text></g>
+  <g fill="#04070f" fill-opacity="0.55"><rect x="530" y="270" width="110" height="14" rx="7"/><rect x="530" y="298" width="80" height="14" rx="7"/><rect x="530" y="326" width="95" height="14" rx="7"/></g>
+  <g><rect x="160" y="40" width="55" height="34" rx="17" fill="#ff5470" fill-opacity="0.18" stroke="#ff5470" stroke-opacity="0.55"/><text x="187.5" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">HDD</text></g>
+  <g><rect x="510" y="40" width="110" height="34" rx="17" fill="#1792d1" fill-opacity="0.18" stroke="#1792d1" stroke-opacity="0.55"/><text x="565.0" y="63" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#6cc4ec">SSD NVMe</text></g>
 </svg>

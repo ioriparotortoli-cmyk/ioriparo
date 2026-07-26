@@ -25,6 +25,7 @@ npm run start      # avvio della build (http://localhost:3000)
 npm run typecheck  # controllo dei tipi
 npm run marchio    # rigenera logo, favicon, icone PWA e og.png dal logo originale
 npm run anteprima  # genera anteprima/index.html (vedi sotto)
+npm run audit      # audit funzionale su tutto il sito (richiede il sito avviato)
 ```
 
 Gli stessi comandi sono richiamabili dalla radice del repository:
@@ -34,6 +35,22 @@ npm run sito:install
 npm run sito:dev
 npm run sito:build && npm run sito:start
 ```
+
+## Audit funzionale
+
+`npm run audit` esegue 136 controlli automatici con un browser reale sul sito in esecuzione:
+risorse mancanti ed errori in console su tutte le pagine, validità di link, pulsanti, `tel:`,
+`mailto:` e WhatsApp, scorrimento verso le ancore, menu mobile, invio e validazione dei tre
+moduli, ricerca, tema, filtri, FAQ e galleria, accessibilità da tastiera e contrasto, assenza di
+scorrimento orizzontale su sei formati e metriche di caricamento.
+
+```bash
+npm run build && npm run start   # in un terminale
+npm run audit                    # in un altro
+```
+
+Termina con codice di uscita diverso da zero se un controllo fallisce, quindi si può usare in
+una pipeline prima del rilascio. Il dettaglio finisce in `audit.json`.
 
 ## Anteprima in un unico file
 

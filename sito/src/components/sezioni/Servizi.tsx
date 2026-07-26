@@ -61,7 +61,7 @@ export function Servizi({ elenco }: { elenco: Servizio[] }) {
                 exit={movimentoRidotto ? undefined : { opacity: 0, scale: 0.96 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.4, delay: Math.min(indice * 0.03, 0.3) }}
-                className="group relative scroll-mt-28"
+                className="group relative"
               >
                 <div className="relative h-full overflow-hidden rounded-3xl vetro p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-elettrico-500/50 hover:shadow-bagliore">
                   <div

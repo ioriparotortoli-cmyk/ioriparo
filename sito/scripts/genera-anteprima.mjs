@@ -131,11 +131,18 @@ html = html.replace(/<next-route-announcer[\s\S]*?<\/next-route-announcer>/g, ''
 html = html.replace(/<template[\s\S]*?<\/template>/g, '')
 
 // Stati iniziali delle animazioni: senza Framer Motion resterebbero invisibili.
+// Si rimuovono anche le altezze azzerate dei pannelli chiusi (FAQ), che nel
+// file statico sono governati dal solo `display`.
 html = html.replace(/style="([^"]*)"/g, (intero, stile) => {
-  if (!/opacity:\s*0/.test(stile) && !/transform:\s*translate/.test(stile)) return intero
+  const nascosto = /opacity:\s*0/.test(stile)
+  if (!nascosto && !/transform:\s*translate/.test(stile)) return intero
   const pulito = stile
     .split(';')
-    .filter((regola) => !/^\s*(opacity|transform)\s*:/.test(regola))
+    .filter((regola) => {
+      if (/^\s*(opacity|transform)\s*:/.test(regola)) return false
+      if (nascosto && /^\s*height\s*:\s*0/.test(regola)) return false
+      return true
+    })
     .join(';')
   return pulito.trim() ? `style="${pulito}"` : ''
 })

@@ -7,7 +7,7 @@ import { embedMappa, linkEmail, linkMappa, linkTelefono, linkWhatsapp, sito } fr
 
 export function Contatti() {
   return (
-    <Sezione id="contatti">
+    <Sezione id="contatti" className="overflow-hidden">
       <IntestazioneSezione
         occhiello="Contatti"
         titolo={

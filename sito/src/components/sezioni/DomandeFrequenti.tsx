@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import { IntestazioneSezione, Sezione } from '@/components/ui/Sezione'
@@ -39,6 +39,7 @@ export function DomandeFrequenti() {
                 <h3>
                   <button
                     type="button"
+                    id={`domanda-${indice}`}
                     onClick={() => impostaAperta(attiva ? null : indice)}
                     aria-expanded={attiva}
                     aria-controls={`risposta-${indice}`}
@@ -53,19 +54,22 @@ export function DomandeFrequenti() {
                     />
                   </button>
                 </h3>
-                <AnimatePresence initial={false}>
-                  {attiva && (
-                    <motion.div
-                      id={`risposta-${indice}`}
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <p className="px-6 pb-6 text-sm leading-relaxed testo-tenue">{voce.risposta}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Il pannello resta sempre nel DOM: così `aria-controls` punta a
+                    un elemento reale, le risposte sono indicizzabili e coerenti
+                    con i dati strutturati FAQPage. Quando è chiuso viene reso
+                    inerte, quindi né leggibile dagli screen reader né tabulabile. */}
+                <motion.div
+                  id={`risposta-${indice}`}
+                  role="region"
+                  aria-labelledby={`domanda-${indice}`}
+                  inert={!attiva}
+                  initial={false}
+                  animate={{ height: attiva ? 'auto' : 0, opacity: attiva ? 1 : 0 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="overflow-hidden"
+                >
+                  <p className="px-6 pb-6 text-sm leading-relaxed testo-tenue">{voce.risposta}</p>
+                </motion.div>
               </div>
             </Rivela>
           )

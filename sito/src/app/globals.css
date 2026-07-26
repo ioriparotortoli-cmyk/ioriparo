@@ -93,11 +93,19 @@
 
   html {
     scroll-behavior: smooth;
+    /* Unico meccanismo di scostamento per le ancore: le sezioni non devono
+       aggiungere anche `scroll-margin`, altrimenti l'offset raddoppia. */
     scroll-padding-top: 6rem;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
+    /* Le animazioni di comparsa partono traslate: senza questo, sui telefoni
+       la pagina scorre lateralmente finché la sezione non entra in vista.
+       `clip` non crea un contenitore di scorrimento; `hidden` è la riserva
+       per i browser che non lo supportano. */
+    overflow-x: hidden;
+    overflow-x: clip;
     background-color: var(--superficie);
     color: var(--testo);
     font-family: var(--font-sans);
@@ -189,6 +197,7 @@
     width: 100%;
     border-radius: 0.85rem;
     border: 1px solid var(--bordo);
+    background-color: var(--superficie-alt);
     background-color: color-mix(in srgb, var(--superficie-alt) 70%, transparent);
     padding: 0.75rem 0.95rem;
     font-size: 0.95rem;

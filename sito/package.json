@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "anteprima": "node scripts/genera-anteprima.mjs",
     "verifica-online": "node scripts/verifica-online.mjs",
-    "marchio": "node scripts/prepara-marchio.mjs"
+    "marchio": "node scripts/prepara-marchio.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",

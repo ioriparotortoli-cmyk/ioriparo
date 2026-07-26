@@ -9,7 +9,7 @@ export async function Offerte() {
   if (offerte.length === 0) return null
 
   return (
-    <section id="offerte" className="scroll-mt-24 pb-4 pt-6 md:pb-8">
+    <section id="offerte" className="pb-4 pt-6 md:pb-8">
       <div className="contenitore">
         <ul className="grid gap-4 md:grid-cols-3">
           {offerte.map((offerta, indice) => (

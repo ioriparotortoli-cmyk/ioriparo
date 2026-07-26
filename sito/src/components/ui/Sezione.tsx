@@ -16,7 +16,7 @@ export function Sezione({
     <section
       id={id}
       className={cn(
-        'relative scroll-mt-24 py-20 md:py-28',
+        'relative py-20 md:py-28',
         sfondoAlternato && 'superficie-alt',
         className,
       )}

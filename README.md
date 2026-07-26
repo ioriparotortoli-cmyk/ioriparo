@@ -125,6 +125,7 @@ Una copia autonoma della home in un unico file HTML (utile per un'anteprima rapi
 eseguire Next.js) si ottiene con `npm run sito:anteprima`, che scrive `sito/anteprima/index.html`.
 
 Dettagli, configurazione e schema del database: [`sito/README.md`](./sito/README.md).
+Pubblicazione su Vercel e collegamento del dominio: [`sito/DEPLOY.md`](./sito/DEPLOY.md).
 
 > Nota: `npm run dev` nella radice avvia il **gestionale** (Vite, porta 5173); il sito pubblico
 > ha i propri comandi `sito:*` e gira sulla porta 3000.

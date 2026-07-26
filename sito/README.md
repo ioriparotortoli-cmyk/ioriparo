@@ -158,8 +158,15 @@ Le foto in `public/galleria/*.svg` sono segnaposto vettoriali. Sostituiscile con
 
 ## Pubblicazione
 
-Il progetto è pensato per Vercel (o qualsiasi host che supporti Next.js in modalità server):
+Guida completa passo per passo, dal repository al dominio collegato:
+**[DEPLOY.md](./DEPLOY.md)**.
 
-1. Imposta la *Root Directory* su `sito/`.
+In breve, su Vercel (o qualsiasi host che supporti Next.js in modalità server):
+
+1. Importa il repository e imposta la *Root Directory* su `sito/`.
 2. Aggiungi le variabili d'ambiente del file `.env.example`.
 3. Distribuisci: le route API e le server action girano come funzioni serverless.
+4. Verifica il risultato con `npm run verifica-online https://iltuodominio.it`.
+
+`vercel.json` fissa la regione delle funzioni su Francoforte (`fra1`), l'intestazione HSTS e la
+cache delle immagini statiche.

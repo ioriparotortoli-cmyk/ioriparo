@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
 import { Clock, ShieldCheck, Sparkles, Wallet } from 'lucide-react'
 import { ModuloPreventivo } from '@/components/moduli/ModuloPreventivo'
 import { Rivela } from '@/components/ui/Rivela'
@@ -76,9 +75,7 @@ export default function PaginaPreventivo() {
 
           <Rivela direzione="sinistra" ritardo={0.08}>
             <div className="rounded-4xl vetro p-6 md:p-9">
-              <Suspense fallback={<p className="text-sm testo-tenue">Caricamento del modulo…</p>}>
-                <ModuloPreventivo />
-              </Suspense>
+              <ModuloPreventivo />
             </div>
           </Rivela>
         </div>

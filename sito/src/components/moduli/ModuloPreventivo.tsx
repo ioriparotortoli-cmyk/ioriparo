@@ -1,7 +1,6 @@
 'use client'
 
 import { ImagePlus, Send, X } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { Bottone } from '@/components/ui/Bottone'
 import { servizi } from '@/lib/dati/servizi'
@@ -12,11 +11,17 @@ type Anteprima = { file: File; url: string }
 
 export function ModuloPreventivo() {
   const { stato, invia, inCorso } = useInvioModulo('/api/preventivi')
-  const parametri = useSearchParams()
-  const servizioIniziale = parametri.get('servizio') ?? ''
   const [foto, impostaFoto] = useState<Anteprima[]>([])
   const [avviso, impostaAvviso] = useState<string | null>(null)
   const campoFile = useRef<HTMLInputElement>(null)
+  const campoServizio = useRef<HTMLSelectElement>(null)
+
+  // Il servizio arriva dal link "Chiedi un preventivo" delle card. Si legge
+  // dopo il montaggio: così il modulo resta renderizzato dal server.
+  useEffect(() => {
+    const scelto = new URLSearchParams(window.location.search).get('servizio')
+    if (scelto && campoServizio.current) campoServizio.current.value = scelto
+  }, [])
 
   // Le anteprime usano URL oggetto: vanno revocate per non trattenere memoria.
   useEffect(() => () => foto.forEach((elemento) => URL.revokeObjectURL(elemento.url)), [foto])
@@ -92,7 +97,7 @@ export function ModuloPreventivo() {
           <input id="dispositivo" name="dispositivo" className="campo" required maxLength={80} />
         </Campo>
         <Campo etichetta="Servizio richiesto" nome="servizio">
-          <select id="servizio" name="servizio" className="campo" defaultValue={servizioIniziale}>
+          <select ref={campoServizio} id="servizio" name="servizio" className="campo" defaultValue="">
             <option value="">Non lo so / da valutare</option>
             {servizi.map((servizio) => (
               <option key={servizio.slug} value={servizio.titolo}>

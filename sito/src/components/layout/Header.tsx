@@ -47,8 +47,8 @@ export function Header() {
         scorso ? 'vetro shadow-[0_8px_30px_-16px_rgba(0,0,0,0.6)]' : 'border-b border-transparent',
       )}
     >
-      <div className="contenitore flex h-18 items-center justify-between gap-4 py-3">
-        <Logo />
+      <div className="contenitore flex h-18 items-center justify-between gap-4">
+        <Logo priorita />
 
         <nav aria-label="Navigazione principale" className="hidden items-center gap-1 xl:flex">
           {voci.map((voce) => (

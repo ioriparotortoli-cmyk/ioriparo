@@ -10,6 +10,7 @@ import type {
   Riparazione,
   Scadenza,
   StatoRiparazione,
+  Utente,
 } from '@/types'
 
 /**
@@ -572,6 +573,22 @@ export const AZIENDA: Azienda = {
   prefissoCodice: `#${anno}-`,
 }
 
+/** Profilo di chi usa il gestionale: si modifica dalla pagina Profilo. */
+export const UTENTE: Utente = {
+  nome: 'Stefano Puddu',
+  ruolo: 'Titolare',
+  email: 'ioriparotortoli@gmail.com',
+  telefono: '338 435 6603',
+  iniziali: 'SP',
+  preferenze: {
+    tema: 'sistema',
+    paginaIniziale: '/gestionale',
+    avvisiScadenze: true,
+    avvisiSottoScorta: true,
+    righePerPagina: 25,
+  },
+}
+
 export function creaDatabaseIniziale(): DatabaseGestionale {
   return {
     clienti: CLIENTI,
@@ -583,5 +600,6 @@ export function creaDatabaseIniziale(): DatabaseGestionale {
     scadenze: SCADENZE,
     impianti: IMPIANTI,
     azienda: AZIENDA,
+    utente: UTENTE,
   }
 }

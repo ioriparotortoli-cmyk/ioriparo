@@ -84,16 +84,32 @@ Ogni pagina imposta titolo, descrizione, canonical, Open Graph, Twitter Card e J
 
 | Percorso | Contenuto |
 | --- | --- |
-| `/gestionale` | Dashboard: riepiloghi, riparazioni per stato, ultime riparazioni, scadenze, incassi |
+| `/gestionale` | Dashboard: riepiloghi, azioni rapide, riparazioni per stato, ultime pratiche, scadenze |
 | `/gestionale/riparazioni` | Elenco con filtri, ricerca, ordinamento, paginazione ed esportazione CSV |
 | `/gestionale/riparazioni/nuova` | Accettazione: dati cliente e dispositivo, difetto, accessori, foto, firma |
 | `/gestionale/riparazioni/:id` | Scheda con stato, interventi, ricambi, totali IVA, stampa |
-| `/gestionale/clienti` | Anagrafica privati e aziende con storico |
+| `/gestionale/clienti`, `/clienti/:id` | Anagrafica privati e aziende con storico |
+| `/gestionale/scadenze`, `/impianti` | Promemoria e impianti installati |
 | `/gestionale/preventivi`, `/fatture` | Documenti commerciali e incassi |
 | `/gestionale/magazzino`, `/ordini` | Ricambi, sotto scorta, ordini a fornitore |
-| `/gestionale/scadenze`, `/impianti` | Promemoria e impianti installati |
-| `/gestionale/statistiche` | Incassi, riparazioni per mese, ricavi per categoria |
-| `/gestionale/impostazioni`, `/backup` | Dati aziendali, backup ed esportazioni |
+| `/gestionale/statistiche` | Incassi, riparazioni per mese, ricavi per categoria, più venduti |
+| `/gestionale/profilo` | **Solo** i dati di chi usa il gestionale e le preferenze del suo account |
+| `/gestionale/impostazioni` | Dati dell'attività e valori predefiniti dei documenti |
+| `/gestionale/backup` | Archivio locale, backup JSON ed esportazioni CSV |
+
+Ogni sezione ha una pagina propria, con il suo modulo caricato separatamente: la
+dashboard non scarica il codice delle statistiche e viceversa. Il menu laterale è
+raggruppato per area — Laboratorio, Documenti, Magazzino, Analisi, Account — così
+resta leggibile man mano che le voci aumentano.
+
+La divisione delle responsabilità è netta:
+
+| Pagina | Contiene | Non contiene |
+| --- | --- | --- |
+| **Dashboard** | numeri del giorno, azioni rapide, code di lavoro | grafici e analisi, che stanno in Statistiche |
+| **Profilo personale** | nome, ruolo, recapiti, preferenze, accesso | qualunque dato dell'azienda |
+| **Impostazioni** | denominazione, partita IVA, IVA e numerazione | dati personali, backup |
+| **Backup** | archivio locale, esportazioni, ripristino | impostazioni dell'attività |
 
 Le due aree condividono l'archivio: la pratica che il tecnico aggiorna nel gestionale è la
 stessa che il cliente vede su `/stato-riparazione` e nell'area riservata.

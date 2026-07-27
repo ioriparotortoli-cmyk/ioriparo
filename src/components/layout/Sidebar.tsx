@@ -12,6 +12,7 @@ import {
   Settings,
   Smartphone,
   Truck,
+  UserCircle2,
   Users,
   Wrench,
   X,
@@ -26,20 +27,59 @@ interface VoceMenu {
   icona: LucideIcon
 }
 
-export const VOCI_MENU: VoceMenu[] = [
-  { etichetta: 'Dashboard', percorso: '/gestionale', icona: LayoutDashboard },
-  { etichetta: 'Clienti', percorso: '/gestionale/clienti', icona: Users },
-  { etichetta: 'Dispositivi / Riparazioni', percorso: '/gestionale/riparazioni', icona: Smartphone },
-  { etichetta: 'Preventivi', percorso: '/gestionale/preventivi', icona: FileText },
-  { etichetta: 'Fatture', percorso: '/gestionale/fatture', icona: Receipt },
-  { etichetta: 'Magazzino', percorso: '/gestionale/magazzino', icona: Boxes },
-  { etichetta: 'Ordini Fornitori', percorso: '/gestionale/ordini', icona: Truck },
-  { etichetta: 'Scadenze e Promemoria', percorso: '/gestionale/scadenze', icona: CalendarClock },
-  { etichetta: 'Impianti & Installazioni', percorso: '/gestionale/impianti', icona: Wrench },
-  { etichetta: 'Statistiche', percorso: '/gestionale/statistiche', icona: BarChart3 },
-  { etichetta: 'Impostazioni', percorso: '/gestionale/impostazioni', icona: Settings },
-  { etichetta: 'Backup / Esportazioni', percorso: '/gestionale/backup', icona: DatabaseBackup },
+interface GruppoMenu {
+  /** Titolo della sezione; assente per il primo gruppo, che apre il menu */
+  titolo?: string
+  voci: VoceMenu[]
+}
+
+/**
+ * Menu raggruppato per area di lavoro: ogni sezione del gestionale ha la sua
+ * pagina, e i gruppi rendono l'elenco leggibile anche quando le voci cresceranno.
+ */
+export const GRUPPI_MENU: GruppoMenu[] = [
+  {
+    voci: [{ etichetta: 'Dashboard', percorso: '/gestionale', icona: LayoutDashboard }],
+  },
+  {
+    titolo: 'Laboratorio',
+    voci: [
+      { etichetta: 'Riparazioni', percorso: '/gestionale/riparazioni', icona: Smartphone },
+      { etichetta: 'Clienti', percorso: '/gestionale/clienti', icona: Users },
+      { etichetta: 'Scadenze e promemoria', percorso: '/gestionale/scadenze', icona: CalendarClock },
+      { etichetta: 'Impianti e installazioni', percorso: '/gestionale/impianti', icona: Wrench },
+    ],
+  },
+  {
+    titolo: 'Documenti',
+    voci: [
+      { etichetta: 'Preventivi', percorso: '/gestionale/preventivi', icona: FileText },
+      { etichetta: 'Fatture', percorso: '/gestionale/fatture', icona: Receipt },
+    ],
+  },
+  {
+    titolo: 'Magazzino',
+    voci: [
+      { etichetta: 'Ricambi', percorso: '/gestionale/magazzino', icona: Boxes },
+      { etichetta: 'Ordini fornitori', percorso: '/gestionale/ordini', icona: Truck },
+    ],
+  },
+  {
+    titolo: 'Analisi',
+    voci: [{ etichetta: 'Statistiche', percorso: '/gestionale/statistiche', icona: BarChart3 }],
+  },
+  {
+    titolo: 'Account',
+    voci: [
+      { etichetta: 'Profilo personale', percorso: '/gestionale/profilo', icona: UserCircle2 },
+      { etichetta: 'Impostazioni', percorso: '/gestionale/impostazioni', icona: Settings },
+      { etichetta: 'Backup ed esportazioni', percorso: '/gestionale/backup', icona: DatabaseBackup },
+    ],
+  },
 ]
+
+/** Elenco piatto, per la ricerca rapida e la navigazione da tastiera. */
+export const VOCI_MENU: VoceMenu[] = GRUPPI_MENU.flatMap((g) => g.voci)
 
 export function Sidebar({ aperta, onChiudi }: { aperta: boolean; onChiudi: () => void }) {
   const { db } = useGestionale()
@@ -75,28 +115,37 @@ export function Sidebar({ aperta, onChiudi }: { aperta: boolean; onChiudi: () =>
         </div>
 
         <nav className="no-scrollbar flex-1 overflow-y-auto p-3" aria-label="Menu principale">
-          <ul className="space-y-0.5">
-            {VOCI_MENU.map(({ etichetta, percorso, icona: Icona }) => (
-              <li key={percorso}>
-                <NavLink
-                  to={percorso}
-                  end={percorso === '/'}
-                  onClick={onChiudi}
-                  className={({ isActive }) =>
-                    cn(
-                      'flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-[13.5px] transition-colors',
-                      isActive
-                        ? 'bg-brand font-semibold text-white'
-                        : 'text-ink-muted hover:bg-surface-2 hover:text-ink',
-                    )
-                  }
-                >
-                  <Icona size={18} strokeWidth={1.9} className="shrink-0" />
-                  <span className="truncate">{etichetta}</span>
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          {GRUPPI_MENU.map((gruppo, i) => (
+            <div key={gruppo.titolo ?? 'principale'} className={cn(i > 0 && 'mt-4')}>
+              {gruppo.titolo && (
+                <p className="px-2.5 pb-1.5 text-[10.5px] font-semibold tracking-wider text-ink-faint uppercase">
+                  {gruppo.titolo}
+                </p>
+              )}
+              <ul className="space-y-0.5">
+                {gruppo.voci.map(({ etichetta, percorso, icona: Icona }) => (
+                  <li key={percorso}>
+                    <NavLink
+                      to={percorso}
+                      end={percorso === '/gestionale'}
+                      onClick={onChiudi}
+                      className={({ isActive }) =>
+                        cn(
+                          'flex items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-[13.5px] transition-colors',
+                          isActive
+                            ? 'bg-brand font-semibold text-white'
+                            : 'text-ink-muted hover:bg-surface-2 hover:text-ink',
+                        )
+                      }
+                    >
+                      <Icona size={18} strokeWidth={1.9} className="shrink-0" />
+                      <span className="truncate">{etichetta}</span>
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
 
         <div className="shrink-0 border-t border-line p-4">

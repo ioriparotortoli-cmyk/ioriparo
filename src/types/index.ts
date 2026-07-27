@@ -201,6 +201,30 @@ export interface Azienda {
   prefissoCodice: string
 }
 
+/**
+ * Chi sta usando il gestionale. Riguarda la persona, non l'attività: i dati
+ * dell'azienda stanno in `Azienda` e si modificano dalle Impostazioni.
+ */
+export interface Utente {
+  nome: string
+  ruolo: string
+  email: string
+  telefono?: string
+  /** Iniziali mostrate nell'intestazione quando manca una foto */
+  iniziali?: string
+  preferenze: PreferenzeUtente
+}
+
+export interface PreferenzeUtente {
+  tema: 'chiaro' | 'scuro' | 'sistema'
+  /** Pagina aperta all'accesso, fra i percorsi del gestionale */
+  paginaIniziale: string
+  avvisiScadenze: boolean
+  avvisiSottoScorta: boolean
+  /** Righe per pagina negli elenchi */
+  righePerPagina: number
+}
+
 export interface DatabaseGestionale {
   clienti: Cliente[]
   riparazioni: Riparazione[]
@@ -211,4 +235,5 @@ export interface DatabaseGestionale {
   scadenze: Scadenza[]
   impianti: Impianto[]
   azienda: Azienda
+  utente: Utente
 }

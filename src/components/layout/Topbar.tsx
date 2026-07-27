@@ -311,12 +311,14 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
           }}
           className="flex items-center gap-2.5 rounded-lg py-1.5 pr-2 pl-1.5 transition-colors hover:bg-surface-2"
         >
-          <span className="flex size-9 items-center justify-center rounded-full bg-surface-3 text-ink-muted">
-            <User size={18} />
+          <span className="flex size-9 items-center justify-center rounded-full bg-brand/15 text-[12px] font-semibold text-brand">
+            {db.utente.iniziali || <User size={18} />}
           </span>
           <span className="hidden text-left sm:block">
-            <span className="block text-[13px] leading-tight font-semibold text-ink">Admin</span>
-            <span className="block text-[10px] text-ink-faint">Amministratore</span>
+            <span className="block text-[13px] leading-tight font-semibold text-ink">
+              {db.utente.nome}
+            </span>
+            <span className="block text-[10px] text-ink-faint">{db.utente.ruolo}</span>
           </span>
           <ChevronDown size={15} className="hidden text-ink-faint sm:block" />
         </button>
@@ -326,6 +328,13 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
             onClick={(e) => e.stopPropagation()}
             className="absolute top-12 right-0 w-52 rounded-card border border-line-soft bg-surface p-1.5 shadow-2xl"
           >
+            <Link
+              to="/gestionale/profilo"
+              onClick={() => setUtenteAperto(false)}
+              className="block rounded-lg px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
+            >
+              Profilo personale
+            </Link>
             <Link
               to="/gestionale/impostazioni"
               onClick={() => setUtenteAperto(false)}

@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
-import { Database, Download, FileSpreadsheet, Upload } from 'lucide-react'
+import { Database, Download, FileSpreadsheet, RotateCcw, Upload } from 'lucide-react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
+import { Modal } from '@/components/ui/Modal'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
 import { esportaCsv, esportaJson, nomeFileConData } from '@/lib/esporta'
@@ -16,9 +17,10 @@ export function Backup() {
     sottotitolo: 'Salva una copia dell’archivio o esporta i dati in CSV',
   })
 
-  const { db, importaDatabase } = useGestionale()
+  const { db, importaDatabase, ripristinaDemo } = useGestionale()
   const inputImport = useRef<HTMLInputElement>(null)
   const [esito, setEsito] = useState<{ tipo: 'ok' | 'errore'; testo: string } | null>(null)
+  const [confermaRipristino, setConfermaRipristino] = useState(false)
 
   function esportaTutto() {
     esportaJson(nomeFileConData('ioriparo-backup', 'json'), db)
@@ -230,6 +232,48 @@ export function Backup() {
           ))}
         </ul>
       </Card>
+
+      <Card>
+        <CardHeader
+          titolo="Archivio locale"
+          sottotitolo="I dati sono salvati nel browser di questo dispositivo"
+        />
+        <p className="mt-3 text-sm text-ink-muted">
+          Il gestionale funziona senza server: ogni modifica resta nel browser corrente. Esporta un
+          backup prima di cambiare dispositivo o di svuotare i dati di navigazione.
+        </p>
+        <Button variante="pericolo" className="mt-4" onClick={() => setConfermaRipristino(true)}>
+          <RotateCcw size={15} />
+          Ripristina dati dimostrativi
+        </Button>
+      </Card>
+
+      <Modal
+        aperta={confermaRipristino}
+        titolo="Ripristinare i dati dimostrativi?"
+        onChiudi={() => setConfermaRipristino(false)}
+        larghezza="sm"
+        piede={
+          <>
+            <Button onClick={() => setConfermaRipristino(false)}>Annulla</Button>
+            <Button
+              variante="pericolo"
+              onClick={() => {
+                ripristinaDemo()
+                setConfermaRipristino(false)
+              }}
+            >
+              <RotateCcw size={15} />
+              Ripristina
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-ink-muted">
+          Tutte le modifiche locali (clienti, riparazioni, magazzino) verranno sostituite dai dati di
+          esempio iniziali. L’operazione non è reversibile.
+        </p>
+      </Modal>
     </div>
   )
 }

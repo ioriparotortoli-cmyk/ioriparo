@@ -22,6 +22,7 @@ export function GalleriaPagina() {
       <Sezione griglia>
         <Intestazione
           occhiello="Galleria"
+          principale
           titolo={
             <>
               Lavori eseguiti,

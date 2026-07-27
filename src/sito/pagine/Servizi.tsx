@@ -46,6 +46,7 @@ export function Servizi() {
       <Sezione griglia>
         <Intestazione
           occhiello="Servizi"
+          principale
           titolo={
             <>
               Tutto quello che facciamo,

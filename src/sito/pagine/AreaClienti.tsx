@@ -23,9 +23,8 @@ export function AreaClienti() {
   const { db, aggiornaRiparazione } = useGestionale()
   const notifica = useNotifica()
 
-  const clienteDemo = db.clienti.find((c) => c.email) ?? db.clienti[0]
-  const [email, setEmail] = useState(clienteDemo?.email ?? '')
-  const [password, setPassword] = useState('dimostrazione')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [errore, setErrore] = useState<string | null>(null)
   const [accesso, setAccesso] = useState<Cliente | null>(null)
 
@@ -58,7 +57,7 @@ export function AreaClienti() {
   const entra = (e: FormEvent) => {
     e.preventDefault()
     if (!emailValida(email) || password.length < 6) {
-      setErrore('Credenziali non valide. Per la dimostrazione usa i dati già compilati.')
+      setErrore('Inserisci l’indirizzo e-mail comunicato in negozio e la tua password.')
       return
     }
     const cliente = db.clienti.find((c) => c.email?.toLowerCase() === email.trim().toLowerCase())
@@ -79,6 +78,7 @@ export function AreaClienti() {
           <div className="wrap" style={{ maxWidth: 1000, padding: 0 }}>
             <Intestazione
               occhiello="Area clienti"
+          principale
               titolo={
                 <>
                   Le tue pratiche,
@@ -127,7 +127,7 @@ export function AreaClienti() {
                     Accedi
                   </Bottone>
                   <p className="faint" style={{ fontSize: '.78rem', marginTop: 14, textAlign: 'center' }}>
-                    Dimostrazione: le credenziali sono già compilate con un cliente dell’archivio.
+                    L’accesso viene attivato in negozio al momento dell’accettazione.
                   </p>
                 </form>
               </div>

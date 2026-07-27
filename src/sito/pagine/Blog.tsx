@@ -26,6 +26,7 @@ export function Blog() {
       <Sezione griglia>
         <Intestazione
           occhiello="Blog"
+          principale
           titolo={
             <>
               Guide, confronti
@@ -67,7 +68,7 @@ export function PaginaArticolo() {
             publisher: {
               '@type': 'Organization',
               name: AZIENDA.nome,
-              logo: { '@type': 'ImageObject', url: `${SITO_URL}/marchio/io-riparo-logo.png` },
+              logo: { '@type': 'ImageObject', url: `${SITO_URL}/marchio/logo.png` },
             },
             mainEntityOfPage: `${SITO_URL}/blog/${articolo.slug}`,
           },

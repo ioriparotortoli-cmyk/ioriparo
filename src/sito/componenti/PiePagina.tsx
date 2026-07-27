@@ -1,18 +1,20 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP } from '../dati/azienda'
+import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, SOCIAL, WHATSAPP } from '../dati/azienda'
+import { TEL, useChiamata } from './Contatto'
+import { inviaModulo } from '../lib/moduli'
 import { emailValida } from '../lib/utili'
 import { Icona } from './Icona'
 import { Marchio } from './Marchio'
 import { useNotifica } from './Notifiche'
 
 const SERVIZI_PIEDE = [
-  ['Riparazione smartphone', '/servizi#riparazione-smartphone'],
-  ['Riparazione computer', '/servizi#riparazione-computer'],
-  ['Recupero dati', '/servizi#recupero-dati'],
-  ['Videosorveglianza', '/servizi#videosorveglianza'],
-  ['Reti e Wi-Fi', '/servizi#impianti-wifi'],
-  ['Assistenza aziende', '/servizi#assistenza-aziende'],
+  ['Riparazione smartphone', '/servizi/riparazione-smartphone'],
+  ['Riparazione computer', '/servizi/riparazione-computer'],
+  ['Riparazione console', '/servizi/riparazione-console'],
+  ['Recupero dati', '/servizi/recupero-dati'],
+  ['Videosorveglianza', '/servizi/videosorveglianza'],
+  ['Reti e Wi-Fi', '/servizi/impianti-wifi'],
 ]
 
 const AZIENDA_PIEDE = [
@@ -27,15 +29,17 @@ const AZIENDA_PIEDE = [
 export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => void }) {
   const [email, setEmail] = useState('')
   const notifica = useNotifica()
+  const chiama = useChiamata()
 
-  const iscrivi = (e: FormEvent) => {
+  const iscrivi = async (e: FormEvent) => {
     e.preventDefault()
     if (!emailValida(email)) {
       notifica('Inserisci un indirizzo e-mail valido.')
       return
     }
+    const esito = await inviaModulo('newsletter', { email, campi: { 'E-mail': email } })
     setEmail('')
-    notifica('Iscrizione registrata: controlla la mail di conferma.')
+    notifica(esito.ok ? 'Iscrizione inviata: ti confermiamo a breve.' : esito.errore)
   }
 
   return (
@@ -43,19 +47,18 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
       <div className="wrap">
         <div className="ftr__grid">
           <div>
-            <Marchio className="ftr__brand" />
+            <Marchio altezza={54} senzaLink />
             <p className="muted" style={{ fontSize: '.88rem', maxWidth: '34ch', marginTop: 16 }}>
               Centro di assistenza tecnica per smartphone, computer, reti e videosorveglianza.
               {' '}
               {AZIENDA.citta} e Ogliastra dal {AZIENDA.fondata}.
             </p>
             <div className="social" style={{ marginTop: 18 }}>
-              <a href={AZIENDA.social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-                <Icona nome="fb" dimensione={17} />
-              </a>
-              <a href={AZIENDA.social.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-                <Icona nome="ig" dimensione={17} />
-              </a>
+              {SOCIAL.map(([rete, url]) => (
+                <a key={rete} href={url} aria-label={rete === 'facebook' ? 'Facebook' : 'Instagram'} target="_blank" rel="noopener noreferrer">
+                  <Icona nome={rete === 'facebook' ? 'fb' : 'ig'} dimensione={17} />
+                </a>
+              ))}
               <a href={WHATSAPP} aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
                 <Icona nome="wa" dimensione={17} pieno />
               </a>
@@ -125,7 +128,23 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
             <div className="hours" style={{ marginTop: 12 }}>
               <div>
                 <b>
-                  <a href={`tel:${TELEFONO_E164}`}>{AZIENDA.telefono}</a>
+                  <a href={TEL} onClick={chiama}>
+                    {AZIENDA.telefono}
+                  </a>
+                </b>
+                <span>Telefono</span>
+              </div>
+              <div>
+                <b>
+                  <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                    {AZIENDA.cellulare}
+                  </a>
+                </b>
+                <span>WhatsApp</span>
+              </div>
+              <div>
+                <b>
+                  <a href={`mailto:${AZIENDA.email}`}>{AZIENDA.email}</a>
                 </b>
                 <span>{INDIRIZZO_COMPLETO}</span>
               </div>

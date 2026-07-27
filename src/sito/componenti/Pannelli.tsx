@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AZIENDA, TELEFONO_E164 } from '../dati/azienda'
+import { AZIENDA } from '../dati/azienda'
 import { cerca } from '../dati/indice'
 import { useEsc } from '../lib/hook'
 import { cn } from '../lib/utili'
+import { BottoneChiama } from './Contatto'
 import { Icona } from './Icona'
 import { LinkBottone } from './base'
 
@@ -12,7 +13,7 @@ import { LinkBottone } from './base'
 const VOCI_MENU = [
   { etichetta: 'Home', percorso: '/' },
   { etichetta: 'Chi siamo', percorso: '/chi-siamo' },
-  { etichetta: 'Servizi', percorso: '/servizi', nota: '11 specializzazioni' },
+  { etichetta: 'Servizi', percorso: '/servizi', nota: '12 specializzazioni' },
   { etichetta: 'Galleria', percorso: '/galleria' },
   { etichetta: 'Stato riparazione', percorso: '/stato-riparazione', nota: 'codice pratica' },
   { etichetta: 'Preventivo online', percorso: '/preventivo' },
@@ -20,7 +21,6 @@ const VOCI_MENU = [
   { etichetta: 'Blog', percorso: '/blog' },
   { etichetta: 'Contatti', percorso: '/contatti' },
   { etichetta: 'Area clienti', percorso: '/area-clienti' },
-  { etichetta: 'Gestionale', percorso: '/gestionale', nota: 'riservato' },
 ]
 
 export function MenuMobile({ aperto, onChiudi }: { aperto: boolean; onChiudi: () => void }) {
@@ -51,9 +51,7 @@ export function MenuMobile({ aperto, onChiudi }: { aperto: boolean; onChiudi: ()
         <LinkBottone a="/preventivo" largo>
           Richiedi preventivo
         </LinkBottone>
-        <LinkBottone a={`tel:${TELEFONO_E164}`} variante="ghost" largo>
-          Chiama {AZIENDA.telefono}
-        </LinkBottone>
+        <BottoneChiama largo>Chiama {AZIENDA.telefono}</BottoneChiama>
       </div>
     </nav>
   )

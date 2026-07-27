@@ -7,7 +7,7 @@ import { Selettore } from './base'
 
 export function SchedaServizio({ servizio }: { servizio: Servizio }) {
   return (
-    <Link className="svc" to={`/preventivo?servizio=${servizio.id}`}>
+    <Link className="svc" to={`/servizi/${servizio.id}`}>
       <Illustrazione scena={servizio.scena} className="svc__art" />
       <span className="ico">
         <Icona nome={servizio.icona} dimensione={22} />
@@ -31,7 +31,7 @@ export function SchedaServizio({ servizio }: { servizio: Servizio }) {
         </span>
       </div>
       <span className="svc__more">
-        Richiedi preventivo <Icona nome="arrow" dimensione={15} />
+        Scopri il servizio <Icona nome="arrow" dimensione={15} />
       </span>
     </Link>
   )

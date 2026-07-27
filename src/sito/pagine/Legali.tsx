@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Intestazione, LinkBottone, Sezione } from '../componenti/base'
 import { AZIENDA, INDIRIZZO_COMPLETO } from '../dati/azienda'
 import { ARTICOLI } from '../dati/blog'
+import { SERVIZI } from '../dati/servizi'
 import { useRivela } from '../lib/hook'
 import { useSeo } from '../lib/seo'
 
@@ -200,9 +201,9 @@ export function MappaSito() {
         ['Prenotazione appuntamenti', '/prenota'],
         ['Stato riparazione', '/stato-riparazione'],
         ['Area clienti', '/area-clienti'],
-        ['Gestionale (riservato)', '/gestionale'],
       ],
     ],
+    ['Servizi', SERVIZI.map((s) => [s.titolo, `/servizi/${s.id}`] as [string, string])],
     ['Blog', ARTICOLI.map((a) => [a.titolo, `/blog/${a.slug}`] as [string, string])],
     [
       'Informative',
@@ -218,6 +219,7 @@ export function MappaSito() {
       <Sezione griglia>
         <Intestazione
           occhiello="Mappa del sito"
+          principale
           titolo={
             <>
               Tutte le pagine,

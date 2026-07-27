@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164 } from '../dati/azienda'
+import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, SOCIAL, TELEFONO_E164 } from '../dati/azienda'
 
 export const SITO_URL = 'https://www.ioriparo.it'
 
@@ -44,8 +44,8 @@ export const SCHEMA_ATTIVITA = {
   url: SITO_URL,
   telephone: TELEFONO_E164,
   email: AZIENDA.email,
-  image: `${SITO_URL}/marchio/io-riparo-logo.png`,
-  logo: `${SITO_URL}/marchio/io-riparo-logo.png`,
+  image: `${SITO_URL}/marchio/logo.png`,
+  logo: `${SITO_URL}/marchio/logo.png`,
   priceRange: '€€',
   vatID: AZIENDA.partitaIva,
   address: {
@@ -56,6 +56,8 @@ export const SCHEMA_ATTIVITA = {
     addressRegion: AZIENDA.provincia,
     addressCountry: 'IT',
   },
+  hasMap: MAPPA,
+  ...(SOCIAL.length ? { sameAs: SOCIAL.map(([, url]) => url) } : {}),
   areaServed: [AZIENDA.citta, 'Ogliastra', 'Provincia di Nuoro', 'Sardegna'],
   openingHoursSpecification: ORARI.filter((o) => o.fasce.length).flatMap((o) =>
     o.fasce.map(([da, a]) => ({

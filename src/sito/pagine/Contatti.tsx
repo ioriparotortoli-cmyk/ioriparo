@@ -1,11 +1,13 @@
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { TEL, useChiamata } from '../componenti/Contatto'
 import { Icona } from '../componenti/Icona'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP, apertoOra } from '../dati/azienda'
+import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, WHATSAPP, apertoOra } from '../dati/azienda'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
+import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
 import { cn, emailValida } from '../lib/utili'
 
 const MOTIVI_CONTATTO = [
@@ -63,6 +65,7 @@ function Mappa() {
 export function Contatti() {
   const rif = useRivela<HTMLDivElement>()
   const notifica = useNotifica()
+  const chiama = useChiamata()
 
   const [nome, setNome] = useState('')
   const [telefono, setTelefono] = useState('')
@@ -71,11 +74,15 @@ export function Contatti() {
   const [messaggio, setMessaggio] = useState('')
   const [privacy, setPrivacy] = useState(false)
   const [errori, setErrori] = useState<Record<string, string>>({})
-  const [inviato, setInviato] = useState(false)
+  const [inviato, setInviato] = useState<'servizio' | 'posta' | null>(null)
+  const [guasto, setGuasto] = useState<string | null>(null)
+  const [inCorso, setInCorso] = useState(false)
+  const [esca, setEsca] = useState('')
+  const apertoIl = useRef(Date.now())
 
   useSeo({
     titolo: `Contatti — ${AZIENDA.citta} | Io Riparo`,
-    descrizione: `Vieni in laboratorio in ${INDIRIZZO_COMPLETO} oppure scrivici su WhatsApp al ${AZIENDA.telefono}. Preventivi gratuiti per privati e aziende.`,
+    descrizione: `Vieni in laboratorio in ${INDIRIZZO_COMPLETO}, chiamaci allo ${AZIENDA.telefono} o scrivici su WhatsApp al ${AZIENDA.cellulare}. Preventivi gratuiti per privati e aziende.`,
     percorso: '/contatti',
     datiStrutturati: briciole([
       { nome: 'Home', percorso: '/' },
@@ -86,7 +93,7 @@ export function Contatti() {
   const oggi = new Date().getDay()
   const aperto = apertoOra()
 
-  const invia = (e: FormEvent) => {
+  const invia = async (e: FormEvent) => {
     e.preventDefault()
     const nuovi: Record<string, string> = {}
     if (nome.trim().length < 2) nuovi.nome = 'Inserisci il tuo nome.'
@@ -95,14 +102,36 @@ export function Contatti() {
     if (!privacy) nuovi.privacy = 'Devi accettare l’informativa privacy.'
     setErrori(nuovi)
     if (Object.keys(nuovi).length) return
+    if (sospetto(esca, apertoIl.current)) return
 
-    setInviato(true)
+    setInCorso(true)
+    const esito = await inviaModulo('contatti', {
+      email,
+      nome,
+      campi: {
+        Nome: nome,
+        Telefono: telefono,
+        'E-mail': email,
+        Motivo: motivo,
+        Messaggio: messaggio,
+      },
+    })
+    setInCorso(false)
+
+    if (!esito.ok) {
+      setGuasto(esito.errore)
+      notifica(esito.errore)
+      return
+    }
+    setGuasto(null)
+
+    setInviato(esito.via)
     setNome('')
     setTelefono('')
     setEmail('')
     setMessaggio('')
     setPrivacy(false)
-    notifica('Messaggio inviato correttamente.')
+    notifica(esito.via === 'posta' ? 'Apriamo il tuo programma di posta.' : 'Messaggio inviato correttamente.')
   }
 
   return (
@@ -110,6 +139,7 @@ export function Contatti() {
       <Sezione griglia>
         <Intestazione
           occhiello="Contatti"
+          principale
           titolo={
             <>
               Parliamone.
@@ -122,7 +152,7 @@ export function Contatti() {
 
         <div className="contact-grid">
           <div className="reveal" style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
-            <a className="cinfo" href={`tel:${TELEFONO_E164}`}>
+            <a className="cinfo" href={TEL} onClick={chiama}>
               <span className="ico">
                 <Icona nome="call" dimensione={22} />
               </span>
@@ -136,8 +166,8 @@ export function Contatti() {
                 <Icona nome="wa" dimensione={22} pieno />
               </span>
               <span>
-                <b>WhatsApp</b>
-                <span>Manda la foto del guasto: ti diciamo subito cosa serve</span>
+                <b>{AZIENDA.cellulare}</b>
+                <span>WhatsApp · manda la foto del guasto e ti diciamo cosa serve</span>
               </span>
             </a>
             <a className="cinfo" href={`mailto:${AZIENDA.email}`}>
@@ -149,7 +179,7 @@ export function Contatti() {
                 <span>Preventivi, fatturazione e aziende</span>
               </span>
             </a>
-            <a className="cinfo" href={AZIENDA.mappa} target="_blank" rel="noopener noreferrer">
+            <a className="cinfo" href={MAPPA} target="_blank" rel="noopener noreferrer">
               <span className="ico">
                 <Icona nome="pin" dimensione={22} />
               </span>
@@ -183,8 +213,13 @@ export function Contatti() {
             <div className="card">
               <h3 style={{ marginBottom: 16 }}>Scrivici</h3>
               <form onSubmit={invia} noValidate>
-                <Avviso visibile={inviato}>
-                  Messaggio inviato. Ti rispondiamo entro poche ore lavorative, di solito molto prima.
+                <Avviso variante="err" visibile={!!guasto}>
+                  {guasto}
+                </Avviso>
+                <Avviso visibile={!!inviato}>
+                  {inviato === 'posta'
+                    ? 'Abbiamo aperto il tuo programma di posta con il messaggio già compilato: premi invia e ti rispondiamo entro poche ore lavorative.'
+                    : 'Messaggio inviato. Ti rispondiamo entro poche ore lavorative, di solito molto prima.'}
                 </Avviso>
 
                 <div className="form-grid">
@@ -242,8 +277,9 @@ export function Contatti() {
                   </small>
                 )}
 
-                <Bottone type="submit" largo style={{ marginTop: 18 }}>
-                  Invia messaggio
+                <input {...propsEsca} value={esca} onChange={(e) => setEsca(e.target.value)} />
+                <Bottone type="submit" largo style={{ marginTop: 18 }} disabled={inCorso}>
+                  {inCorso ? 'Invio in corso…' : 'Invia messaggio'}
                 </Bottone>
                 <p className="faint" style={{ fontSize: '.76rem', marginTop: 12, textAlign: 'center' }}>
                   Non usiamo i tuoi dati per finalità commerciali senza consenso.
@@ -252,7 +288,7 @@ export function Contatti() {
             </div>
 
             <Mappa />
-            <LinkBottone a={AZIENDA.mappa} variante="ghost" largo>
+            <LinkBottone a={MAPPA} variante="ghost" largo>
               Apri in Google Maps <Icona nome="arrow" dimensione={16} />
             </LinkBottone>
           </div>

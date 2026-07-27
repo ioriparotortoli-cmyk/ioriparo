@@ -2,10 +2,14 @@
 
 Progetto unico che contiene due applicazioni con lo stesso archivio dati:
 
-| Area | Percorso | Destinatari |
-| --- | --- | --- |
-| **Sito web pubblico** | `/` | clienti privati e aziende |
-| **Gestionale** | `/gestionale` | staff del laboratorio |
+| Area | Percorso | Destinatari | Nella build pubblica |
+| --- | --- | --- | --- |
+| **Sito web pubblico** | `/` | clienti privati e aziende | sì |
+| **Gestionale** | `/gestionale` | staff del laboratorio | **no**, si compila con `VITE_GESTIONALE=1` |
+
+Il gestionale non ha autenticazione: se finisse online chiunque conoscesse l'indirizzo
+vedrebbe clienti, fatture e magazzino. Per questo è escluso dalla build di produzione —
+il codice resta nel repository e tornerà utile quando ci sarà un accesso vero.
 
 Il sito presenta i servizi, raccoglie preventivi e appuntamenti e permette al cliente di seguire
 la propria riparazione; il gestionale è il pannello con cui il laboratorio gestisce clienti,
@@ -27,6 +31,7 @@ npm run build      # sitemap + controllo dei tipi + build di produzione in dist/
 npm run preview    # anteprima della build
 npm run lint       # oxlint
 npm run sitemap    # rigenera public/sitemap.xml
+npm run anteprima  # anteprima/io-riparo.html: tutto il sito in un unico file
 ```
 
 ## Stack
@@ -51,7 +56,8 @@ richieste di terze parti e non installa cookie non necessari.
 | --- | --- |
 | `/` | Apertura con campo segnale animato, servizi, motivi, processo, numeri, settori, tracking, galleria, recensioni, FAQ, blog, invito al contatto |
 | `/chi-siamo` | Storia, missione, valori e percorso dell'attività |
-| `/servizi` | Le 11 specializzazioni, listino orientativo e domande frequenti |
+| `/servizi` | Le 12 specializzazioni, listino orientativo e domande frequenti |
+| `/servizi/:id` | Pagina dedicata a ogni servizio: interventi compresi, fasi, prezzi e domande |
 | `/galleria` | Lavori eseguiti con filtro per categoria e visualizzatore a schermo intero |
 | `/blog`, `/blog/:slug` | Guide tecniche con dati strutturati `Article` |
 | `/preventivo` | Preventivo online in tre passaggi con stima di prezzo calcolata |
@@ -97,7 +103,6 @@ stessa che il cliente vede su `/stato-riparazione` e nell'area riservata.
 ```
 public/
   marchio/        logo ufficiale (PNG), versione su fondo scuro, icone e immagine social
-  favicon.svg     marchio vettoriale per la scheda del browser
   robots.txt      sitemap.xml  site.webmanifest
 scripts/
   genera-sitemap.mjs   sitemap XML generata dalle rotte e dagli articoli
@@ -118,14 +123,75 @@ src/
 
 ## Identità grafica
 
-Il marchio ufficiale è in `public/marchio/io-riparo-logo.png` (versione con lettering chiaro
-per fondi scuri accanto). Per intestazione, favicon e icone è disponibile la versione
-vettoriale ridisegnata in `src/sito/componenti/Marchio.tsx`, con lo stesso gradiente
-istituzionale **#29ABE2 → #0071BC**.
+Il marchio usato ovunque è il **file originale fornito dall'azienda**:
+
+| File | Uso |
+| --- | --- |
+| `public/marchio/io-riparo-logo.png` | originale ricevuto, conservato intatto |
+| `public/marchio/logo.png` | stesso file senza margine trasparente, per fondi chiari |
+| `public/marchio/logo-chiaro.png` | lettering schiarito, per fondi scuri e gestionale |
+| `public/marchio/simbolo.png` | solo la parte grafica, base delle icone |
+| `public/marchio/icona-*.png` | favicon e icone app generate dal simbolo originale |
+| `public/marchio/social.png` | immagine per le condivisioni |
+
+Il passaggio tra la versione chiara e quella scura avviene via CSS (`.marchio--scuro` /
+`.marchio--chiaro`): nessun ridisegno, nessuna reinterpretazione del marchio.
 
 Palette del sito: nero con dominante blu (`#05070c`), blu elettrico (`#2563eb`), bianco e
 grigio chiaro; tipografia di sistema (SF Pro Display / Segoe UI / Inter) con monospace per
 codici pratica e dati tecnici.
+
+## Moduli e invio e-mail
+
+Il sito è statico: non c'è backend e nessuna richiesta resta nel browser. I moduli
+**Contatti**, **Preventivo**, **Prenotazione** e **Newsletter** passano tutti da
+`src/sito/lib/moduli.ts` e recapitano a `ioriparotortoli@gmail.com` in due modi:
+
+1. **Formspree** (modalità attiva) — le richieste partono in JSON verso
+   `https://formspree.io/f/mpqvknlr`, il modulo di Io Riparo, che recapita a
+   ioriparotortoli@gmail.com. L'endpoint sta in `src/sito/lib/moduli.ts`: non è
+   un segreto — l'indirizzo di un modulo Formspree finisce nel codice di ogni
+   sito che lo usa — ed è lì perché il sito funzioni da qualunque hosting senza
+   configurare variabili d'ambiente. Si può scavalcare con
+   `VITE_MODULI_ENDPOINT` (valgono anche Web3Forms, Getform e Basin, più
+   `VITE_MODULI_CHIAVE` dove serve una chiave).
+2. **Client di posta** — ripiego che entra in funzione solo svuotando
+   l'endpoint: apre il programma di posta con destinatario, oggetto e testo già
+   compilati. Utile in sviluppo, non è la modalità di produzione.
+
+Con il servizio configurato la conferma di successo compare **solo** dopo una
+risposta positiva: se l'invio fallisce il visitatore legge il motivo e i recapiti
+alternativi, mai un falso "inviato". I casi gestiti:
+
+| Risposta | Cosa vede il visitatore |
+| --- | --- |
+| `200` | conferma di avvenuto invio |
+| `400` / `422` | dati rifiutati, con il dettaglio riportato da Formspree |
+| `429` | troppe richieste, riprovare più tardi o telefonare |
+| `403` / `404` | modulo non disponibile, con WhatsApp e telefono |
+| rete assente | invito a ricontrollare la connessione, con i recapiti |
+
+I moduli hanno un campo esca invisibile e un tempo minimo di compilazione come
+filtro anti-robot, senza CAPTCHA.
+
+L'indirizzo di risposta viene incluso solo quando il visitatore ne ha lasciato uno
+valido: nella prenotazione l'e-mail è facoltativa e la richiesta parte comunque con
+il numero di telefono, senza indirizzi inventati che i servizi scarterebbero.
+
+## Dati dell'attività
+
+Nome, indirizzo, telefono, WhatsApp, e-mail e partita IVA stanno **in un solo punto**
+(`src/sito/dati/azienda.ts`) e da lì alimentano intestazione, contatti, piè di pagina,
+informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
+
+| Dato | Valore |
+| --- | --- |
+| Attività | Io Riparo |
+| Sede | Via Campidano 7, 08048 Tortolì (NU) |
+| Telefono | 0782 208901 |
+| WhatsApp | +39 338 435 6603 |
+| E-mail | ioriparotortoli@gmail.com |
+| Partita IVA | 01625710916 |
 
 ## Convenzioni
 
@@ -142,8 +208,29 @@ codici pratica e dati tecnici.
 
 - **Fotografie reali**: le illustrazioni vettoriali di galleria, servizi e blog vanno
   sostituite con foto del laboratorio e degli impianti (formato WebP/AVIF, `loading="lazy"`).
-- **Dati aziendali**: indirizzo, partita IVA e profili social sono in `src/sito/dati/azienda.ts`
-  e in `src/data/seed.ts` (gestionale).
-- **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale. Per la
-  messa online servono API con salvataggio su database, invio e-mail e autenticazione.
-- **Dominio**: aggiornare `SITO_URL` in `src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`.
+- **Profili social**: `social.facebook` e `social.instagram` in `src/sito/dati/azienda.ts` sono
+  vuoti, quindi le due icone non compaiono nel piè di pagina. Basta incollare l'indirizzo del
+  profilo perché l'icona torni visibile e finisca anche nei dati strutturati (`sameAs`).
+- **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale del browser.
+  Il sito è pubblicabile così com'è; quando servirà la persistenza reale basterà sostituire le
+  funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,
+  senza toccare interfaccia e componenti.
+- **Dominio**: `SITO_URL` (`src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`) vale
+  `https://www.ioriparo.it`. Se il dominio principale sarà l'apice `ioriparo.it`
+  senza `www`, va cambiato in entrambi i file, altrimenti canonical e sitemap
+  puntano a un indirizzo diverso da quello servito.
+
+## Pubblicazione su Vercel
+
+`vercel.json` è già nel repository e contiene tutto il necessario:
+
+- **riscrittura per il routing lato client**: senza di essa ogni indirizzo diverso
+  dalla home (`/contatti`, `/servizi/...`) restituisce 404 se aperto direttamente,
+  ricaricato o raggiunto da un motore di ricerca. La regola esclude `assets/`,
+  `marchio/`, `sitemap.xml`, `robots.txt` e `site.webmanifest`, che restano file veri;
+- **cache**: un anno sugli asset con nome contenente l'hash, una settimana sul marchio;
+- **intestazioni di sicurezza**: `X-Content-Type-Options`, `Referrer-Policy`,
+  `X-Frame-Options`, `Permissions-Policy`.
+
+Su Vercel bastano le impostazioni predefinite (`npm run build` → `dist`): non
+servono variabili d'ambiente, l'endpoint dei moduli è nel codice.

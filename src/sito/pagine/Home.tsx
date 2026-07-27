@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
 import { useGestionale } from '@/data/store'
 import { AnteprimaArticolo } from '../componenti/AnteprimaArticolo'
+import { BottoneChiama, BottoneWhatsapp } from '../componenti/Contatto'
 import { CampoSegnale } from '../componenti/CampoSegnale'
 import { Faq, schemaFaq } from '../componenti/Faq'
 import { Galleria } from '../componenti/Galleria'
@@ -150,7 +150,7 @@ export function Home() {
       {/* ── Servizi ── */}
       <Sezione id="servizi" griglia>
         <Intestazione
-          occhiello="Servizi · 11 specializzazioni"
+          occhiello="Servizi · 12 specializzazioni"
           titolo={
             <>
               Un unico laboratorio
@@ -435,9 +435,8 @@ export function Home() {
             <LinkBottone a="/prenota" variante="ghost">
               Prenota un appuntamento
             </LinkBottone>
-            <Link className="btn btn--ghost" to="/contatti">
-              Contattaci
-            </Link>
+            <BottoneChiama />
+            <BottoneWhatsapp />
           </div>
         </div>
       </Sezione>

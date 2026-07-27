@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Intestazione, Sezione } from '../componenti/base'
@@ -6,6 +6,7 @@ import { ORARI } from '../dati/azienda'
 import { SERVIZI_APPUNTAMENTO } from '../dati/servizi'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
+import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
 import { cn, dataEstesa, telefonoValido } from '../lib/utili'
 
 const FASCE = ['09:00', '09:45', '10:30', '11:15', '12:00', '16:00', '16:45', '17:30', '18:15', '19:00']
@@ -32,8 +33,13 @@ export function Prenota() {
   const [nome, setNome] = useState('')
   const [telefono, setTelefono] = useState('')
   const [privacy, setPrivacy] = useState(false)
+  const [email, setEmail] = useState('')
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [conferma, setConferma] = useState<string | null>(null)
+  const [guasto, setGuasto] = useState<string | null>(null)
+  const [inCorso, setInCorso] = useState(false)
+  const [esca, setEsca] = useState('')
+  const apertoIl = useRef(Date.now())
 
   useSeo({
     titolo: 'Prenota un appuntamento | Io Riparo',
@@ -50,7 +56,7 @@ export function Prenota() {
   const sabato = scelto?.getDay() === 6
   const occupata = (i: number) => (sabato && i > 4) || (i + giorno) % 9 === 2
 
-  const invia = (e: FormEvent) => {
+  const invia = async (e: FormEvent) => {
     e.preventDefault()
     const nuovi: Record<string, string> = {}
     if (!fascia) nuovi.fascia = 'Scegli un orario disponibile.'
@@ -59,11 +65,38 @@ export function Prenota() {
     if (!privacy) nuovi.privacy = 'Devi accettare l’informativa privacy.'
     setErrori(nuovi)
     if (Object.keys(nuovi).length) return
+    if (sospetto(esca, apertoIl.current)) return
 
+    setInCorso(true)
+    const esito = await inviaModulo('appuntamento', {
+      email,
+      nome,
+      campi: {
+        Nome: nome,
+        Telefono: telefono,
+        'E-mail': email || 'non indicata',
+        Servizio: servizio,
+        Giorno: dataEstesa(scelto),
+        Orario: fascia ?? '',
+      },
+    })
+    setInCorso(false)
+
+    if (!esito.ok) {
+      setGuasto(esito.errore)
+      notifica(esito.errore)
+      return
+    }
+    setGuasto(null)
+
+    // Con il ripiego sul client di posta il messaggio non è ancora partito:
+    // dirlo evita che l'appuntamento resti nella bozza del visitatore.
     setConferma(
-      `Appuntamento confermato per ${dataEstesa(scelto)} alle ${fascia}. Ti abbiamo inviato un promemoria via SMS.`,
+      esito.via === 'posta'
+        ? `Abbiamo aperto il tuo programma di posta con la richiesta per ${dataEstesa(scelto)} alle ${fascia}: invia il messaggio per confermare.`
+        : `Richiesta inviata per ${dataEstesa(scelto)} alle ${fascia}. Ti confermiamo l’appuntamento per telefono o e-mail entro poche ore.`,
     )
-    notifica('Appuntamento confermato.')
+    notifica(esito.via === 'posta' ? 'Apriamo il tuo programma di posta.' : 'Richiesta di appuntamento inviata.')
   }
 
   return (
@@ -72,12 +105,16 @@ export function Prenota() {
         <div className="wrap" style={{ maxWidth: 900, padding: 0 }}>
           <Intestazione
             occhiello="Appuntamenti"
+            principale
             titolo="Scegli quando passare."
             testo="Prenotando eviti l'attesa: il banco è già libero e il tecnico ti aspetta con la scheda pronta."
           />
 
           <div className="card reveal">
             <form onSubmit={invia} noValidate>
+              <Avviso variante="err" visibile={!!guasto}>
+                {guasto}
+              </Avviso>
               <Avviso visibile={!!conferma}>{conferma}</Avviso>
 
               <div className="form-grid">
@@ -138,6 +175,16 @@ export function Prenota() {
                     autoComplete="tel"
                   />
                 </Campo>
+                <Campo etichetta="E-mail" id="b-mail" intero aiuto="Facoltativa: la usiamo per il promemoria.">
+                  <input
+                    className="inp"
+                    id="b-mail"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                  />
+                </Campo>
               </div>
 
               <label className="check">
@@ -153,8 +200,9 @@ export function Prenota() {
                 </small>
               )}
 
-              <Bottone type="submit" largo style={{ marginTop: 18 }}>
-                Conferma appuntamento
+              <input {...propsEsca} value={esca} onChange={(e) => setEsca(e.target.value)} />
+              <Bottone type="submit" largo style={{ marginTop: 18 }} disabled={inCorso}>
+                {inCorso ? 'Invio in corso…' : 'Richiedi appuntamento'}
               </Bottone>
             </form>
           </div>

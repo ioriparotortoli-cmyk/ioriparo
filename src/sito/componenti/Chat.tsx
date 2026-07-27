@@ -56,7 +56,7 @@ const RISPOSTE: [RegExp, string][] = [
 
 const SUGGERIMENTI = ['Quanto costa un display?', 'Tempi di riparazione', 'Preventivo per rete Wi-Fi', 'Dove siete?']
 
-const RISPOSTA_PREDEFINITA = `Grazie! Per questa richiesta ti passo un tecnico: chiamaci al ${AZIENDA.telefono} oppure scrivici su WhatsApp e ti rispondiamo entro pochi minuti.`
+const RISPOSTA_PREDEFINITA = `Grazie! Per questa richiesta ti passo un tecnico: chiamaci allo ${AZIENDA.telefono} oppure scrivici su WhatsApp al ${AZIENDA.cellulare} e ti rispondiamo entro pochi minuti.`
 
 export function Chat({ aperta, onChiudi }: { aperta: boolean; onChiudi: () => void }) {
   const [messaggi, setMessaggi] = useState<Messaggio[]>([

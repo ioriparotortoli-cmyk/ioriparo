@@ -27,6 +27,9 @@ const PAGINE = [
   { percorso: '/cookie-policy', priorita: '0.3', frequenza: 'yearly' },
 ]
 
+const servizi = readFileSync(join(radice, 'src/sito/dati/servizi.ts'), 'utf8')
+const idServizi = [...servizi.matchAll(/^\s{4}id: '([^']+)',$/gm)].map((m) => m[1])
+
 const blog = readFileSync(join(radice, 'src/sito/dati/blog.ts'), 'utf8')
 const articoli = [...blog.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
 const date = [...blog.matchAll(/dataIso:\s*'([^']+)'/g)].map((m) => m[1])
@@ -34,6 +37,12 @@ const oggi = new Date().toISOString().slice(0, 10)
 
 const voci = [
   ...PAGINE.map((p) => ({ ...p, aggiornata: oggi })),
+  ...idServizi.map((id) => ({
+    percorso: `/servizi/${id}`,
+    priorita: '0.8',
+    frequenza: 'monthly',
+    aggiornata: oggi,
+  })),
   ...articoli.map((slug, i) => ({
     percorso: `/blog/${slug}`,
     priorita: '0.6',

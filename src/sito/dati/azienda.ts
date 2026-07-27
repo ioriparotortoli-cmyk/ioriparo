@@ -22,22 +22,46 @@ export const AZIENDA = {
   citta: 'Tortolì',
   provincia: 'NU',
   regione: 'Ogliastra, Sardegna',
-  telefono: '377 381 97 87',
-  email: 'ioriparo15@gmail.com',
-  emailPrivacy: 'ioriparo15@gmail.com',
-  partitaIva: '08123450726',
+  /** Numero fisso del laboratorio, usato dal pulsante "Chiama ora". */
+  telefono: '0782 208901',
+  /** Cellulare usato per WhatsApp e per i messaggi diretti. */
+  cellulare: '338 435 6603',
+  email: 'ioriparotortoli@gmail.com',
+  emailPrivacy: 'ioriparotortoli@gmail.com',
+  partitaIva: '01625710916',
   fondata: 2013,
-  mappa: 'https://www.google.com/maps/search/?api=1&query=Io+Riparo+Via+Campidano+7+Tortol%C3%AC',
+  /**
+   * Profili social ufficiali. Finché un indirizzo resta vuoto la relativa icona
+   * non viene mostrata: meglio nessun collegamento che un collegamento che porta
+   * alla pagina generica del servizio.
+   */
   social: {
-    facebook: 'https://www.facebook.com/',
-    instagram: 'https://www.instagram.com/',
+    facebook: '',
+    instagram: '',
   },
 } as const
 
-/** Numero in formato E.164, usato per `tel:` e per i collegamenti WhatsApp. */
+/** Numeri in formato E.164: il fisso per `tel:`, il cellulare per WhatsApp. */
 export const TELEFONO_E164 = '+39' + AZIENDA.telefono.replace(/\D/g, '')
-export const WHATSAPP = `https://wa.me/${TELEFONO_E164.replace('+', '')}`
+export const CELLULARE_E164 = '+39' + AZIENDA.cellulare.replace(/\D/g, '')
+
+/** Messaggio già compilato: chi scrive parte da una richiesta chiara. */
+export const messaggioWhatsapp = (testo = 'Buongiorno, vorrei un preventivo per') =>
+  `https://wa.me/${CELLULARE_E164.replace('+', '')}?text=${encodeURIComponent(testo)}`
+
+export const WHATSAPP = messaggioWhatsapp()
 export const INDIRIZZO_COMPLETO = `${AZIENDA.indirizzo}, ${AZIENDA.cap} ${AZIENDA.citta} (${AZIENDA.provincia})`
+
+/** Ricerca su Google Maps con nome e indirizzo completo dell'attività. */
+export const MAPPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${AZIENDA.nome}, ${INDIRIZZO_COMPLETO}`,
+)}`
+
+/** Profili social effettivamente configurati: gli altri non vengono mostrati. */
+export const SOCIAL = Object.entries(AZIENDA.social).filter(([, url]) => url !== '') as [
+  keyof typeof AZIENDA.social,
+  string,
+][]
 
 export const ORARI: FasciaOraria[] = [
   { giorno: 'Lunedì', indice: 1, orario: '09:00–13:00 · 16:00–19:30', fasce: [[9, 13], [16, 19.5]] },

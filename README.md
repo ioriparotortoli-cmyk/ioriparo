@@ -147,17 +147,29 @@ Il sito è statico: non c'è backend e nessuna richiesta resta nel browser. I mo
 **Contatti**, **Preventivo**, **Prenotazione** e **Newsletter** passano tutti da
 `src/sito/lib/moduli.ts` e recapitano a `ioriparotortoli@gmail.com` in due modi:
 
-1. **Servizio di invio** — basta valorizzare `VITE_MODULI_ENDPOINT` in `.env` con
-   l'indirizzo fornito da Formspree, Web3Forms, Getform, Basin o equivalenti
-   (`VITE_MODULI_CHIAVE` solo per i servizi che richiedono una chiave). I dati
-   partono in JSON e arrivano in casella senza che il visitatore lasci il sito.
+1. **Formspree** (modalità di produzione) — si valorizza `VITE_MODULI_ENDPOINT` in
+   `.env` con l'endpoint del modulo (`https://formspree.io/f/xxxxxxxx`). I dati
+   partono in JSON con `Accept: application/json` e arrivano in casella senza che
+   il visitatore lasci il sito. Valgono anche Web3Forms, Getform e Basin: stessa
+   variabile, più `VITE_MODULI_CHIAVE` per i servizi che richiedono una chiave.
 2. **Client di posta** — finché l'endpoint non è configurato il modulo apre il
    programma di posta con destinatario, oggetto e testo già compilati, così il
    sito è utilizzabile da subito.
 
-In entrambi i casi il messaggio di conferma mostrato all'utente si adatta a quello
-che è realmente successo. I moduli hanno un campo esca invisibile e un tempo minimo
-di compilazione come filtro anti-robot, senza CAPTCHA.
+Con il servizio configurato la conferma di successo compare **solo** dopo una
+risposta positiva: se l'invio fallisce il visitatore legge il motivo e i recapiti
+alternativi, mai un falso "inviato". I casi gestiti:
+
+| Risposta | Cosa vede il visitatore |
+| --- | --- |
+| `200` | conferma di avvenuto invio |
+| `400` / `422` | dati rifiutati, con il dettaglio riportato da Formspree |
+| `429` | troppe richieste, riprovare più tardi o telefonare |
+| `403` / `404` | modulo non disponibile, con WhatsApp e telefono |
+| rete assente | invito a ricontrollare la connessione, con i recapiti |
+
+I moduli hanno un campo esca invisibile e un tempo minimo di compilazione come
+filtro anti-robot, senza CAPTCHA.
 
 L'indirizzo di risposta viene incluso solo quando il visitatore ne ha lasciato uno
 valido: nella prenotazione l'e-mail è facoltativa e la richiesta parte comunque con

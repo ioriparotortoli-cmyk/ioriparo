@@ -39,7 +39,7 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
     }
     const esito = await inviaModulo('newsletter', { email, campi: { 'E-mail': email } })
     setEmail('')
-    notifica(esito.ok ? 'Iscrizione inviata: ti confermiamo a breve.' : 'Iscrizione non riuscita, riprova più tardi.')
+    notifica(esito.ok ? 'Iscrizione inviata: ti confermiamo a breve.' : esito.errore)
   }
 
   return (

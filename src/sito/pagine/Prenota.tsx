@@ -36,6 +36,7 @@ export function Prenota() {
   const [email, setEmail] = useState('')
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [conferma, setConferma] = useState<string | null>(null)
+  const [guasto, setGuasto] = useState<string | null>(null)
   const [inCorso, setInCorso] = useState(false)
   const [esca, setEsca] = useState('')
   const apertoIl = useRef(Date.now())
@@ -82,9 +83,11 @@ export function Prenota() {
     setInCorso(false)
 
     if (!esito.ok) {
-      notifica('Invio non riuscito: chiamaci per fissare l’appuntamento.')
+      setGuasto(esito.errore)
+      notifica(esito.errore)
       return
     }
+    setGuasto(null)
 
     // Con il ripiego sul client di posta il messaggio non è ancora partito:
     // dirlo evita che l'appuntamento resti nella bozza del visitatore.
@@ -102,13 +105,16 @@ export function Prenota() {
         <div className="wrap" style={{ maxWidth: 900, padding: 0 }}>
           <Intestazione
             occhiello="Appuntamenti"
-          principale
+            principale
             titolo="Scegli quando passare."
             testo="Prenotando eviti l'attesa: il banco è già libero e il tecnico ti aspetta con la scheda pronta."
           />
 
           <div className="card reveal">
             <form onSubmit={invia} noValidate>
+              <Avviso variante="err" visibile={!!guasto}>
+                {guasto}
+              </Avviso>
               <Avviso visibile={!!conferma}>{conferma}</Avviso>
 
               <div className="form-grid">

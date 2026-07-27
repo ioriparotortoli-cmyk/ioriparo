@@ -46,6 +46,7 @@ export function Preventivo() {
   const [privacy, setPrivacy] = useState(false)
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [inviato, setInviato] = useState<string | null>(null)
+  const [erroreInvio, setErroreInvio] = useState<string | null>(null)
   const [inCorso, setInCorso] = useState(false)
   const [esca, setEsca] = useState('')
   const apertoIl = useRef(Date.now())
@@ -130,9 +131,11 @@ export function Preventivo() {
     setInCorso(false)
 
     if (!esito.ok) {
-      notifica('Invio non riuscito: chiamaci o scrivici su WhatsApp.')
+      setErroreInvio(esito.errore)
+      notifica(esito.errore)
       return
     }
+    setErroreInvio(null)
 
     setInviato(
       esito.via === 'posta'
@@ -249,6 +252,9 @@ export function Preventivo() {
               {/* Passo 3 */}
               <div className={cn('wiz__step', passo === 3 && 'is-on')}>
                 <h3 style={{ marginBottom: 14 }}>Come ti ricontattiamo?</h3>
+                <Avviso variante="err" visibile={!!erroreInvio}>
+                  {erroreInvio}
+                </Avviso>
                 <Avviso visibile={!!inviato}>{inviato}</Avviso>
 
                 <div className="form-grid">

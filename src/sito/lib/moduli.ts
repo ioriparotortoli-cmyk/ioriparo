@@ -40,6 +40,31 @@ export type Esito =
   | { ok: true; via: 'servizio' | 'posta' }
   | { ok: false; errore: string }
 
+/**
+ * Messaggi d'errore per i casi che Formspree segnala davvero. Sono pensati per
+ * il visitatore: dicono cosa è successo e come farsi sentire lo stesso.
+ */
+const ERRORI: Record<string, string> = {
+  validazione: 'Alcuni dati non sono stati accettati. Controlla l’indirizzo e-mail e riprova.',
+  limite: 'Abbiamo ricevuto troppe richieste in poco tempo. Riprova fra qualche minuto oppure chiamaci.',
+  bloccato: 'Il modulo non è al momento disponibile. Scrivici su WhatsApp o chiamaci: ti rispondiamo subito.',
+  rete: 'Invio non riuscito: controlla la connessione e riprova. Se il problema resta, chiamaci o scrivici su WhatsApp.',
+  servizio: 'Il servizio di invio non ha risposto. Riprova fra poco oppure contattaci per telefono o WhatsApp.',
+}
+
+/** Traduce la risposta di Formspree in un motivo comprensibile. */
+async function motivoErrore(risposta: Response): Promise<string> {
+  if (risposta.status === 429) return ERRORI.limite
+  if (risposta.status === 403 || risposta.status === 404) return ERRORI.bloccato
+  if (risposta.status === 400 || risposta.status === 422) {
+    // Formspree elenca i campi rifiutati in `errors`
+    const corpo = (await risposta.json().catch(() => null)) as { errors?: { message?: string }[] } | null
+    const dettaglio = corpo?.errors?.map((e) => e.message).filter(Boolean).join('; ')
+    return dettaglio ? `${ERRORI.validazione} (${dettaglio})` : ERRORI.validazione
+  }
+  return ERRORI.servizio
+}
+
 const OGGETTI: Record<Modulo, string> = {
   contatti: 'Nuovo messaggio dal sito',
   preventivo: 'Nuova richiesta di preventivo dal sito',
@@ -75,8 +100,14 @@ function apriPosta(modulo: Modulo, dati: DatiModulo): Esito {
 }
 
 /**
- * Recapita il modulo. Non solleva eccezioni: in caso di problema di rete
- * ripiega sul client di posta, così la richiesta del cliente non va persa.
+ * Recapita il modulo. Non solleva eccezioni.
+ *
+ * Con il servizio configurato la conferma di successo arriva **solo** dopo una
+ * risposta positiva del servizio: se l'invio fallisce il visitatore vede il
+ * motivo e i recapiti alternativi, non un falso "inviato".
+ *
+ * Senza servizio configurato resta il ripiego sul programma di posta, che tiene
+ * il sito utilizzabile ma richiede al visitatore di premere "Invia".
  */
 export async function inviaModulo(modulo: Modulo, dati: DatiModulo): Promise<Esito> {
   if (!ENDPOINT) return apriPosta(modulo, dati)
@@ -84,6 +115,7 @@ export async function inviaModulo(modulo: Modulo, dati: DatiModulo): Promise<Esi
   const risposta = rispostaA(dati)
   const corpo: Record<string, unknown> = {
     ...dati.campi,
+    // Formspree usa `email` per impostare il "Rispondi a" del messaggio
     ...(risposta ? { email: risposta, _replyto: risposta } : {}),
     _subject: oggettoDi(modulo, dati),
     modulo,
@@ -91,17 +123,19 @@ export async function inviaModulo(modulo: Modulo, dati: DatiModulo): Promise<Esi
   }
   if (CHIAVE) corpo.access_key = CHIAVE
 
+  let esito: Response
   try {
-    const esito = await fetch(ENDPOINT, {
+    esito = await fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(corpo),
     })
-    if (!esito.ok) throw new Error(`stato ${esito.status}`)
-    return { ok: true, via: 'servizio' }
   } catch {
-    return apriPosta(modulo, dati)
+    return { ok: false, errore: ERRORI.rete } // connessione assente o richiesta bloccata
   }
+
+  if (!esito.ok) return { ok: false, errore: await motivoErrore(esito) }
+  return { ok: true, via: 'servizio' }
 }
 
 /**

@@ -75,6 +75,7 @@ export function Contatti() {
   const [privacy, setPrivacy] = useState(false)
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [inviato, setInviato] = useState<'servizio' | 'posta' | null>(null)
+  const [guasto, setGuasto] = useState<string | null>(null)
   const [inCorso, setInCorso] = useState(false)
   const [esca, setEsca] = useState('')
   const apertoIl = useRef(Date.now())
@@ -118,9 +119,11 @@ export function Contatti() {
     setInCorso(false)
 
     if (!esito.ok) {
-      notifica('Invio non riuscito: chiamaci o scrivici su WhatsApp.')
+      setGuasto(esito.errore)
+      notifica(esito.errore)
       return
     }
+    setGuasto(null)
 
     setInviato(esito.via)
     setNome('')
@@ -210,6 +213,9 @@ export function Contatti() {
             <div className="card">
               <h3 style={{ marginBottom: 16 }}>Scrivici</h3>
               <form onSubmit={invia} noValidate>
+                <Avviso variante="err" visibile={!!guasto}>
+                  {guasto}
+                </Avviso>
                 <Avviso visibile={!!inviato}>
                   {inviato === 'posta'
                     ? 'Abbiamo aperto il tuo programma di posta con il messaggio già compilato: premi invia e ti rispondiamo entro poche ore lavorative.'

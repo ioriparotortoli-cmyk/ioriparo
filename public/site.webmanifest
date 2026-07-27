@@ -1,0 +1,16 @@
+{
+  "name": "Io Riparo — Assistenza, Reti e Sicurezza",
+  "short_name": "Io Riparo",
+  "description": "Riparazione smartphone, computer e notebook, recupero dati, videosorveglianza e reti aziendali a Tortolì (NU).",
+  "lang": "it-IT",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#05070c",
+  "theme_color": "#05070c",
+  "icons": [
+    { "src": "/marchio/icona-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/marchio/icona-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/marchio/icona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

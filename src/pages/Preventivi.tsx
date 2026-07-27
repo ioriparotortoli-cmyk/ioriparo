@@ -240,7 +240,7 @@ export function Preventivi() {
                 ))}
               </Select>
               {dettaglio.riparazioneId && (
-                <Button onClick={() => navigate(`/riparazioni/${dettaglio.riparazioneId}`)}>
+                <Button onClick={() => navigate(`/gestionale/riparazioni/${dettaglio.riparazioneId}`)}>
                   Apri riparazione
                 </Button>
               )}

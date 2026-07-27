@@ -12,7 +12,7 @@ export function NonTrovata() {
       <p className="mt-2 text-sm text-ink-muted">
         L’indirizzo richiesto non esiste o è stato spostato.
       </p>
-      <LinkButton to="/" variante="primario" className="mt-5">
+      <LinkButton to="/gestionale" variante="primario" className="mt-5">
         Torna alla dashboard
       </LinkButton>
     </Card>

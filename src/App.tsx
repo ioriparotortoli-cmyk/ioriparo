@@ -1,57 +1,76 @@
+import { Suspense } from 'react'
 import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
-import { AppLayout } from '@/components/layout/AppLayout'
 import { GestionaleProvider } from '@/data/store'
-import { Dashboard } from '@/pages/Dashboard'
-import { ClientiList } from '@/pages/clienti/ClientiList'
-import { DettaglioCliente } from '@/pages/clienti/DettaglioCliente'
-import { RiparazioniList } from '@/pages/riparazioni/RiparazioniList'
-import { NuovaRiparazione } from '@/pages/riparazioni/NuovaRiparazione'
-import { ModificaRiparazione } from '@/pages/riparazioni/ModificaRiparazione'
-import { DettaglioRiparazione } from '@/pages/riparazioni/DettaglioRiparazione'
-import { Preventivi } from '@/pages/Preventivi'
-import { Fatture } from '@/pages/Fatture'
-import { Magazzino } from '@/pages/Magazzino'
-import { OrdiniFornitori } from '@/pages/OrdiniFornitori'
-import { Scadenze } from '@/pages/Scadenze'
-import { Impianti } from '@/pages/Impianti'
-import { Statistiche } from '@/pages/Statistiche'
-import { Impostazioni } from '@/pages/Impostazioni'
-import { Backup } from '@/pages/Backup'
-import { NonTrovata } from '@/pages/NonTrovata'
+import { SitoLayout } from '@/sito/SitoLayout'
+import { Home } from '@/sito/pagine/Home'
 
 /**
  * Su hosting statico senza riscrittura degli URL (anteprime, GitHub Pages)
  * si compila con `VITE_ROUTER=hash` e la navigazione passa dal fragment.
  */
-const creaRouter =
-  import.meta.env.VITE_ROUTER === 'hash' ? createHashRouter : createBrowserRouter
+const creaRouter = import.meta.env.VITE_ROUTER === 'hash' ? createHashRouter : createBrowserRouter
+
+/**
+ * Ogni pagina è un modulo separato: la home pubblica non scarica il codice del
+ * gestionale (e viceversa), così il primo caricamento resta leggero.
+ */
+const pagina = (carica: () => Promise<Record<string, unknown>>, esporta: string) => async () => ({
+  Component: (await carica())[esporta] as React.ComponentType,
+})
 
 const router = creaRouter([
+  /* ─── Sito pubblico ─── */
   {
     path: '/',
-    element: <AppLayout />,
+    element: <SitoLayout />,
     children: [
-      { index: true, element: <Dashboard /> },
+      { index: true, element: <Home /> },
+      { path: 'chi-siamo', lazy: pagina(() => import('@/sito/pagine/ChiSiamo'), 'ChiSiamo') },
+      { path: 'servizi', lazy: pagina(() => import('@/sito/pagine/Servizi'), 'Servizi') },
+      { path: 'galleria', lazy: pagina(() => import('@/sito/pagine/GalleriaPagina'), 'GalleriaPagina') },
+      { path: 'blog', lazy: pagina(() => import('@/sito/pagine/Blog'), 'Blog') },
+      { path: 'blog/:slug', lazy: pagina(() => import('@/sito/pagine/Blog'), 'PaginaArticolo') },
+      { path: 'contatti', lazy: pagina(() => import('@/sito/pagine/Contatti'), 'Contatti') },
+      { path: 'preventivo', lazy: pagina(() => import('@/sito/pagine/Preventivo'), 'Preventivo') },
+      { path: 'prenota', lazy: pagina(() => import('@/sito/pagine/Prenota'), 'Prenota') },
+      { path: 'stato-riparazione', lazy: pagina(() => import('@/sito/pagine/StatoRiparazione'), 'StatoRiparazione') },
+      { path: 'area-clienti', lazy: pagina(() => import('@/sito/pagine/AreaClienti'), 'AreaClienti') },
+      { path: 'privacy', lazy: pagina(() => import('@/sito/pagine/Legali'), 'Privacy') },
+      { path: 'cookie-policy', lazy: pagina(() => import('@/sito/pagine/Legali'), 'CookiePolicy') },
+      { path: 'mappa-del-sito', lazy: pagina(() => import('@/sito/pagine/Legali'), 'MappaSito') },
+      { path: '*', lazy: pagina(() => import('@/sito/pagine/Legali'), 'NonTrovata') },
+    ],
+  },
 
-      { path: 'clienti', element: <ClientiList /> },
-      { path: 'clienti/:id', element: <DettaglioCliente /> },
+  /* ─── Gestionale: area riservata allo staff ─── */
+  {
+    path: '/gestionale',
+    lazy: pagina(() => import('@/components/layout/AppLayout'), 'AppLayout'),
+    children: [
+      { index: true, lazy: pagina(() => import('@/pages/Dashboard'), 'Dashboard') },
 
-      { path: 'riparazioni', element: <RiparazioniList /> },
-      { path: 'riparazioni/nuova', element: <NuovaRiparazione /> },
-      { path: 'riparazioni/:id', element: <DettaglioRiparazione /> },
-      { path: 'riparazioni/:id/modifica', element: <ModificaRiparazione /> },
+      { path: 'clienti', lazy: pagina(() => import('@/pages/clienti/ClientiList'), 'ClientiList') },
+      { path: 'clienti/:id', lazy: pagina(() => import('@/pages/clienti/DettaglioCliente'), 'DettaglioCliente') },
 
-      { path: 'preventivi', element: <Preventivi /> },
-      { path: 'fatture', element: <Fatture /> },
-      { path: 'magazzino', element: <Magazzino /> },
-      { path: 'ordini', element: <OrdiniFornitori /> },
-      { path: 'scadenze', element: <Scadenze /> },
-      { path: 'impianti', element: <Impianti /> },
-      { path: 'statistiche', element: <Statistiche /> },
-      { path: 'impostazioni', element: <Impostazioni /> },
-      { path: 'backup', element: <Backup /> },
+      { path: 'riparazioni', lazy: pagina(() => import('@/pages/riparazioni/RiparazioniList'), 'RiparazioniList') },
+      { path: 'riparazioni/nuova', lazy: pagina(() => import('@/pages/riparazioni/NuovaRiparazione'), 'NuovaRiparazione') },
+      { path: 'riparazioni/:id', lazy: pagina(() => import('@/pages/riparazioni/DettaglioRiparazione'), 'DettaglioRiparazione') },
+      {
+        path: 'riparazioni/:id/modifica',
+        lazy: pagina(() => import('@/pages/riparazioni/ModificaRiparazione'), 'ModificaRiparazione'),
+      },
 
-      { path: '*', element: <NonTrovata /> },
+      { path: 'preventivi', lazy: pagina(() => import('@/pages/Preventivi'), 'Preventivi') },
+      { path: 'fatture', lazy: pagina(() => import('@/pages/Fatture'), 'Fatture') },
+      { path: 'magazzino', lazy: pagina(() => import('@/pages/Magazzino'), 'Magazzino') },
+      { path: 'ordini', lazy: pagina(() => import('@/pages/OrdiniFornitori'), 'OrdiniFornitori') },
+      { path: 'scadenze', lazy: pagina(() => import('@/pages/Scadenze'), 'Scadenze') },
+      { path: 'impianti', lazy: pagina(() => import('@/pages/Impianti'), 'Impianti') },
+      { path: 'statistiche', lazy: pagina(() => import('@/pages/Statistiche'), 'Statistiche') },
+      { path: 'impostazioni', lazy: pagina(() => import('@/pages/Impostazioni'), 'Impostazioni') },
+      { path: 'backup', lazy: pagina(() => import('@/pages/Backup'), 'Backup') },
+
+      { path: '*', lazy: pagina(() => import('@/pages/NonTrovata'), 'NonTrovata') },
     ],
   },
 ])
@@ -59,7 +78,9 @@ const router = creaRouter([
 export function App() {
   return (
     <GestionaleProvider>
-      <RouterProvider router={router} />
+      <Suspense fallback={null}>
+        <RouterProvider router={router} />
+      </Suspense>
     </GestionaleProvider>
   )
 }

@@ -321,7 +321,7 @@ export function FormRiparazione({
                   <Input
                     value={dati.citta}
                     onChange={(e) => aggiorna('citta', e.target.value)}
-                    placeholder="Altamura"
+                    placeholder="Tortolì"
                   />
                 </Campo>
                 <Campo etichetta="CAP">

@@ -24,7 +24,7 @@ export function DettaglioCliente() {
     titolo: cliente?.nome ?? 'Cliente non trovato',
     briciole: [
       { label: 'Home', to: '/' },
-      { label: 'Clienti', to: '/clienti' },
+      { label: 'Clienti', to: '/gestionale/clienti' },
       { label: cliente?.nome ?? '—' },
     ],
   })
@@ -42,7 +42,7 @@ export function DettaglioCliente() {
     [db.fatture, id],
   )
 
-  if (!cliente) return <Navigate to="/clienti" replace />
+  if (!cliente) return <Navigate to="/gestionale/clienti" replace />
 
   const speso = fatture
     .filter((f) => f.stato === 'pagata')
@@ -51,11 +51,11 @@ export function DettaglioCliente() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <Button onClick={() => navigate('/clienti')}>
+        <Button onClick={() => navigate('/gestionale/clienti')}>
           <ArrowLeft size={15} />
           Torna all'anagrafica
         </Button>
-        <LinkButton to="/riparazioni/nuova" variante="primario">
+        <LinkButton to="/gestionale/riparazioni/nuova" variante="primario">
           <Plus size={16} />
           Nuova accettazione
         </LinkButton>
@@ -158,7 +158,7 @@ export function DettaglioCliente() {
                 titolo="Nessuna riparazione"
                 descrizione="Questo cliente non ha ancora dispositivi in assistenza."
                 azione={
-                  <LinkButton to="/riparazioni/nuova" variante="primario" dimensione="sm">
+                  <LinkButton to="/gestionale/riparazioni/nuova" variante="primario" dimensione="sm">
                     <Wrench size={14} />
                     Registra accettazione
                   </LinkButton>
@@ -177,7 +177,7 @@ export function DettaglioCliente() {
                   {riparazioni.map((riparazione) => (
                     <Tr
                       key={riparazione.id}
-                      onClick={() => navigate(`/riparazioni/${riparazione.id}`)}
+                      onClick={() => navigate(`/gestionale/riparazioni/${riparazione.id}`)}
                     >
                       <Td className="whitespace-nowrap">{riparazione.codice}</Td>
                       <Td>
@@ -214,7 +214,7 @@ export function DettaglioCliente() {
               <CardHeader
                 titolo="Fatture"
                 azione={
-                  <Link to="/fatture" className="text-xs font-medium text-blue-400 hover:text-blue-300">
+                  <Link to="/gestionale/fatture" className="text-xs font-medium text-blue-400 hover:text-blue-300">
                     Vedi tutte
                   </Link>
                 }
@@ -232,7 +232,7 @@ export function DettaglioCliente() {
                 </TabellaHead>
                 <tbody>
                   {fatture.slice(0, 8).map((fattura) => (
-                    <Tr key={fattura.id} onClick={() => navigate('/fatture')}>
+                    <Tr key={fattura.id} onClick={() => navigate('/gestionale/fatture')}>
                       <Td className="whitespace-nowrap">
                         <span className="flex items-center gap-2">
                           <Receipt size={14} className="text-ink-faint" />

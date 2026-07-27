@@ -16,13 +16,13 @@ export function ModificaRiparazione() {
     titolo: riparazione ? `Modifica ${riparazione.codice}` : 'Riparazione non trovata',
     briciole: [
       { label: 'Home', to: '/' },
-      { label: 'Dispositivi', to: '/riparazioni' },
-      { label: riparazione?.codice ?? '—', to: riparazione ? `/riparazioni/${id}` : '/riparazioni' },
+      { label: 'Dispositivi', to: '/gestionale/riparazioni' },
+      { label: riparazione?.codice ?? '—', to: riparazione ? `/gestionale/riparazioni/${id}` : '/gestionale/riparazioni' },
       { label: 'Modifica' },
     ],
   })
 
-  if (!riparazione) return <Navigate to="/riparazioni" replace />
+  if (!riparazione) return <Navigate to="/gestionale/riparazioni" replace />
 
   const cliente = clientePerId(riparazione.clienteId)
 
@@ -51,7 +51,7 @@ export function ModificaRiparazione() {
         dati.stato === 'consegnato' ? (riparazione.dataConsegna ?? oggiISO()) : undefined,
     })
 
-    navigate(`/riparazioni/${riparazione.id}${stampa ? '?stampa=1' : ''}`)
+    navigate(`/gestionale/riparazioni/${riparazione.id}${stampa ? '?stampa=1' : ''}`)
   }
 
   return (

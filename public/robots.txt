@@ -1,0 +1,9 @@
+# Io Riparo — https://www.ioriparo.it
+User-agent: *
+Allow: /
+
+# Aree riservate: nessuna indicizzazione
+Disallow: /gestionale
+Disallow: /area-clienti
+
+Sitemap: https://www.ioriparo.it/sitemap.xml

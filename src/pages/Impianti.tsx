@@ -95,7 +95,7 @@ export function Impianti() {
                       <Wrench size={14} className="text-ink-faint" />
                       {cliente ? (
                         <Link
-                          to={`/clienti/${cliente.id}`}
+                          to={`/gestionale/clienti/${cliente.id}`}
                           className="transition-colors hover:text-blue-400"
                         >
                           {cliente.nome}

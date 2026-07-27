@@ -70,7 +70,7 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
         id: s.id,
         titolo: s.titolo,
         dettaglio: `${s.descrizione ?? ''} · ${scadenzaRelativa(s.data)}`.trim(),
-        percorso: '/scadenze',
+        percorso: '/gestionale/scadenze',
         urgente: s.priorita === 'urgente' || giorniAllaData(s.data) <= 2,
       }))
 
@@ -80,7 +80,7 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
         id: a.id,
         titolo: 'Scorta minima raggiunta',
         dettaglio: `${a.nome} · ${a.quantita} pz disponibili`,
-        percorso: '/magazzino',
+        percorso: '/gestionale/magazzino',
         urgente: a.quantita === 0,
       }))
 
@@ -92,7 +92,7 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
               id: 'ritiri',
               titolo: 'Dispositivi pronti per il ritiro',
               dettaglio: `${pronte} da consegnare ai clienti`,
-              percorso: '/riparazioni?stato=pronto_per_ritiro',
+              percorso: '/gestionale/riparazioni?stato=pronto_per_ritiro',
               urgente: false,
             },
           ]
@@ -179,7 +179,7 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
                   <button
                     key={riparazione.id}
                     type="button"
-                    onClick={() => apriRicerca(`/riparazioni/${riparazione.id}`)}
+                    onClick={() => apriRicerca(`/gestionale/riparazioni/${riparazione.id}`)}
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-2"
                   >
                     <DeviceIcon tipo={riparazione.tipoDispositivo} dimensione="sm" />
@@ -205,7 +205,7 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
                   <button
                     key={cliente.id}
                     type="button"
-                    onClick={() => apriRicerca(`/clienti/${cliente.id}`)}
+                    onClick={() => apriRicerca(`/gestionale/clienti/${cliente.id}`)}
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-2"
                   >
                     <span className="flex size-9 items-center justify-center rounded-lg border border-line-soft bg-surface-2 text-ink-muted">
@@ -327,14 +327,14 @@ export function Topbar({ onApriMenu }: { onApriMenu: () => void }) {
             className="absolute top-12 right-0 w-52 rounded-card border border-line-soft bg-surface p-1.5 shadow-2xl"
           >
             <Link
-              to="/impostazioni"
+              to="/gestionale/impostazioni"
               onClick={() => setUtenteAperto(false)}
               className="block rounded-lg px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
             >
               Impostazioni
             </Link>
             <Link
-              to="/backup"
+              to="/gestionale/backup"
               onClick={() => setUtenteAperto(false)}
               className="block rounded-lg px-3 py-2 text-sm text-ink-muted transition-colors hover:bg-surface-2 hover:text-ink"
             >

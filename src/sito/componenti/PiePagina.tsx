@@ -47,7 +47,7 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
             <p className="muted" style={{ fontSize: '.88rem', maxWidth: '34ch', marginTop: 16 }}>
               Centro di assistenza tecnica per smartphone, computer, reti e videosorveglianza.
               {' '}
-              {AZIENDA.citta} e provincia di Bari dal {AZIENDA.fondata}.
+              {AZIENDA.citta} e Ogliastra dal {AZIENDA.fondata}.
             </p>
             <div className="social" style={{ marginTop: 18 }}>
               <a href={AZIENDA.social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer">

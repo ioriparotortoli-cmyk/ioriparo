@@ -49,7 +49,7 @@ export function Home() {
   useSeo({
     titolo: 'Io Riparo — Riparazioni Smartphone, Computer e Soluzioni Tecnologiche',
     descrizione:
-      'Riparazione smartphone, tablet, computer e notebook, recupero dati, videosorveglianza, reti aziendali e impianti Wi-Fi ad Altamura e provincia di Bari. Preventivo gratuito, garanzia 12 mesi.',
+      'Riparazione smartphone, tablet, computer e notebook, recupero dati, videosorveglianza, reti aziendali e impianti Wi-Fi a Tortolì e in tutta l’Ogliastra. Preventivo gratuito, garanzia 12 mesi.',
     percorso: '/',
     datiStrutturati: schemaFaq(),
   })

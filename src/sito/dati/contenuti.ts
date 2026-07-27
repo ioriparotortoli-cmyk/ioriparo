@@ -131,7 +131,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: "Riparate anche a domicilio o presso l'azienda?",
     risposta:
-      'Per computer fissi, reti, access point e videosorveglianza interveniamo direttamente sul posto in tutta la provincia di Bari. Per smartphone e tablet il laboratorio è indispensabile: possiamo però ritirare e riconsegnare il dispositivo se hai un contratto di assistenza attivo.',
+      'Per computer fissi, reti, access point e videosorveglianza interveniamo direttamente sul posto in tutta l’Ogliastra e nel Nuorese. Per smartphone e tablet il laboratorio è indispensabile: possiamo però ritirare e riconsegnare il dispositivo se hai un contratto di assistenza attivo.',
   },
   {
     domanda: 'Quanto costa un impianto di videosorveglianza?',

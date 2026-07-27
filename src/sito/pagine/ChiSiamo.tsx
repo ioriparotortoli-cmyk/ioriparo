@@ -10,8 +10,8 @@ export function ChiSiamo() {
   const anni = new Date().getFullYear() - AZIENDA.fondata
 
   useSeo({
-    titolo: 'Chi siamo — il laboratorio Io Riparo | Altamura',
-    descrizione: `Dal ${AZIENDA.fondata} ripariamo smartphone, computer e reti ad Altamura: laboratorio interno, tecnici specializzati, preventivi scritti e garanzia sugli interventi.`,
+    titolo: 'Chi siamo — il laboratorio Io Riparo | Tortolì',
+    descrizione: `Dal ${AZIENDA.fondata} ripariamo smartphone, computer e reti a Tortolì: laboratorio interno, tecnici specializzati, preventivi scritti e garanzia sugli interventi.`,
     percorso: '/chi-siamo',
     datiStrutturati: briciole([
       { nome: 'Home', percorso: '/' },

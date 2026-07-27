@@ -9,7 +9,7 @@ export function GalleriaPagina() {
   useSeo({
     titolo: 'Galleria lavori — laboratorio e impianti | Io Riparo',
     descrizione:
-      'Riparazioni eseguite in laboratorio, impianti di videosorveglianza e reti installate presso aziende e attività commerciali di Altamura e provincia.',
+      'Riparazioni eseguite in laboratorio, impianti di videosorveglianza e reti installate presso aziende e attività commerciali di Tortolì e dell’Ogliastra.',
     percorso: '/galleria',
     datiStrutturati: briciole([
       { nome: 'Home', percorso: '/' },

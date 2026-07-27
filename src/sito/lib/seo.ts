@@ -56,7 +56,7 @@ export const SCHEMA_ATTIVITA = {
     addressRegion: AZIENDA.provincia,
     addressCountry: 'IT',
   },
-  areaServed: [AZIENDA.citta, `Provincia di Bari`, AZIENDA.regione],
+  areaServed: [AZIENDA.citta, 'Ogliastra', 'Provincia di Nuoro', 'Sardegna'],
   openingHoursSpecification: ORARI.filter((o) => o.fasce.length).flatMap((o) =>
     o.fasce.map(([da, a]) => ({
       '@type': 'OpeningHoursSpecification',

@@ -90,7 +90,7 @@ body[data-sito]{
 #layers > *{pointer-events:auto}
 
 /* ---------- tipografia ---------- */
-#app h1,#app h2,#app h3,#app h4{margin:0; letter-spacing:-.035em; line-height:1.05; text-wrap:balance; font-weight:700}
+#app h1,#app h2,#app h3,#app h4{margin:0; letter-spacing:-.035em; line-height:1.05; text-wrap:balance; font-weight:700; overflow-wrap:break-word}
 #app h1{font-size:clamp(2.15rem,5.4vw,3.85rem); font-weight:800}
 #app h2{font-size:clamp(1.9rem,4.6vw,3.1rem)}
 #app h3{font-size:clamp(1.15rem,2vw,1.45rem); letter-spacing:-.02em}
@@ -223,7 +223,9 @@ body[data-sito]{
 .hdr__burger{display:grid}
 .progress{position:absolute; left:0; bottom:-1px; height:2px; width:0; background:linear-gradient(90deg,var(--blue),var(--blue-glow)); transition:width .12s linear}
 
-@media (min-width: 1000px){
+/* La navigazione estesa richiede 1086px: sotto i 1120px resta il menu a scomparsa,
+   altrimenti gli strumenti della testata escono dallo schermo. */
+@media (min-width: 1120px){
   .nav{display:flex}
   .hdr__burger{display:none}
   .hdr .btn{display:inline-flex}
@@ -514,6 +516,10 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
 
 /* ---------- contatti ---------- */
 .contact-grid{display:grid; gap:20px; grid-template-columns:1fr}
+/* Senza questo l'indirizzo e-mail, che non ha punti di a capo, allarga la colonna
+   e fa scorrere la pagina in orizzontale sugli schermi da 320px. */
+.contact-grid > *{min-width:0}
+.cinfo b,.cinfo span,.cinfo a{overflow-wrap:anywhere}
 .cinfo{display:flex; gap:14px; padding:16px; border-radius:var(--r-m); border:1px solid var(--line); background:var(--panel); align-items:flex-start; transition:border-color .25s, transform .3s var(--ease)}
 .cinfo:hover{border-color:var(--line-soft); transform:translateX(3px)}
 .cinfo b{font-size:.93rem; display:block}
@@ -534,11 +540,15 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
 /* ---------- footer ---------- */
 .ftr{border-top:1px solid var(--line); background:var(--ground-2); padding-block:52px 26px; position:relative}
 .ftr__grid{display:grid; gap:34px; grid-template-columns:1fr}
+.ftr__grid > *{min-width:0}
+.hours a{overflow-wrap:anywhere}
 .ftr h4{font-size:.76rem; text-transform:uppercase; letter-spacing:.14em; color:var(--txt-3); margin-bottom:14px; font-weight:700}
 .ftr ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
 .ftr a{font-size:.88rem; color:var(--txt-2); transition:color .2s, padding-left .25s var(--ease)}
 .ftr a:hover{color:var(--blue-glow); padding-left:4px}
 .ftr__bottom{display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:center; margin-top:38px; padding-top:22px; border-top:1px solid var(--line); font-size:.78rem; color:var(--txt-3)}
+/* Area di tocco minima sui dispositivi tattili, senza spostare il testo. */
+.ftr__bottom a,.ftr__bottom .link{display:inline-flex; align-items:center; min-height:24px}
 .social{display:flex; gap:9px}
 .social a{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; border:1px solid var(--line); background:var(--panel); transition:all .25s var(--ease)}
 .social a:hover{border-color:var(--blue); color:var(--blue-glow); transform:translateY(-2px); padding-left:0}

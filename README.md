@@ -2,10 +2,14 @@
 
 Progetto unico che contiene due applicazioni con lo stesso archivio dati:
 
-| Area | Percorso | Destinatari |
-| --- | --- | --- |
-| **Sito web pubblico** | `/` | clienti privati e aziende |
-| **Gestionale** | `/gestionale` | staff del laboratorio |
+| Area | Percorso | Destinatari | Nella build pubblica |
+| --- | --- | --- | --- |
+| **Sito web pubblico** | `/` | clienti privati e aziende | sì |
+| **Gestionale** | `/gestionale` | staff del laboratorio | **no**, si compila con `VITE_GESTIONALE=1` |
+
+Il gestionale non ha autenticazione: se finisse online chiunque conoscesse l'indirizzo
+vedrebbe clienti, fatture e magazzino. Per questo è escluso dalla build di produzione —
+il codice resta nel repository e tornerà utile quando ci sarà un accesso vero.
 
 Il sito presenta i servizi, raccoglie preventivi e appuntamenti e permette al cliente di seguire
 la propria riparazione; il gestionale è il pannello con cui il laboratorio gestisce clienti,

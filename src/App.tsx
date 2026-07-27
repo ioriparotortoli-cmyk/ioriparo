@@ -19,12 +19,14 @@ const pagina = (carica: () => Promise<Record<string, unknown>>, esporta: string)
 })
 
 /**
- * L'anteprima in file singolo contiene solo il sito pubblico: il ramo del
- * gestionale viene eliminato in fase di build, non solo nascosto.
+ * Il gestionale è escluso dalla build: non ha autenticazione e mostra dati
+ * dell'attività, quindi non può stare su un sito pubblico. Il codice resta nel
+ * repository e si ricompila con `VITE_GESTIONALE=1` per l'uso interno, quando
+ * sarà protetto da un accesso vero.
  */
-const soloSitoPubblico = import.meta.env.VITE_ANTEPRIMA === '1'
+const conGestionale = import.meta.env.VITE_GESTIONALE === '1' && import.meta.env.VITE_ANTEPRIMA !== '1'
 
-const rotteGestionale = soloSitoPubblico
+const rotteGestionale = !conGestionale
   ? []
   : [
       {

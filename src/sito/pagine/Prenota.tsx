@@ -86,10 +86,14 @@ export function Prenota() {
       return
     }
 
+    // Con il ripiego sul client di posta il messaggio non è ancora partito:
+    // dirlo evita che l'appuntamento resti nella bozza del visitatore.
     setConferma(
-      `Richiesta inviata per ${dataEstesa(scelto)} alle ${fascia}. Ti confermiamo l’appuntamento per telefono o e-mail entro poche ore.`,
+      esito.via === 'posta'
+        ? `Abbiamo aperto il tuo programma di posta con la richiesta per ${dataEstesa(scelto)} alle ${fascia}: invia il messaggio per confermare.`
+        : `Richiesta inviata per ${dataEstesa(scelto)} alle ${fascia}. Ti confermiamo l’appuntamento per telefono o e-mail entro poche ore.`,
     )
-    notifica('Richiesta di appuntamento inviata.')
+    notifica(esito.via === 'posta' ? 'Apriamo il tuo programma di posta.' : 'Richiesta di appuntamento inviata.')
   }
 
   return (

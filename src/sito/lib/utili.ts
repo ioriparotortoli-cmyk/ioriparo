@@ -1,0 +1,38 @@
+/** Formattazione e validazioni condivise dalle pagine del sito. */
+
+export const euro = (n: number) =>
+  n.toLocaleString('it-IT', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 })
+
+export const numero = (n: number) => n.toLocaleString('it-IT')
+
+export const emailValida = (v: string) => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v.trim())
+
+export const telefonoValido = (v: string) => v.replace(/\D/g, '').length >= 8
+
+export const cn = (...parti: (string | false | null | undefined)[]) => parti.filter(Boolean).join(' ')
+
+export const iniziali = (nome: string) =>
+  nome
+    .split(' ')
+    .map((p) => p[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+
+const GIORNI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato']
+const MESI = [
+  'gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
+  'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre',
+]
+
+export const dataEstesa = (d: Date) => `${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]}`
+
+export const dataBreve = (iso: string) => {
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString('it-IT')
+}
+
+export const oraBreve = (iso: string) => {
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })
+}

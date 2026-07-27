@@ -244,7 +244,7 @@ export function ClientiList() {
               </TabellaHead>
               <tbody>
                 {elenco.visibili.map((cliente) => (
-                  <Tr key={cliente.id} onClick={() => navigate(`/clienti/${cliente.id}`)}>
+                  <Tr key={cliente.id} onClick={() => navigate(`/gestionale/clienti/${cliente.id}`)}>
                     <Td>
                       <span className="flex items-center gap-3">
                         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-3 text-xs font-bold text-ink-muted">
@@ -281,7 +281,7 @@ export function ClientiList() {
                         className="flex items-center justify-end gap-1.5"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <Button dimensione="sm" onClick={() => navigate(`/clienti/${cliente.id}`)}>
+                        <Button dimensione="sm" onClick={() => navigate(`/gestionale/clienti/${cliente.id}`)}>
                           <Eye size={14} />
                         </Button>
                         <Button dimensione="sm" variante="primario" onClick={() => apriModifica(cliente)}>

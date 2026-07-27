@@ -45,12 +45,12 @@ import { TIPI_SCADENZA } from '@/lib/stati'
 import { cn } from '@/lib/cn'
 
 const AZIONI_RAPIDE = [
-  { etichetta: 'Nuova riparazione', percorso: '/riparazioni/nuova', icona: Wrench, tono: 'bg-blue-600' },
-  { etichetta: 'Nuovo cliente', percorso: '/clienti?nuovo=1', icona: UserPlus, tono: 'bg-emerald-600' },
-  { etichetta: 'Nuovo preventivo', percorso: '/preventivi', icona: FileText, tono: 'bg-violet-600' },
-  { etichetta: 'Nuova fattura', percorso: '/fatture', icona: Receipt, tono: 'bg-amber-500' },
-  { etichetta: 'Carico magazzino', percorso: '/magazzino?nuovo=1', icona: Boxes, tono: 'bg-cyan-600' },
-  { etichetta: 'Nuovo promemoria', percorso: '/scadenze?nuovo=1', icona: CalendarPlus, tono: 'bg-rose-600' },
+  { etichetta: 'Nuova riparazione', percorso: '/gestionale/riparazioni/nuova', icona: Wrench, tono: 'bg-blue-600' },
+  { etichetta: 'Nuovo cliente', percorso: '/gestionale/clienti?nuovo=1', icona: UserPlus, tono: 'bg-emerald-600' },
+  { etichetta: 'Nuovo preventivo', percorso: '/gestionale/preventivi', icona: FileText, tono: 'bg-violet-600' },
+  { etichetta: 'Nuova fattura', percorso: '/gestionale/fatture', icona: Receipt, tono: 'bg-amber-500' },
+  { etichetta: 'Carico magazzino', percorso: '/gestionale/magazzino?nuovo=1', icona: Boxes, tono: 'bg-cyan-600' },
+  { etichetta: 'Nuovo promemoria', percorso: '/gestionale/scadenze?nuovo=1', icona: CalendarPlus, tono: 'bg-rose-600' },
 ]
 
 export function Dashboard() {
@@ -83,28 +83,28 @@ export function Dashboard() {
           valore={riparazioniAperte(db)}
           icona={Briefcase}
           tono="blu"
-          link="/riparazioni"
+          link="/gestionale/riparazioni"
         />
         <StatCard
           etichetta="In lavorazione"
           valore={conteggi.in_lavorazione}
           icona={Wrench}
           tono="ambra"
-          link="/riparazioni?stato=in_lavorazione"
+          link="/gestionale/riparazioni?stato=in_lavorazione"
         />
         <StatCard
           etichetta="Pronte per il ritiro"
           valore={conteggi.pronto_per_ritiro}
           icona={CheckCircle2}
           tono="verde"
-          link="/riparazioni?stato=pronto_per_ritiro"
+          link="/gestionale/riparazioni?stato=pronto_per_ritiro"
         />
         <StatCard
           etichetta="Incasso oggi"
           valore={formatEuroAuto(incassoDelGiorno(db))}
           icona={Euro}
           tono="ciano"
-          link="/fatture"
+          link="/gestionale/fatture"
           testoLink="Vedi dettagli"
         />
         <StatCard
@@ -112,7 +112,7 @@ export function Dashboard() {
           valore={formatEuroAuto(incassoDelMese(db))}
           icona={TrendingUp}
           tono="viola"
-          link="/statistiche"
+          link="/gestionale/statistiche"
           testoLink="Vedi dettagli"
         />
         <StatCard
@@ -120,7 +120,7 @@ export function Dashboard() {
           valore={formatNumero(db.clienti.length)}
           icona={Users}
           tono="rosa"
-          link="/clienti"
+          link="/gestionale/clienti"
           testoLink="Vedi tutti"
         />
       </div>
@@ -132,12 +132,12 @@ export function Dashboard() {
           <div className="mt-5">
             <StatoDonut
               voci={vociStato}
-              onSelezione={(voce) => navigate(`/riparazioni?stato=${voce.stato}`)}
+              onSelezione={(voce) => navigate(`/gestionale/riparazioni?stato=${voce.stato}`)}
             />
           </div>
           <CardFooter>
             <Link
-              to="/riparazioni"
+              to="/gestionale/riparazioni"
               className="inline-flex items-center gap-1.5 font-medium text-blue-400 hover:text-blue-300"
             >
               Vedi tutte le riparazioni
@@ -152,7 +152,7 @@ export function Dashboard() {
             {ultime.map((riparazione) => (
               <li key={riparazione.id}>
                 <Link
-                  to={`/riparazioni/${riparazione.id}`}
+                  to={`/gestionale/riparazioni/${riparazione.id}`}
                   className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-3 transition-colors hover:bg-surface-2"
                 >
                   <DeviceIcon tipo={riparazione.tipoDispositivo} dimensione="sm" />
@@ -179,7 +179,7 @@ export function Dashboard() {
           </ul>
           <CardFooter>
             <Link
-              to="/riparazioni"
+              to="/gestionale/riparazioni"
               className="inline-flex items-center gap-1.5 font-medium text-blue-400 hover:text-blue-300"
             >
               Vedi tutte le riparazioni
@@ -197,7 +197,7 @@ export function Dashboard() {
               return (
                 <li key={scadenza.id}>
                   <Link
-                    to="/scadenze"
+                    to="/gestionale/scadenze"
                     className="-mx-2 flex items-start gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-surface-2"
                   >
                     <span
@@ -243,7 +243,7 @@ export function Dashboard() {
           </ul>
           <CardFooter>
             <Link
-              to="/scadenze"
+              to="/gestionale/scadenze"
               className="inline-flex items-center gap-1.5 font-medium text-blue-400 hover:text-blue-300"
             >
               Vedi tutte le scadenze
@@ -312,7 +312,7 @@ export function Dashboard() {
           </ol>
           <CardFooter>
             <Link
-              to="/magazzino"
+              to="/gestionale/magazzino"
               className="inline-flex items-center gap-1.5 font-medium text-blue-400 hover:text-blue-300"
             >
               Vedi tutti i prodotti

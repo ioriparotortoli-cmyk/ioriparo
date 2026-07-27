@@ -42,7 +42,7 @@ export function DettaglioRiparazione() {
     titolo: riparazione ? `${riparazione.marca} ${riparazione.modello}` : 'Riparazione non trovata',
     briciole: [
       { label: 'Home', to: '/' },
-      { label: 'Dispositivi', to: '/riparazioni' },
+      { label: 'Dispositivi', to: '/gestionale/riparazioni' },
       { label: riparazione?.codice ?? '—' },
     ],
   })
@@ -55,7 +55,7 @@ export function DettaglioRiparazione() {
     setParametri({}, { replace: true })
   }, [stampaRichiesta, riparazione, setParametri])
 
-  if (!riparazione) return <Navigate to="/riparazioni" replace />
+  if (!riparazione) return <Navigate to="/gestionale/riparazioni" replace />
 
   const cliente = clientePerId(riparazione.clienteId)
   const totale = totaleRiparazione(riparazione)
@@ -101,7 +101,7 @@ export function DettaglioRiparazione() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2 print:hidden">
-        <Button onClick={() => navigate('/riparazioni')}>
+        <Button onClick={() => navigate('/gestionale/riparazioni')}>
           <ArrowLeft size={15} />
           Torna all'elenco
         </Button>
@@ -115,7 +115,7 @@ export function DettaglioRiparazione() {
             <Trash2 size={15} />
             Elimina
           </Button>
-          <Button variante="primario" onClick={() => navigate(`/riparazioni/${riparazione.id}/modifica`)}>
+          <Button variante="primario" onClick={() => navigate(`/gestionale/riparazioni/${riparazione.id}/modifica`)}>
             <Pencil size={15} />
             Modifica
           </Button>
@@ -342,7 +342,7 @@ export function DettaglioRiparazione() {
             {cliente ? (
               <div className="mt-3">
                 <Link
-                  to={`/clienti/${cliente.id}`}
+                  to={`/gestionale/clienti/${cliente.id}`}
                   className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-surface-2"
                 >
                   <span className="flex size-10 items-center justify-center rounded-full bg-surface-3 text-ink-muted">
@@ -517,7 +517,7 @@ export function DettaglioRiparazione() {
               variante="pericolo"
               onClick={() => {
                 eliminaRiparazione(riparazione.id)
-                navigate('/riparazioni')
+                navigate('/gestionale/riparazioni')
               }}
             >
               <Trash2 size={15} />

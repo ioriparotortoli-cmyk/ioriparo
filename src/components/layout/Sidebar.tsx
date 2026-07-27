@@ -5,6 +5,7 @@ import {
   CalendarClock,
   DatabaseBackup,
   FileText,
+  Globe,
   LayoutDashboard,
   type LucideIcon,
   Receipt,
@@ -26,18 +27,18 @@ interface VoceMenu {
 }
 
 export const VOCI_MENU: VoceMenu[] = [
-  { etichetta: 'Dashboard', percorso: '/', icona: LayoutDashboard },
-  { etichetta: 'Clienti', percorso: '/clienti', icona: Users },
-  { etichetta: 'Dispositivi / Riparazioni', percorso: '/riparazioni', icona: Smartphone },
-  { etichetta: 'Preventivi', percorso: '/preventivi', icona: FileText },
-  { etichetta: 'Fatture', percorso: '/fatture', icona: Receipt },
-  { etichetta: 'Magazzino', percorso: '/magazzino', icona: Boxes },
-  { etichetta: 'Ordini Fornitori', percorso: '/ordini', icona: Truck },
-  { etichetta: 'Scadenze e Promemoria', percorso: '/scadenze', icona: CalendarClock },
-  { etichetta: 'Impianti & Installazioni', percorso: '/impianti', icona: Wrench },
-  { etichetta: 'Statistiche', percorso: '/statistiche', icona: BarChart3 },
-  { etichetta: 'Impostazioni', percorso: '/impostazioni', icona: Settings },
-  { etichetta: 'Backup / Esportazioni', percorso: '/backup', icona: DatabaseBackup },
+  { etichetta: 'Dashboard', percorso: '/gestionale', icona: LayoutDashboard },
+  { etichetta: 'Clienti', percorso: '/gestionale/clienti', icona: Users },
+  { etichetta: 'Dispositivi / Riparazioni', percorso: '/gestionale/riparazioni', icona: Smartphone },
+  { etichetta: 'Preventivi', percorso: '/gestionale/preventivi', icona: FileText },
+  { etichetta: 'Fatture', percorso: '/gestionale/fatture', icona: Receipt },
+  { etichetta: 'Magazzino', percorso: '/gestionale/magazzino', icona: Boxes },
+  { etichetta: 'Ordini Fornitori', percorso: '/gestionale/ordini', icona: Truck },
+  { etichetta: 'Scadenze e Promemoria', percorso: '/gestionale/scadenze', icona: CalendarClock },
+  { etichetta: 'Impianti & Installazioni', percorso: '/gestionale/impianti', icona: Wrench },
+  { etichetta: 'Statistiche', percorso: '/gestionale/statistiche', icona: BarChart3 },
+  { etichetta: 'Impostazioni', percorso: '/gestionale/impostazioni', icona: Settings },
+  { etichetta: 'Backup / Esportazioni', percorso: '/gestionale/backup', icona: DatabaseBackup },
 ]
 
 export function Sidebar({ aperta, onChiudi }: { aperta: boolean; onChiudi: () => void }) {
@@ -99,6 +100,13 @@ export function Sidebar({ aperta, onChiudi }: { aperta: boolean; onChiudi: () =>
         </nav>
 
         <div className="shrink-0 border-t border-line p-4">
+          <NavLink
+            to="/"
+            className="mb-3 flex items-center gap-2 rounded-lg border border-line bg-surface-2 px-3 py-2 text-[12px] font-semibold text-ink-muted transition-colors hover:border-brand hover:text-ink"
+          >
+            <Globe size={14} />
+            Vai al sito pubblico
+          </NavLink>
           <Logo compatto className="mb-3" />
           <p className="text-[13px] font-bold text-ink">{azienda.nome}</p>
           <ul className="mt-2 space-y-1.5 text-[11px] leading-tight text-ink-faint">

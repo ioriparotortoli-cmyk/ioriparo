@@ -39,7 +39,7 @@ export function NuovaRiparazione() {
     titolo: 'Nuova Accettazione',
     briciole: [
       { label: 'Home', to: '/' },
-      { label: 'Dispositivi', to: '/riparazioni' },
+      { label: 'Dispositivi', to: '/gestionale/riparazioni' },
       { label: 'Nuova Accettazione' },
     ],
   })
@@ -62,7 +62,7 @@ export function NuovaRiparazione() {
       }).id
 
     const riparazione = aggiungiRiparazione(riparazioneDaForm(dati, clienteId))
-    navigate(`/riparazioni/${riparazione.id}${stampa ? '?stampa=1' : ''}`)
+    navigate(`/gestionale/riparazioni/${riparazione.id}${stampa ? '?stampa=1' : ''}`)
   }
 
   return <FormRiparazione iniziali={datiVuoti()} onSalva={salva} />

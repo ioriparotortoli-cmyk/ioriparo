@@ -166,7 +166,7 @@ export function RiparazioniList() {
           <Download size={15} />
           Esporta
         </Button>
-        <LinkButton to="/riparazioni/nuova" variante="primario">
+        <LinkButton to="/gestionale/riparazioni/nuova" variante="primario">
           <Plus size={16} />
           Nuova riparazione
         </LinkButton>
@@ -326,7 +326,7 @@ export function RiparazioniList() {
             titolo="Nessun dispositivo trovato"
             descrizione="Modifica i filtri di ricerca oppure registra una nuova accettazione."
             azione={
-              <LinkButton to="/riparazioni/nuova" variante="primario" dimensione="sm">
+              <LinkButton to="/gestionale/riparazioni/nuova" variante="primario" dimensione="sm">
                 <Plus size={14} />
                 Nuova riparazione
               </LinkButton>
@@ -379,7 +379,7 @@ export function RiparazioniList() {
                   return (
                     <Tr
                       key={riparazione.id}
-                      onClick={() => navigate(`/riparazioni/${riparazione.id}`)}
+                      onClick={() => navigate(`/gestionale/riparazioni/${riparazione.id}`)}
                     >
                       <Td className="font-medium text-ink-muted whitespace-nowrap">
                         {riparazione.codice}
@@ -441,7 +441,7 @@ export function RiparazioniList() {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Link
-                            to={`/riparazioni/${riparazione.id}`}
+                            to={`/gestionale/riparazioni/${riparazione.id}`}
                             title="Apri scheda"
                             aria-label="Apri scheda"
                             className="inline-flex size-8 items-center justify-center rounded-lg border border-line-soft bg-surface-3 text-ink-muted transition-colors hover:text-ink"
@@ -449,7 +449,7 @@ export function RiparazioniList() {
                             <Eye size={15} />
                           </Link>
                           <Link
-                            to={`/riparazioni/${riparazione.id}/modifica`}
+                            to={`/gestionale/riparazioni/${riparazione.id}/modifica`}
                             title="Modifica"
                             aria-label="Modifica"
                             className="inline-flex size-8 items-center justify-center rounded-lg bg-brand text-white transition-colors hover:bg-brand-hover"

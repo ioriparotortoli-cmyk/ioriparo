@@ -215,4 +215,22 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
   Il sito è pubblicabile così com'è; quando servirà la persistenza reale basterà sostituire le
   funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,
   senza toccare interfaccia e componenti.
-- **Dominio**: aggiornare `SITO_URL` in `src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`.
+- **Dominio**: `SITO_URL` (`src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`) vale
+  `https://www.ioriparo.it`. Se il dominio principale sarà l'apice `ioriparo.it`
+  senza `www`, va cambiato in entrambi i file, altrimenti canonical e sitemap
+  puntano a un indirizzo diverso da quello servito.
+
+## Pubblicazione su Vercel
+
+`vercel.json` è già nel repository e contiene tutto il necessario:
+
+- **riscrittura per il routing lato client**: senza di essa ogni indirizzo diverso
+  dalla home (`/contatti`, `/servizi/...`) restituisce 404 se aperto direttamente,
+  ricaricato o raggiunto da un motore di ricerca. La regola esclude `assets/`,
+  `marchio/`, `sitemap.xml`, `robots.txt` e `site.webmanifest`, che restano file veri;
+- **cache**: un anno sugli asset con nome contenente l'hash, una settimana sul marchio;
+- **intestazioni di sicurezza**: `X-Content-Type-Options`, `Referrer-Policy`,
+  `X-Frame-Options`, `Permissions-Policy`.
+
+Su Vercel bastano le impostazioni predefinite (`npm run build` → `dist`): non
+servono variabili d'ambiente, l'endpoint dei moduli è nel codice.

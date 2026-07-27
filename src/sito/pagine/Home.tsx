@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
 import { useGestionale } from '@/data/store'
 import { AnteprimaArticolo } from '../componenti/AnteprimaArticolo'
+import { BottoneChiama, BottoneWhatsapp } from '../componenti/Contatto'
 import { CampoSegnale } from '../componenti/CampoSegnale'
 import { Faq, schemaFaq } from '../componenti/Faq'
 import { Galleria } from '../componenti/Galleria'
@@ -435,9 +435,8 @@ export function Home() {
             <LinkBottone a="/prenota" variante="ghost">
               Prenota un appuntamento
             </LinkBottone>
-            <Link className="btn btn--ghost" to="/contatti">
-              Contattaci
-            </Link>
+            <BottoneChiama />
+            <BottoneWhatsapp />
           </div>
         </div>
       </Sezione>

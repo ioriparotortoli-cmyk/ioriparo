@@ -155,6 +155,10 @@ In entrambi i casi il messaggio di conferma mostrato all'utente si adatta a quel
 che è realmente successo. I moduli hanno un campo esca invisibile e un tempo minimo
 di compilazione come filtro anti-robot, senza CAPTCHA.
 
+L'indirizzo di risposta viene incluso solo quando il visitatore ne ha lasciato uno
+valido: nella prenotazione l'e-mail è facoltativa e la richiesta parte comunque con
+il numero di telefono, senza indirizzi inventati che i servizi scarterebbero.
+
 ## Dati dell'attività
 
 Nome, indirizzo, telefono, WhatsApp, e-mail e partita IVA stanno **in un solo punto**
@@ -185,8 +189,9 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
 
 - **Fotografie reali**: le illustrazioni vettoriali di galleria, servizi e blog vanno
   sostituite con foto del laboratorio e degli impianti (formato WebP/AVIF, `loading="lazy"`).
-- **Profili social**: Facebook e Instagram in `src/sito/dati/azienda.ts` puntano ancora alle
-  pagine generiche, in attesa degli indirizzi definitivi.
+- **Profili social**: `social.facebook` e `social.instagram` in `src/sito/dati/azienda.ts` sono
+  vuoti, quindi le due icone non compaiono nel piè di pagina. Basta incollare l'indirizzo del
+  profilo perché l'icona torni visibile e finisca anche nei dati strutturati (`sameAs`).
 - **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale del browser.
   Il sito è pubblicabile così com'è; quando servirà la persistenza reale basterà sostituire le
   funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,

@@ -30,10 +30,14 @@ export const AZIENDA = {
   emailPrivacy: 'ioriparotortoli@gmail.com',
   partitaIva: '01625710916',
   fondata: 2013,
-  mappa: 'https://www.google.com/maps/search/?api=1&query=Io+Riparo+Via+Campidano+7+Tortol%C3%AC',
+  /**
+   * Profili social ufficiali. Finché un indirizzo resta vuoto la relativa icona
+   * non viene mostrata: meglio nessun collegamento che un collegamento che porta
+   * alla pagina generica del servizio.
+   */
   social: {
-    facebook: 'https://www.facebook.com/',
-    instagram: 'https://www.instagram.com/',
+    facebook: '',
+    instagram: '',
   },
 } as const
 
@@ -47,6 +51,17 @@ export const messaggioWhatsapp = (testo = 'Buongiorno, vorrei un preventivo per'
 
 export const WHATSAPP = messaggioWhatsapp()
 export const INDIRIZZO_COMPLETO = `${AZIENDA.indirizzo}, ${AZIENDA.cap} ${AZIENDA.citta} (${AZIENDA.provincia})`
+
+/** Ricerca su Google Maps con nome e indirizzo completo dell'attività. */
+export const MAPPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${AZIENDA.nome}, ${INDIRIZZO_COMPLETO}`,
+)}`
+
+/** Profili social effettivamente configurati: gli altri non vengono mostrati. */
+export const SOCIAL = Object.entries(AZIENDA.social).filter(([, url]) => url !== '') as [
+  keyof typeof AZIENDA.social,
+  string,
+][]
 
 export const ORARI: FasciaOraria[] = [
   { giorno: 'Lunedì', indice: 1, orario: '09:00–13:00 · 16:00–19:30', fasce: [[9, 13], [16, 19.5]] },

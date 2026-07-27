@@ -1,9 +1,10 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { TEL, useChiamata } from '../componenti/Contatto'
 import { Icona } from '../componenti/Icona'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP, apertoOra } from '../dati/azienda'
+import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, WHATSAPP, apertoOra } from '../dati/azienda'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
 import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
@@ -64,6 +65,7 @@ function Mappa() {
 export function Contatti() {
   const rif = useRivela<HTMLDivElement>()
   const notifica = useNotifica()
+  const chiama = useChiamata()
 
   const [nome, setNome] = useState('')
   const [telefono, setTelefono] = useState('')
@@ -147,7 +149,7 @@ export function Contatti() {
 
         <div className="contact-grid">
           <div className="reveal" style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
-            <a className="cinfo" href={`tel:${TELEFONO_E164}`}>
+            <a className="cinfo" href={TEL} onClick={chiama}>
               <span className="ico">
                 <Icona nome="call" dimensione={22} />
               </span>
@@ -174,7 +176,7 @@ export function Contatti() {
                 <span>Preventivi, fatturazione e aziende</span>
               </span>
             </a>
-            <a className="cinfo" href={AZIENDA.mappa} target="_blank" rel="noopener noreferrer">
+            <a className="cinfo" href={MAPPA} target="_blank" rel="noopener noreferrer">
               <span className="ico">
                 <Icona nome="pin" dimensione={22} />
               </span>
@@ -280,7 +282,7 @@ export function Contatti() {
             </div>
 
             <Mappa />
-            <LinkBottone a={AZIENDA.mappa} variante="ghost" largo>
+            <LinkBottone a={MAPPA} variante="ghost" largo>
               Apri in Google Maps <Icona nome="arrow" dimensione={16} />
             </LinkBottone>
           </div>

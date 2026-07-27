@@ -31,8 +31,8 @@ export type Modulo = 'contatti' | 'preventivo' | 'appuntamento' | 'newsletter'
 export interface DatiModulo {
   /** Etichetta → valore, nell'ordine in cui compaiono nell'e-mail */
   campi: Record<string, string>
-  /** Indirizzo a cui rispondere */
-  email: string
+  /** Indirizzo a cui rispondere: facoltativo, alcuni moduli chiedono solo il telefono */
+  email?: string
   nome?: string
 }
 
@@ -53,9 +53,22 @@ const corpoTestuale = (dati: DatiModulo) =>
     .map(([etichetta, valore]) => `${etichetta}: ${valore}`)
     .join('\n')
 
+/**
+ * Indirizzo di risposta valido, se il visitatore lo ha lasciato: un valore
+ * inventato come "non indicata" farebbe scartare la richiesta dal servizio.
+ */
+const rispostaA = (dati: DatiModulo) => {
+  const email = dati.email?.trim()
+  return email && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : undefined
+}
+
+/** Oggetto dell'e-mail: chi ha scritto, riconoscibile già dall'elenco messaggi. */
+const oggettoDi = (modulo: Modulo, dati: DatiModulo) =>
+  `${OGGETTI[modulo]} — ${dati.nome ?? rispostaA(dati) ?? AZIENDA.nome}`
+
 /** Apre il client di posta con il messaggio già pronto. */
 function apriPosta(modulo: Modulo, dati: DatiModulo): Esito {
-  const oggetto = encodeURIComponent(`${OGGETTI[modulo]} — ${dati.nome ?? dati.email}`)
+  const oggetto = encodeURIComponent(oggettoDi(modulo, dati))
   const corpo = encodeURIComponent(`${corpoTestuale(dati)}\n\n—\nInviato dal sito ${AZIENDA.nome}`)
   window.location.href = `mailto:${AZIENDA.email}?subject=${oggetto}&body=${corpo}`
   return { ok: true, via: 'posta' }
@@ -68,23 +81,23 @@ function apriPosta(modulo: Modulo, dati: DatiModulo): Esito {
 export async function inviaModulo(modulo: Modulo, dati: DatiModulo): Promise<Esito> {
   if (!ENDPOINT) return apriPosta(modulo, dati)
 
+  const risposta = rispostaA(dati)
   const corpo: Record<string, unknown> = {
     ...dati.campi,
-    email: dati.email,
-    _replyto: dati.email,
-    _subject: `${OGGETTI[modulo]} — ${dati.nome ?? dati.email}`,
+    ...(risposta ? { email: risposta, _replyto: risposta } : {}),
+    _subject: oggettoDi(modulo, dati),
     modulo,
     origine: window.location.href,
   }
   if (CHIAVE) corpo.access_key = CHIAVE
 
   try {
-    const risposta = await fetch(ENDPOINT, {
+    const esito = await fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(corpo),
     })
-    if (!risposta.ok) throw new Error(`stato ${risposta.status}`)
+    if (!esito.ok) throw new Error(`stato ${esito.status}`)
     return { ok: true, via: 'servizio' }
   } catch {
     return apriPosta(modulo, dati)

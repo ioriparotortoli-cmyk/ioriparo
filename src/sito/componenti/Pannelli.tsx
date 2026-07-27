@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AZIENDA, TELEFONO_E164 } from '../dati/azienda'
+import { AZIENDA } from '../dati/azienda'
 import { cerca } from '../dati/indice'
 import { useEsc } from '../lib/hook'
 import { cn } from '../lib/utili'
+import { BottoneChiama } from './Contatto'
 import { Icona } from './Icona'
 import { LinkBottone } from './base'
 
@@ -50,9 +51,7 @@ export function MenuMobile({ aperto, onChiudi }: { aperto: boolean; onChiudi: ()
         <LinkBottone a="/preventivo" largo>
           Richiedi preventivo
         </LinkBottone>
-        <LinkBottone a={`tel:${TELEFONO_E164}`} variante="ghost" largo>
-          Chiama {AZIENDA.telefono}
-        </LinkBottone>
+        <BottoneChiama largo>Chiama {AZIENDA.telefono}</BottoneChiama>
       </div>
     </nav>
   )

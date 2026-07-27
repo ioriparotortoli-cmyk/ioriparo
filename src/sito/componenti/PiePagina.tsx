@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP } from '../dati/azienda'
+import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, SOCIAL, WHATSAPP } from '../dati/azienda'
+import { TEL, useChiamata } from './Contatto'
 import { inviaModulo } from '../lib/moduli'
 import { emailValida } from '../lib/utili'
 import { Icona } from './Icona'
@@ -28,6 +29,7 @@ const AZIENDA_PIEDE = [
 export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => void }) {
   const [email, setEmail] = useState('')
   const notifica = useNotifica()
+  const chiama = useChiamata()
 
   const iscrivi = async (e: FormEvent) => {
     e.preventDefault()
@@ -52,12 +54,11 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
               {AZIENDA.citta} e Ogliastra dal {AZIENDA.fondata}.
             </p>
             <div className="social" style={{ marginTop: 18 }}>
-              <a href={AZIENDA.social.facebook} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-                <Icona nome="fb" dimensione={17} />
-              </a>
-              <a href={AZIENDA.social.instagram} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-                <Icona nome="ig" dimensione={17} />
-              </a>
+              {SOCIAL.map(([rete, url]) => (
+                <a key={rete} href={url} aria-label={rete === 'facebook' ? 'Facebook' : 'Instagram'} target="_blank" rel="noopener noreferrer">
+                  <Icona nome={rete === 'facebook' ? 'fb' : 'ig'} dimensione={17} />
+                </a>
+              ))}
               <a href={WHATSAPP} aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
                 <Icona nome="wa" dimensione={17} pieno />
               </a>
@@ -127,7 +128,9 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
             <div className="hours" style={{ marginTop: 12 }}>
               <div>
                 <b>
-                  <a href={`tel:${TELEFONO_E164}`}>{AZIENDA.telefono}</a>
+                  <a href={TEL} onClick={chiama}>
+                    {AZIENDA.telefono}
+                  </a>
                 </b>
                 <span>Telefono</span>
               </div>

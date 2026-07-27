@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react'
 import { useGestionale } from '@/data/store'
 import type { Riparazione } from '@/types'
+import { BottoneChiama } from '../componenti/Contatto'
 import { useNotifica } from '../componenti/Notifiche'
 import { SchedaPratica } from '../componenti/SchedaPratica'
-import { Avviso, Bottone, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, TELEFONO_E164 } from '../dati/azienda'
+import { Avviso, Bottone, Intestazione, Sezione } from '../componenti/base'
+import { AZIENDA } from '../dati/azienda'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
 
@@ -58,7 +59,7 @@ export function StatoRiparazione() {
         <div className="wrap" style={{ maxWidth: 820, padding: 0 }}>
           <Intestazione
             occhiello="Stato riparazione"
-          principale
+            principale
             titolo="Dov'è il mio dispositivo?"
             testo="Inserisci il codice pratica che trovi sulla ricevuta di accettazione o nella e-mail di conferma."
           />
@@ -96,9 +97,7 @@ export function StatoRiparazione() {
               <>
                 <SchedaPratica riparazione={risultato} />
                 <div className="row" style={{ marginTop: 16 }}>
-                  <LinkBottone a={`tel:${TELEFONO_E164}`} variante="ghost" piccolo>
-                    Serve aiuto? Chiamaci
-                  </LinkBottone>
+                  <BottoneChiama piccolo>Serve aiuto? Chiamaci</BottoneChiama>
                   <Bottone
                     variante="soft"
                     piccolo

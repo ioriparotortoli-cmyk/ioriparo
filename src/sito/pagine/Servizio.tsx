@@ -1,10 +1,11 @@
 import { Navigate, useParams } from 'react-router-dom'
+import { BottoneChiama, BottoneWhatsapp } from '../componenti/Contatto'
 import { Faq, schemaFaq } from '../componenti/Faq'
 import { Icona } from '../componenti/Icona'
 import { Illustrazione } from '../componenti/Illustrazione'
 import { SchedaServizio } from '../componenti/Servizi'
 import { Chip, Intestazione, LinkBottone, LinkTesto, Sezione, Tabella } from '../componenti/base'
-import { AZIENDA, TELEFONO_E164, messaggioWhatsapp } from '../dati/azienda'
+import { AZIENDA, TELEFONO_E164 } from '../dati/azienda'
 import { DETTAGLI } from '../dati/dettagli-servizi'
 import { LISTINO, SERVIZI } from '../dati/servizi'
 import { useRivela } from '../lib/hook'
@@ -92,12 +93,8 @@ export function Servizio() {
               <LinkBottone a={`/preventivo?servizio=${servizio.id}`}>
                 Richiedi preventivo <Icona nome="arrow" dimensione={17} />
               </LinkBottone>
-              <LinkBottone a={`tel:${TELEFONO_E164}`} variante="ghost">
-                <Icona nome="call" dimensione={16} /> Chiama ora
-              </LinkBottone>
-              <LinkBottone a={messaggioWhatsapp(`Buongiorno, avrei bisogno di: ${servizio.titolo}.`)} variante="ghost">
-                <Icona nome="wa" dimensione={16} pieno /> WhatsApp
-              </LinkBottone>
+              <BottoneChiama />
+              <BottoneWhatsapp testo={`Buongiorno, avrei bisogno di: ${servizio.titolo}.`} />
             </div>
           </div>
 

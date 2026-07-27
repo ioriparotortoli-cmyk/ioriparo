@@ -68,12 +68,12 @@ export function Prenota() {
 
     setInCorso(true)
     const esito = await inviaModulo('appuntamento', {
-      email: email || 'non indicata',
+      email,
       nome,
       campi: {
         Nome: nome,
         Telefono: telefono,
-        'E-mail': email,
+        'E-mail': email || 'non indicata',
         Servizio: servizio,
         Giorno: dataEstesa(scelto),
         Orario: fascia ?? '',

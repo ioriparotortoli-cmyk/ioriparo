@@ -73,6 +73,18 @@ export const SERVIZI: Servizio[] = [
     tempo: '1–2 giorni',
   },
   {
+    id: 'riparazione-console',
+    famiglia: 'dispositivi',
+    icona: 'box',
+    scena: 'bench',
+    titolo: 'Riparazione console',
+    descrizione:
+      'PlayStation, Xbox e Nintendo Switch: pulizia e pasta termica, ventole rumorose, porte HDMI, lettori ottici e drifting dei controller.',
+    tag: ['PlayStation', 'Xbox', 'Switch', 'Controller'],
+    prezzo: 'da 49 €',
+    tempo: '1–2 giorni',
+  },
+  {
     id: 'recupero-dati',
     famiglia: 'dispositivi',
     icona: 'data',

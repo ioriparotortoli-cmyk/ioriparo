@@ -51,7 +51,8 @@ richieste di terze parti e non installa cookie non necessari.
 | --- | --- |
 | `/` | Apertura con campo segnale animato, servizi, motivi, processo, numeri, settori, tracking, galleria, recensioni, FAQ, blog, invito al contatto |
 | `/chi-siamo` | Storia, missione, valori e percorso dell'attività |
-| `/servizi` | Le 11 specializzazioni, listino orientativo e domande frequenti |
+| `/servizi` | Le 12 specializzazioni, listino orientativo e domande frequenti |
+| `/servizi/:id` | Pagina dedicata a ogni servizio: interventi compresi, fasi, prezzi e domande |
 | `/galleria` | Lavori eseguiti con filtro per categoria e visualizzatore a schermo intero |
 | `/blog`, `/blog/:slug` | Guide tecniche con dati strutturati `Article` |
 | `/preventivo` | Preventivo online in tre passaggi con stima di prezzo calcolata |
@@ -97,7 +98,6 @@ stessa che il cliente vede su `/stato-riparazione` e nell'area riservata.
 ```
 public/
   marchio/        logo ufficiale (PNG), versione su fondo scuro, icone e immagine social
-  favicon.svg     marchio vettoriale per la scheda del browser
   robots.txt      sitemap.xml  site.webmanifest
 scripts/
   genera-sitemap.mjs   sitemap XML generata dalle rotte e dagli articoli
@@ -118,14 +118,38 @@ src/
 
 ## Identità grafica
 
-Il marchio ufficiale è in `public/marchio/io-riparo-logo.png` (versione con lettering chiaro
-per fondi scuri accanto). Per intestazione, favicon e icone è disponibile la versione
-vettoriale ridisegnata in `src/sito/componenti/Marchio.tsx`, con lo stesso gradiente
-istituzionale **#29ABE2 → #0071BC**.
+Il marchio usato ovunque è il **file originale fornito dall'azienda**:
+
+| File | Uso |
+| --- | --- |
+| `public/marchio/io-riparo-logo.png` | originale ricevuto, conservato intatto |
+| `public/marchio/logo.png` | stesso file senza margine trasparente, per fondi chiari |
+| `public/marchio/logo-chiaro.png` | lettering schiarito, per fondi scuri e gestionale |
+| `public/marchio/simbolo.png` | solo la parte grafica, base delle icone |
+| `public/marchio/icona-*.png` | favicon e icone app generate dal simbolo originale |
+| `public/marchio/social.png` | immagine per le condivisioni |
+
+Il passaggio tra la versione chiara e quella scura avviene via CSS (`.marchio--scuro` /
+`.marchio--chiaro`): nessun ridisegno, nessuna reinterpretazione del marchio.
 
 Palette del sito: nero con dominante blu (`#05070c`), blu elettrico (`#2563eb`), bianco e
 grigio chiaro; tipografia di sistema (SF Pro Display / Segoe UI / Inter) con monospace per
 codici pratica e dati tecnici.
+
+## Dati dell'attività
+
+Nome, indirizzo, telefono, WhatsApp, e-mail e partita IVA stanno **in un solo punto**
+(`src/sito/dati/azienda.ts`) e da lì alimentano intestazione, contatti, piè di pagina,
+informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
+
+| Dato | Valore |
+| --- | --- |
+| Attività | Io Riparo |
+| Sede | Via Campidano 7, 08048 Tortolì (NU) |
+| Telefono | 0782 208901 |
+| WhatsApp | +39 338 435 6603 |
+| E-mail | ioriparotortoli@gmail.com |
+| Partita IVA | 01625710916 |
 
 ## Convenzioni
 
@@ -142,8 +166,10 @@ codici pratica e dati tecnici.
 
 - **Fotografie reali**: le illustrazioni vettoriali di galleria, servizi e blog vanno
   sostituite con foto del laboratorio e degli impianti (formato WebP/AVIF, `loading="lazy"`).
-- **Dati aziendali**: indirizzo, partita IVA e profili social sono in `src/sito/dati/azienda.ts`
-  e in `src/data/seed.ts` (gestionale).
-- **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale. Per la
-  messa online servono API con salvataggio su database, invio e-mail e autenticazione.
+- **Profili social**: Facebook e Instagram in `src/sito/dati/azienda.ts` puntano ancora alle
+  pagine generiche, in attesa degli indirizzi definitivi.
+- **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale del browser.
+  Il sito è pubblicabile così com'è; quando servirà la persistenza reale basterà sostituire le
+  funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,
+  senza toccare interfaccia e componenti.
 - **Dominio**: aggiornare `SITO_URL` in `src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`.

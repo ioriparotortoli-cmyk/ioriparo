@@ -24,6 +24,7 @@ export function ChiSiamo() {
       <Sezione griglia>
         <Intestazione
           occhiello="Chi siamo"
+          principale
           titolo={
             <>
               Un laboratorio vero,

@@ -121,6 +121,7 @@ export function Preventivo() {
         <div className="wrap" style={{ maxWidth: 860, padding: 0 }}>
           <Intestazione
             occhiello="Preventivo online · 3 passaggi"
+          principale
             titolo="Una stima in meno di un minuto."
             testo="Rispondi a tre domande: ti mostriamo subito una fascia di prezzo indicativa e ti ricontattiamo con il preventivo definitivo."
           />

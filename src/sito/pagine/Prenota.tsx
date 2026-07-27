@@ -72,6 +72,7 @@ export function Prenota() {
         <div className="wrap" style={{ maxWidth: 900, padding: 0 }}>
           <Intestazione
             occhiello="Appuntamenti"
+          principale
             titolo="Scegli quando passare."
             testo="Prenotando eviti l'attesa: il banco è già libero e il tecnico ti aspetta con la scheda pronta."
           />

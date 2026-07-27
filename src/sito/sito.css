@@ -22,7 +22,7 @@
   --fog:#f1f4f9;
   --shadow: 0 24px 60px -28px rgba(0,0,0,.9);
   --ring: 0 0 0 1px var(--line);
-  --nav-h: 68px;
+  --nav-h: 76px;
   --pad: 20px;
   --max: 1220px;
   --r-s:10px; --r-m:16px; --r-l:24px; --r-xl:32px;
@@ -111,6 +111,7 @@ body[data-sito]{
 .wrap{width:100%; max-width:var(--max); margin-inline:auto; padding-inline:var(--pad)}
 .section{padding-block:clamp(56px,9vw,116px); position:relative}
 .section--tint{background:var(--ground-2); border-block:1px solid var(--line)}
+.section-head h1{font-size:clamp(1.9rem,4.6vw,3.1rem)}
 .section-head{display:flex; flex-direction:column; gap:14px; margin-bottom:clamp(28px,4vw,52px)}
 .section-head .lede{margin-top:2px}
 .griglia{display:grid; gap:18px}
@@ -706,10 +707,21 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
 .skip:focus{top:0}
 
 /* ---------- marchio ---------- */
-.brand__mark{width:auto; height:38px}
-.logo-esteso{max-width:230px; height:auto}
-.hdr .brand__name{font-size:1.05rem}
-.brand__claim{font-size:.62rem; letter-spacing:.02em; color:var(--txt-3); margin-top:5px; font-weight:500; font-style:italic}
+.marchio{height:var(--altezza-marchio,46px); width:auto; max-width:none; transition:transform .5s var(--ease), opacity .25s}
+.brand:hover .marchio{transform:scale(1.03)}
+/* Sui fondi scuri va la versione con lettering chiaro, e viceversa.
+   I selettori includono #app perché le regole di base delle immagini
+   del sito sono anch'esse ancorate a quell'identificativo. */
+#app .marchio--chiaro{display:none}
+:root[data-theme="dark"] #app .marchio--scuro{display:none}
+:root[data-theme="dark"] #app .marchio--chiaro{display:block}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) #app .marchio--scuro{display:none}
+  :root:not([data-theme="light"]) #app .marchio--chiaro{display:block}
+}
+@media (max-width: 560px){
+  #app .marchio{height:42px}
+}
 
 /* ---------- collegamento al gestionale ---------- */
 .badge-demo{font-size:.68rem; padding:2px 7px; border-radius:6px; background:color-mix(in srgb,var(--blue) 18%,transparent); color:var(--blue-glow); font-weight:700; letter-spacing:.04em}

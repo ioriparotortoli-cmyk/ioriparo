@@ -27,6 +27,7 @@ const router = creaRouter([
       { index: true, element: <Home /> },
       { path: 'chi-siamo', lazy: pagina(() => import('@/sito/pagine/ChiSiamo'), 'ChiSiamo') },
       { path: 'servizi', lazy: pagina(() => import('@/sito/pagine/Servizi'), 'Servizi') },
+      { path: 'servizi/:id', lazy: pagina(() => import('@/sito/pagine/Servizio'), 'Servizio') },
       { path: 'galleria', lazy: pagina(() => import('@/sito/pagine/GalleriaPagina'), 'GalleriaPagina') },
       { path: 'blog', lazy: pagina(() => import('@/sito/pagine/Blog'), 'Blog') },
       { path: 'blog/:slug', lazy: pagina(() => import('@/sito/pagine/Blog'), 'PaginaArticolo') },

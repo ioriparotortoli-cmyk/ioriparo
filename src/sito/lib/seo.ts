@@ -44,8 +44,8 @@ export const SCHEMA_ATTIVITA = {
   url: SITO_URL,
   telephone: TELEFONO_E164,
   email: AZIENDA.email,
-  image: `${SITO_URL}/marchio/io-riparo-logo.png`,
-  logo: `${SITO_URL}/marchio/io-riparo-logo.png`,
+  image: `${SITO_URL}/marchio/logo.png`,
+  logo: `${SITO_URL}/marchio/logo.png`,
   priceRange: '€€',
   vatID: AZIENDA.partitaIva,
   address: {

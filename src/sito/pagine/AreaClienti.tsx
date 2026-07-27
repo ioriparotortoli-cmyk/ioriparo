@@ -79,6 +79,7 @@ export function AreaClienti() {
           <div className="wrap" style={{ maxWidth: 1000, padding: 0 }}>
             <Intestazione
               occhiello="Area clienti"
+          principale
               titolo={
                 <>
                   Le tue pratiche,

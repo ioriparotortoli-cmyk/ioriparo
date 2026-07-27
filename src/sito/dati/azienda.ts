@@ -22,10 +22,13 @@ export const AZIENDA = {
   citta: 'Tortolì',
   provincia: 'NU',
   regione: 'Ogliastra, Sardegna',
-  telefono: '377 381 97 87',
-  email: 'ioriparo15@gmail.com',
-  emailPrivacy: 'ioriparo15@gmail.com',
-  partitaIva: '08123450726',
+  /** Numero fisso del laboratorio, usato dal pulsante "Chiama ora". */
+  telefono: '0782 208901',
+  /** Cellulare usato per WhatsApp e per i messaggi diretti. */
+  cellulare: '338 435 6603',
+  email: 'ioriparotortoli@gmail.com',
+  emailPrivacy: 'ioriparotortoli@gmail.com',
+  partitaIva: '01625710916',
   fondata: 2013,
   mappa: 'https://www.google.com/maps/search/?api=1&query=Io+Riparo+Via+Campidano+7+Tortol%C3%AC',
   social: {
@@ -34,9 +37,15 @@ export const AZIENDA = {
   },
 } as const
 
-/** Numero in formato E.164, usato per `tel:` e per i collegamenti WhatsApp. */
+/** Numeri in formato E.164: il fisso per `tel:`, il cellulare per WhatsApp. */
 export const TELEFONO_E164 = '+39' + AZIENDA.telefono.replace(/\D/g, '')
-export const WHATSAPP = `https://wa.me/${TELEFONO_E164.replace('+', '')}`
+export const CELLULARE_E164 = '+39' + AZIENDA.cellulare.replace(/\D/g, '')
+
+/** Messaggio già compilato: chi scrive parte da una richiesta chiara. */
+export const messaggioWhatsapp = (testo = 'Buongiorno, vorrei un preventivo per') =>
+  `https://wa.me/${CELLULARE_E164.replace('+', '')}?text=${encodeURIComponent(testo)}`
+
+export const WHATSAPP = messaggioWhatsapp()
 export const INDIRIZZO_COMPLETO = `${AZIENDA.indirizzo}, ${AZIENDA.cap} ${AZIENDA.citta} (${AZIENDA.provincia})`
 
 export const ORARI: FasciaOraria[] = [

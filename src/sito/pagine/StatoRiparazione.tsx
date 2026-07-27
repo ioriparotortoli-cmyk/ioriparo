@@ -61,6 +61,7 @@ export function StatoRiparazione() {
         <div className="wrap" style={{ maxWidth: 820, padding: 0 }}>
           <Intestazione
             occhiello="Stato riparazione"
+          principale
             titolo="Dov'è il mio dispositivo?"
             testo="Inserisci il codice pratica che trovi sulla ricevuta di accettazione o nella e-mail di conferma."
           />

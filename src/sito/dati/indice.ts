@@ -31,6 +31,7 @@ const SINTOMI: Record<string, string> = {
   'riparazione-tablet': 'vetro rotto touch non funziona batteria gonfia ricarica',
   'riparazione-computer': 'lento lentezza si spegne non si avvia virus malware formattazione windows blocco',
   'assistenza-notebook': 'lento surriscalda ventola rumorosa cerniera rotta tastiera ssd ram batteria',
+  'riparazione-console': 'playstation ps4 ps5 xbox nintendo switch joypad controller drifting ventola rumorosa hdmi lettore',
   'recupero-dati': 'hard disk non riconosciuto file persi foto cancellate formattato ripristino backup',
   videosorveglianza: 'telecamere allarme furto negozio casa registratore nvr visione da remoto',
   'impianti-wifi': 'internet lento non prende segnale copertura router modem fibra ripetitore',
@@ -44,7 +45,7 @@ export const INDICE: VoceIndice[] = [
   ...SERVIZI.map<VoceIndice>((s) => ({
     titolo: s.titolo,
     nota: `Servizio · ${s.prezzo}`,
-    percorso: `/servizi#${s.id}`,
+    percorso: `/servizi/${s.id}`,
     icona: s.icona,
     chiavi: `${s.tag.join(' ')} ${s.descrizione} ${SINTOMI[s.id] ?? ''}`,
   })),

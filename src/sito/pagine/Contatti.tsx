@@ -75,7 +75,7 @@ export function Contatti() {
 
   useSeo({
     titolo: `Contatti — ${AZIENDA.citta} | Io Riparo`,
-    descrizione: `Vieni in laboratorio in ${INDIRIZZO_COMPLETO} oppure scrivici su WhatsApp al ${AZIENDA.telefono}. Preventivi gratuiti per privati e aziende.`,
+    descrizione: `Vieni in laboratorio in ${INDIRIZZO_COMPLETO}, chiamaci allo ${AZIENDA.telefono} o scrivici su WhatsApp al ${AZIENDA.cellulare}. Preventivi gratuiti per privati e aziende.`,
     percorso: '/contatti',
     datiStrutturati: briciole([
       { nome: 'Home', percorso: '/' },
@@ -110,6 +110,7 @@ export function Contatti() {
       <Sezione griglia>
         <Intestazione
           occhiello="Contatti"
+          principale
           titolo={
             <>
               Parliamone.
@@ -136,8 +137,8 @@ export function Contatti() {
                 <Icona nome="wa" dimensione={22} pieno />
               </span>
               <span>
-                <b>WhatsApp</b>
-                <span>Manda la foto del guasto: ti diciamo subito cosa serve</span>
+                <b>{AZIENDA.cellulare}</b>
+                <span>WhatsApp · manda la foto del guasto e ti diciamo cosa serve</span>
               </span>
             </a>
             <a className="cinfo" href={`mailto:${AZIENDA.email}`}>

@@ -33,16 +33,20 @@ export function Intestazione({
   titolo,
   testo,
   children,
+  principale,
 }: {
   occhiello: string
   titolo: ReactNode
   testo?: ReactNode
   children?: ReactNode
+  /** Titolo principale della pagina: viene reso come `h1`, uno solo per pagina. */
+  principale?: boolean
 }) {
+  const Titolo = principale ? 'h1' : 'h2'
   return (
     <div className="section-head reveal">
       <span className="eyebrow">{occhiello}</span>
-      <h2>{titolo}</h2>
+      <Titolo>{titolo}</Titolo>
       {testo && <p className="lede">{testo}</p>}
       {children}
     </div>

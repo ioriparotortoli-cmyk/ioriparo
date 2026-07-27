@@ -7,12 +7,12 @@ import { Marchio } from './Marchio'
 import { useNotifica } from './Notifiche'
 
 const SERVIZI_PIEDE = [
-  ['Riparazione smartphone', '/servizi#riparazione-smartphone'],
-  ['Riparazione computer', '/servizi#riparazione-computer'],
-  ['Recupero dati', '/servizi#recupero-dati'],
-  ['Videosorveglianza', '/servizi#videosorveglianza'],
-  ['Reti e Wi-Fi', '/servizi#impianti-wifi'],
-  ['Assistenza aziende', '/servizi#assistenza-aziende'],
+  ['Riparazione smartphone', '/servizi/riparazione-smartphone'],
+  ['Riparazione computer', '/servizi/riparazione-computer'],
+  ['Riparazione console', '/servizi/riparazione-console'],
+  ['Recupero dati', '/servizi/recupero-dati'],
+  ['Videosorveglianza', '/servizi/videosorveglianza'],
+  ['Reti e Wi-Fi', '/servizi/impianti-wifi'],
 ]
 
 const AZIENDA_PIEDE = [
@@ -43,7 +43,7 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
       <div className="wrap">
         <div className="ftr__grid">
           <div>
-            <Marchio className="ftr__brand" />
+            <Marchio altezza={54} senzaLink />
             <p className="muted" style={{ fontSize: '.88rem', maxWidth: '34ch', marginTop: 16 }}>
               Centro di assistenza tecnica per smartphone, computer, reti e videosorveglianza.
               {' '}
@@ -126,6 +126,20 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
               <div>
                 <b>
                   <a href={`tel:${TELEFONO_E164}`}>{AZIENDA.telefono}</a>
+                </b>
+                <span>Telefono</span>
+              </div>
+              <div>
+                <b>
+                  <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                    {AZIENDA.cellulare}
+                  </a>
+                </b>
+                <span>WhatsApp</span>
+              </div>
+              <div>
+                <b>
+                  <a href={`mailto:${AZIENDA.email}`}>{AZIENDA.email}</a>
                 </b>
                 <span>{INDIRIZZO_COMPLETO}</span>
               </div>

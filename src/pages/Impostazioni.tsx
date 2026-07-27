@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Check, RotateCcw, Save } from 'lucide-react'
+import { Check, Save } from 'lucide-react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Campo, Input } from '@/components/ui/Form'
-import { Modal } from '@/components/ui/Modal'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
 import type { Azienda } from '@/types'
@@ -11,13 +10,12 @@ import type { Azienda } from '@/types'
 export function Impostazioni() {
   useIntestazione({
     titolo: 'Impostazioni',
-    sottotitolo: 'Dati aziendali e preferenze del gestionale',
+    sottotitolo: 'Dati dell’attività e valori predefiniti dei documenti',
   })
 
-  const { db, aggiornaAzienda, ripristinaDemo } = useGestionale()
+  const { db, aggiornaAzienda } = useGestionale()
   const [form, setForm] = useState<Azienda>(db.azienda)
   const [salvato, setSalvato] = useState(false)
-  const [confermaRipristino, setConfermaRipristino] = useState(false)
 
   function salva() {
     aggiornaAzienda({
@@ -118,25 +116,6 @@ export function Impostazioni() {
               </Campo>
             </div>
           </Card>
-
-          <Card>
-            <CardHeader
-              titolo="Archivio locale"
-              sottotitolo="I dati sono salvati nel browser di questo dispositivo"
-            />
-            <p className="mt-3 text-sm text-ink-muted">
-              Il gestionale funziona senza server: ogni modifica resta nel browser corrente. Usa la
-              sezione Backup per esportare i dati prima di cambiare dispositivo.
-            </p>
-            <Button
-              variante="pericolo"
-              className="mt-4"
-              onClick={() => setConfermaRipristino(true)}
-            >
-              <RotateCcw size={15} />
-              Ripristina dati dimostrativi
-            </Button>
-          </Card>
         </div>
       </div>
 
@@ -153,32 +132,6 @@ export function Impostazioni() {
         </Button>
       </div>
 
-      <Modal
-        aperta={confermaRipristino}
-        titolo="Ripristinare i dati dimostrativi?"
-        onChiudi={() => setConfermaRipristino(false)}
-        larghezza="sm"
-        piede={
-          <>
-            <Button onClick={() => setConfermaRipristino(false)}>Annulla</Button>
-            <Button
-              variante="pericolo"
-              onClick={() => {
-                ripristinaDemo()
-                setConfermaRipristino(false)
-              }}
-            >
-              <RotateCcw size={15} />
-              Ripristina
-            </Button>
-          </>
-        }
-      >
-        <p className="text-sm text-ink-muted">
-          Tutte le modifiche locali (clienti, riparazioni, magazzino) verranno sostituite dai dati di
-          esempio iniziali. L'operazione non è reversibile.
-        </p>
-      </Modal>
     </div>
   )
 }

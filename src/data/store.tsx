@@ -16,9 +16,11 @@ import type {
   Fattura,
   Impianto,
   OrdineFornitore,
+  PreferenzeUtente,
   Preventivo,
   Riparazione,
   Scadenza,
+  Utente,
 } from '@/types'
 
 const CHIAVE_STORAGE = 'ioriparo:db:v1'
@@ -37,7 +39,18 @@ function caricaDatabase(): DatabaseGestionale {
     if (!grezzo) return iniziale
     const salvato = JSON.parse(grezzo) as Partial<DatabaseGestionale>
     // Merge superficiale: le collezioni mancanti tornano al dato demo.
-    return { ...iniziale, ...salvato, azienda: { ...iniziale.azienda, ...salvato.azienda } }
+    // Azienda e utente si fondono campo per campo, così un archivio salvato
+    // prima che esistessero queste voci non resta senza valori.
+    return {
+      ...iniziale,
+      ...salvato,
+      azienda: { ...iniziale.azienda, ...salvato.azienda },
+      utente: {
+        ...iniziale.utente,
+        ...salvato.utente,
+        preferenze: { ...iniziale.utente.preferenze, ...salvato.utente?.preferenze },
+      },
+    }
   } catch {
     return iniziale
   }
@@ -71,6 +84,8 @@ interface ContestoGestionale {
 
   aggiornaImpianto: (id: string, modifiche: Partial<Impianto>) => void
   aggiornaAzienda: (modifiche: Partial<Azienda>) => void
+  aggiornaUtente: (modifiche: Partial<Utente>) => void
+  aggiornaPreferenze: (modifiche: Partial<PreferenzeUtente>) => void
 
   /** Ripristina i dati dimostrativi scartando le modifiche locali. */
   ripristinaDemo: () => void
@@ -184,6 +199,13 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       aggiornaImpianto: (id, modifiche) => aggiornaIn('impianti', id, modifiche),
       aggiornaAzienda: (modifiche) =>
         setDb((p) => ({ ...p, azienda: { ...p.azienda, ...modifiche } })),
+      aggiornaUtente: (modifiche) =>
+        setDb((p) => ({ ...p, utente: { ...p.utente, ...modifiche } })),
+      aggiornaPreferenze: (modifiche) =>
+        setDb((p) => ({
+          ...p,
+          utente: { ...p.utente, preferenze: { ...p.utente.preferenze, ...modifiche } },
+        })),
 
       ripristinaDemo: () => {
         window.localStorage.removeItem(CHIAVE_STORAGE)

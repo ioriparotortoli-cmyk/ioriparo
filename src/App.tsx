@@ -53,6 +53,7 @@ const rotteGestionale = !conGestionale
           { path: 'scadenze', lazy: pagina(() => import('@/pages/Scadenze'), 'Scadenze') },
           { path: 'impianti', lazy: pagina(() => import('@/pages/Impianti'), 'Impianti') },
           { path: 'statistiche', lazy: pagina(() => import('@/pages/Statistiche'), 'Statistiche') },
+          { path: 'profilo', lazy: pagina(() => import('@/pages/Profilo'), 'Profilo') },
           { path: 'impostazioni', lazy: pagina(() => import('@/pages/Impostazioni'), 'Impostazioni') },
           { path: 'backup', lazy: pagina(() => import('@/pages/Backup'), 'Backup') },
 

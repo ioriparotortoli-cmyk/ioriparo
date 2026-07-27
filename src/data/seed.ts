@@ -543,7 +543,7 @@ export const SCADENZE: Scadenza[] = [
   { id: 'sca-005', titolo: 'Richiamo cliente per ritiro', descrizione: 'Alessandro Palumbo — PlayStation 5 pronta', tipo: 'promemoria', priorita: 'bassa', data: traGiorni(1), completata: false },
   { id: 'sca-006', titolo: 'Pagamento fornitore', descrizione: 'Esprinet — fattura 2210', tipo: 'pagamento_fornitore', priorita: 'normale', data: traGiorni(18), importo: 640, completata: false },
   { id: 'sca-007', titolo: 'Manutenzione impianto Farmacia Centrale', descrizione: 'Controllo semestrale rete e NAS', tipo: 'promemoria', priorita: 'normale', data: traGiorni(25), completata: false },
-  { id: 'sca-008', titolo: 'Rinnovo dominio e hosting', descrizione: 'ioriparo.it', tipo: 'rinnovo', priorita: 'bassa', data: giorniFa(3), importo: 95, completata: true },
+  { id: 'sca-008', titolo: 'Rinnovo dominio e hosting', descrizione: 'ioriparotortoli.it', tipo: 'rinnovo', priorita: 'bassa', data: giorniFa(3), importo: 95, completata: true },
 ]
 
 // --------------------------------------------------------------- Impianti

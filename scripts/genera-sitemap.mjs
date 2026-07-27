@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const radice = join(dirname(fileURLToPath(import.meta.url)), '..')
-const sito = process.argv[2] ?? process.env.SITE_URL ?? 'https://www.ioriparo.it'
+const sito = process.argv[2] ?? process.env.SITE_URL ?? 'https://ioriparotortoli.it'
 
 const PAGINE = [
   { percorso: '/', priorita: '1.0', frequenza: 'weekly' },

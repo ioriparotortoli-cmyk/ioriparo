@@ -147,14 +147,17 @@ Il sito è statico: non c'è backend e nessuna richiesta resta nel browser. I mo
 **Contatti**, **Preventivo**, **Prenotazione** e **Newsletter** passano tutti da
 `src/sito/lib/moduli.ts` e recapitano a `ioriparotortoli@gmail.com` in due modi:
 
-1. **Formspree** (modalità di produzione) — si valorizza `VITE_MODULI_ENDPOINT` in
-   `.env` con l'endpoint del modulo (`https://formspree.io/f/xxxxxxxx`). I dati
-   partono in JSON con `Accept: application/json` e arrivano in casella senza che
-   il visitatore lasci il sito. Valgono anche Web3Forms, Getform e Basin: stessa
-   variabile, più `VITE_MODULI_CHIAVE` per i servizi che richiedono una chiave.
-2. **Client di posta** — finché l'endpoint non è configurato il modulo apre il
-   programma di posta con destinatario, oggetto e testo già compilati, così il
-   sito è utilizzabile da subito.
+1. **Formspree** (modalità attiva) — le richieste partono in JSON verso
+   `https://formspree.io/f/mpqvknlr`, il modulo di Io Riparo, che recapita a
+   ioriparotortoli@gmail.com. L'endpoint sta in `src/sito/lib/moduli.ts`: non è
+   un segreto — l'indirizzo di un modulo Formspree finisce nel codice di ogni
+   sito che lo usa — ed è lì perché il sito funzioni da qualunque hosting senza
+   configurare variabili d'ambiente. Si può scavalcare con
+   `VITE_MODULI_ENDPOINT` (valgono anche Web3Forms, Getform e Basin, più
+   `VITE_MODULI_CHIAVE` dove serve una chiave).
+2. **Client di posta** — ripiego che entra in funzione solo svuotando
+   l'endpoint: apre il programma di posta con destinatario, oggetto e testo già
+   compilati. Utile in sviluppo, non è la modalità di produzione.
 
 Con il servizio configurato la conferma di successo compare **solo** dopo una
 risposta positiva: se l'invio fallisce il visitatore legge il motivo e i recapiti

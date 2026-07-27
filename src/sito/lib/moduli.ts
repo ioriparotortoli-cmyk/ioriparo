@@ -1,26 +1,32 @@
 import { AZIENDA } from '../dati/azienda'
 
 /**
- * Invio dei moduli del sito.
+ * Invio dei moduli del sito: Contatti, Preventivo, Prenotazione e Newsletter.
  *
  * Il sito è statico: non c'è un backend e nessuna richiesta viene salvata nel
- * browser. Ogni modulo viene recapitato per e-mail a `AZIENDA.email` in due modi:
+ * browser. Le richieste partono in JSON verso **Formspree**, che le recapita a
+ * `AZIENDA.email`; la conferma di successo compare solo dopo una risposta
+ * positiva del servizio, mai prima.
  *
- * 1. **Servizio di invio** (consigliato). Basta impostare `VITE_MODULI_ENDPOINT`
- *    nel file `.env` con l'indirizzo fornito dal servizio scelto — Formspree,
- *    Web3Forms, Getform, Basin o equivalenti. I dati partono in JSON e arrivano
- *    nella casella senza che il visitatore lasci il sito.
+ * Se l'endpoint viene svuotato (`VITE_MODULI_ENDPOINT=" "`) resta il ripiego sul
+ * programma di posta del visitatore, con destinatario, oggetto e testo già
+ * compilati: utile in sviluppo, non è la modalità di produzione.
  *
- * 2. **Client di posta** (ripiego automatico). Se l'endpoint non è configurato
- *    il modulo apre il programma di posta del visitatore con destinatario,
- *    oggetto e testo già compilati: il sito resta usabile da subito.
- *
- * Per attivare il primo metodo:
- *   VITE_MODULI_ENDPOINT="https://formspree.io/f/xxxxxxx"
- *   VITE_MODULI_CHIAVE="…"      # solo per i servizi che richiedono una chiave
+ * Per usare un servizio diverso (Web3Forms, Getform, Basin) basta cambiare
+ * `VITE_MODULI_ENDPOINT`, più `VITE_MODULI_CHIAVE` dove serve una chiave.
  */
 
-const ENDPOINT = (import.meta.env.VITE_MODULI_ENDPOINT as string | undefined)?.trim()
+/**
+ * Modulo Formspree di Io Riparo, che recapita a `AZIENDA.email`.
+ *
+ * Non è un segreto: l'indirizzo di un modulo Formspree finisce nel codice di
+ * ogni sito che lo usa. Sta qui, e non solo in `.env`, perché il sito funzioni
+ * da qualunque hosting senza dover configurare variabili d'ambiente; per le
+ * prove si può comunque scavalcare con `VITE_MODULI_ENDPOINT`.
+ */
+const FORMSPREE = 'https://formspree.io/f/mpqvknlr'
+
+const ENDPOINT = (import.meta.env.VITE_MODULI_ENDPOINT as string | undefined)?.trim() || FORMSPREE
 const CHIAVE = (import.meta.env.VITE_MODULI_CHIAVE as string | undefined)?.trim()
 
 /** Vero quando il servizio di invio è configurato. */

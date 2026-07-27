@@ -241,10 +241,14 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
 
 `vercel.json` è già nel repository e contiene tutto il necessario:
 
-- **riscrittura per il routing lato client**: senza di essa ogni indirizzo diverso
-  dalla home (`/contatti`, `/servizi/...`) restituisce 404 se aperto direttamente,
-  ricaricato o raggiunto da un motore di ricerca. La regola esclude `assets/`,
-  `marchio/`, `sitemap.xml`, `robots.txt` e `site.webmanifest`, che restano file veri;
+- **riscrittura per il routing lato client** (`/(.*)` → `/index.html`): senza di essa
+  ogni indirizzo diverso dalla home (`/contatti`, `/servizi/...`) restituisce 404 se
+  aperto direttamente, ricaricato o raggiunto da un motore di ricerca. Non servono
+  esclusioni per `assets/`, `marchio/`, `sitemap.xml`, `robots.txt` e
+  `site.webmanifest`: Vercel serve prima i file che esistono davvero e applica la
+  riscrittura solo dopo. Attenzione a non complicare il pattern — `source` non accetta
+  espressioni regolari arbitrarie e una regola che non viene interpretata fa cadere
+  tutto il sito sulla 404 di Vercel;
 - **cache**: un anno sugli asset con nome contenente l'hash, una settimana sul marchio;
 - **intestazioni di sicurezza**: `X-Content-Type-Options`, `Referrer-Policy`,
   `X-Frame-Options`, `Permissions-Policy`.

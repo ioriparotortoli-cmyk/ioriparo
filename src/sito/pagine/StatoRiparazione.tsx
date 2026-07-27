@@ -31,9 +31,6 @@ export function StatoRiparazione() {
     ]),
   })
 
-  /** Codici di esempio: le pratiche aperte presenti in archivio. */
-  const esempi = db.riparazioni.filter((r) => r.stato !== 'consegnato').slice(0, 3)
-
   const cerca = (valore: string) => {
     const richiesto = normalizza(valore)
     if (!richiesto) {
@@ -76,7 +73,7 @@ export function StatoRiparazione() {
                     id="codice"
                     value={codice}
                     onChange={(e) => setCodice(e.target.value)}
-                    placeholder={esempi[0]?.codice ?? '#26-0001'}
+                    placeholder="#26-0001"
                     autoComplete="off"
                     required
                   />
@@ -85,28 +82,9 @@ export function StatoRiparazione() {
               </div>
             </form>
 
-            {esempi.length > 0 && (
-              <p className="faint" style={{ fontSize: '.79rem', marginTop: 12 }}>
-                Pratiche aperte di esempio:{' '}
-                {esempi.map((r, i) => (
-                  <span key={r.id}>
-                    {i > 0 && ', '}
-                    <button
-                      type="button"
-                      className="link mono"
-                      style={{ background: 'none', border: 0, cursor: 'pointer', padding: 0, fontSize: '.79rem' }}
-                      onClick={() => {
-                        setCodice(r.codice)
-                        cerca(r.codice)
-                      }}
-                    >
-                      {r.codice}
-                    </button>
-                  </span>
-                ))}
-                .
-              </p>
-            )}
+            <p className="faint" style={{ fontSize: '.79rem', marginTop: 12 }}>
+              Il codice si trova sulla ricevuta di accettazione, nel formato <span className="mono">#26-0001</span>.
+            </p>
           </div>
 
           <div style={{ marginTop: 20 }}>

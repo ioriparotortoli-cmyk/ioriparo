@@ -12,7 +12,7 @@ import { LinkBottone } from './base'
 const VOCI_MENU = [
   { etichetta: 'Home', percorso: '/' },
   { etichetta: 'Chi siamo', percorso: '/chi-siamo' },
-  { etichetta: 'Servizi', percorso: '/servizi', nota: '11 specializzazioni' },
+  { etichetta: 'Servizi', percorso: '/servizi', nota: '12 specializzazioni' },
   { etichetta: 'Galleria', percorso: '/galleria' },
   { etichetta: 'Stato riparazione', percorso: '/stato-riparazione', nota: 'codice pratica' },
   { etichetta: 'Preventivo online', percorso: '/preventivo' },
@@ -20,7 +20,6 @@ const VOCI_MENU = [
   { etichetta: 'Blog', percorso: '/blog' },
   { etichetta: 'Contatti', percorso: '/contatti' },
   { etichetta: 'Area clienti', percorso: '/area-clienti' },
-  { etichetta: 'Gestionale', percorso: '/gestionale', nota: 'riservato' },
 ]
 
 export function MenuMobile({ aperto, onChiudi }: { aperto: boolean; onChiudi: () => void }) {

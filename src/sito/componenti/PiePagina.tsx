@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP } from '../dati/azienda'
+import { inviaModulo } from '../lib/moduli'
 import { emailValida } from '../lib/utili'
 import { Icona } from './Icona'
 import { Marchio } from './Marchio'
@@ -28,14 +29,15 @@ export function PiePagina({ onPreferenzeCookie }: { onPreferenzeCookie: () => vo
   const [email, setEmail] = useState('')
   const notifica = useNotifica()
 
-  const iscrivi = (e: FormEvent) => {
+  const iscrivi = async (e: FormEvent) => {
     e.preventDefault()
     if (!emailValida(email)) {
       notifica('Inserisci un indirizzo e-mail valido.')
       return
     }
+    const esito = await inviaModulo('newsletter', { email, campi: { 'E-mail': email } })
     setEmail('')
-    notifica('Iscrizione registrata: controlla la mail di conferma.')
+    notifica(esito.ok ? 'Iscrizione inviata: ti confermiamo a breve.' : 'Iscrizione non riuscita, riprova più tardi.')
   }
 
   return (

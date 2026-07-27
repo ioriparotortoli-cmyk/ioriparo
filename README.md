@@ -27,6 +27,7 @@ npm run build      # sitemap + controllo dei tipi + build di produzione in dist/
 npm run preview    # anteprima della build
 npm run lint       # oxlint
 npm run sitemap    # rigenera public/sitemap.xml
+npm run anteprima  # anteprima/io-riparo.html: tutto il sito in un unico file
 ```
 
 ## Stack
@@ -135,6 +136,24 @@ Il passaggio tra la versione chiara e quella scura avviene via CSS (`.marchio--s
 Palette del sito: nero con dominante blu (`#05070c`), blu elettrico (`#2563eb`), bianco e
 grigio chiaro; tipografia di sistema (SF Pro Display / Segoe UI / Inter) con monospace per
 codici pratica e dati tecnici.
+
+## Moduli e invio e-mail
+
+Il sito è statico: non c'è backend e nessuna richiesta resta nel browser. I moduli
+**Contatti**, **Preventivo**, **Prenotazione** e **Newsletter** passano tutti da
+`src/sito/lib/moduli.ts` e recapitano a `ioriparotortoli@gmail.com` in due modi:
+
+1. **Servizio di invio** — basta valorizzare `VITE_MODULI_ENDPOINT` in `.env` con
+   l'indirizzo fornito da Formspree, Web3Forms, Getform, Basin o equivalenti
+   (`VITE_MODULI_CHIAVE` solo per i servizi che richiedono una chiave). I dati
+   partono in JSON e arrivano in casella senza che il visitatore lasci il sito.
+2. **Client di posta** — finché l'endpoint non è configurato il modulo apre il
+   programma di posta con destinatario, oggetto e testo già compilati, così il
+   sito è utilizzabile da subito.
+
+In entrambi i casi il messaggio di conferma mostrato all'utente si adatta a quello
+che è realmente successo. I moduli hanno un campo esca invisibile e un tempo minimo
+di compilazione come filtro anti-robot, senza CAPTCHA.
 
 ## Dati dell'attività
 

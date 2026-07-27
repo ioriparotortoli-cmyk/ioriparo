@@ -150,7 +150,7 @@ export function Home() {
       {/* ── Servizi ── */}
       <Sezione id="servizi" griglia>
         <Intestazione
-          occhiello="Servizi · 11 specializzazioni"
+          occhiello="Servizi · 12 specializzazioni"
           titolo={
             <>
               Un unico laboratorio

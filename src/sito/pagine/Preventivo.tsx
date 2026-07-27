@@ -1,10 +1,11 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Intestazione, Sezione } from '../componenti/base'
 import { CATEGORIE_PREVENTIVO, GUASTI_PREVENTIVO, SERVIZI } from '../dati/servizi'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
+import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
 import { cn, emailValida, euro, telefonoValido } from '../lib/utili'
 
 type Urgenza = 'standard' | 'express' | 'programmato'
@@ -45,6 +46,9 @@ export function Preventivo() {
   const [privacy, setPrivacy] = useState(false)
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [inviato, setInviato] = useState<string | null>(null)
+  const [inCorso, setInCorso] = useState(false)
+  const [esca, setEsca] = useState('')
+  const apertoIl = useRef(Date.now())
 
   useSeo({
     titolo: 'Preventivo online — stima in un minuto | Io Riparo',
@@ -96,7 +100,7 @@ export function Preventivo() {
     </div>
   )
 
-  const invia = (e: FormEvent) => {
+  const invia = async (e: FormEvent) => {
     e.preventDefault()
     const nuovi: Record<string, string> = {}
     if (nome.trim().length < 2) nuovi.nome = 'Inserisci il tuo nome.'
@@ -105,12 +109,35 @@ export function Preventivo() {
     if (!privacy) nuovi.privacy = 'Devi accettare l’informativa privacy.'
     setErrori(nuovi)
     if (Object.keys(nuovi).length) return
+    if (sospetto(esca, apertoIl.current)) return
 
-    const pratica = `RIC-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 900) + 100)}`
+    setInCorso(true)
+    const esito = await inviaModulo('preventivo', {
+      email,
+      nome,
+      campi: {
+        Nome: nome,
+        Telefono: telefono,
+        'E-mail': email,
+        Categoria: stima.categoria,
+        Problema: stima.guasto,
+        Modello: modello || 'da comunicare',
+        Urgenza: TEMPI[urgenza],
+        Descrizione: note,
+        'Stima indicativa': `${euro(stima.minimo)} – ${euro(stima.massimo)}`,
+      },
+    })
+    setInCorso(false)
+
+    if (!esito.ok) {
+      notifica('Invio non riuscito: chiamaci o scrivici su WhatsApp.')
+      return
+    }
+
     setInviato(
-      `Richiesta registrata con il numero ${pratica}. Ti ricontattiamo ${
-        new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'
-      } con il preventivo definitivo (stima ${euro(stima.minimo)}–${euro(stima.massimo)}).`,
+      esito.via === 'posta'
+        ? `Abbiamo aperto il tuo programma di posta con la richiesta già compilata: invia il messaggio e ti rispondiamo ${new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'}.`
+        : `Richiesta inviata. Ti ricontattiamo ${new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'} con il preventivo definitivo (stima ${euro(stima.minimo)}–${euro(stima.massimo)}).`,
     )
     notifica('Richiesta di preventivo inviata.')
   }
@@ -263,6 +290,8 @@ export function Preventivo() {
                   </small>
                 )}
 
+                <input {...propsEsca} value={esca} onChange={(e) => setEsca(e.target.value)} />
+
                 <div style={{ marginTop: 18 }}>
                   <Riepilogo />
                 </div>
@@ -271,7 +300,9 @@ export function Preventivo() {
                   <Bottone type="button" variante="ghost" onClick={() => setPasso(2)}>
                     Indietro
                   </Bottone>
-                  <Bottone type="submit">{inviato ? 'Richiesta inviata ✓' : 'Invia richiesta'}</Bottone>
+                  <Bottone type="submit" disabled={inCorso}>
+                    {inCorso ? 'Invio in corso…' : inviato ? 'Richiesta inviata ✓' : 'Invia richiesta'}
+                  </Bottone>
                 </div>
               </div>
             </form>

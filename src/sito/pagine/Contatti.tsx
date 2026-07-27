@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { Icona } from '../componenti/Icona'
 import { useNotifica } from '../componenti/Notifiche'
@@ -6,6 +6,7 @@ import { Avviso, Bottone, Campo, Chip, Intestazione, LinkBottone, Sezione } from
 import { AZIENDA, INDIRIZZO_COMPLETO, ORARI, TELEFONO_E164, WHATSAPP, apertoOra } from '../dati/azienda'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
+import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
 import { cn, emailValida } from '../lib/utili'
 
 const MOTIVI_CONTATTO = [
@@ -71,7 +72,10 @@ export function Contatti() {
   const [messaggio, setMessaggio] = useState('')
   const [privacy, setPrivacy] = useState(false)
   const [errori, setErrori] = useState<Record<string, string>>({})
-  const [inviato, setInviato] = useState(false)
+  const [inviato, setInviato] = useState<'servizio' | 'posta' | null>(null)
+  const [inCorso, setInCorso] = useState(false)
+  const [esca, setEsca] = useState('')
+  const apertoIl = useRef(Date.now())
 
   useSeo({
     titolo: `Contatti — ${AZIENDA.citta} | Io Riparo`,
@@ -86,7 +90,7 @@ export function Contatti() {
   const oggi = new Date().getDay()
   const aperto = apertoOra()
 
-  const invia = (e: FormEvent) => {
+  const invia = async (e: FormEvent) => {
     e.preventDefault()
     const nuovi: Record<string, string> = {}
     if (nome.trim().length < 2) nuovi.nome = 'Inserisci il tuo nome.'
@@ -95,14 +99,34 @@ export function Contatti() {
     if (!privacy) nuovi.privacy = 'Devi accettare l’informativa privacy.'
     setErrori(nuovi)
     if (Object.keys(nuovi).length) return
+    if (sospetto(esca, apertoIl.current)) return
 
-    setInviato(true)
+    setInCorso(true)
+    const esito = await inviaModulo('contatti', {
+      email,
+      nome,
+      campi: {
+        Nome: nome,
+        Telefono: telefono,
+        'E-mail': email,
+        Motivo: motivo,
+        Messaggio: messaggio,
+      },
+    })
+    setInCorso(false)
+
+    if (!esito.ok) {
+      notifica('Invio non riuscito: chiamaci o scrivici su WhatsApp.')
+      return
+    }
+
+    setInviato(esito.via)
     setNome('')
     setTelefono('')
     setEmail('')
     setMessaggio('')
     setPrivacy(false)
-    notifica('Messaggio inviato correttamente.')
+    notifica(esito.via === 'posta' ? 'Apriamo il tuo programma di posta.' : 'Messaggio inviato correttamente.')
   }
 
   return (
@@ -184,8 +208,10 @@ export function Contatti() {
             <div className="card">
               <h3 style={{ marginBottom: 16 }}>Scrivici</h3>
               <form onSubmit={invia} noValidate>
-                <Avviso visibile={inviato}>
-                  Messaggio inviato. Ti rispondiamo entro poche ore lavorative, di solito molto prima.
+                <Avviso visibile={!!inviato}>
+                  {inviato === 'posta'
+                    ? 'Abbiamo aperto il tuo programma di posta con il messaggio già compilato: premi invia e ti rispondiamo entro poche ore lavorative.'
+                    : 'Messaggio inviato. Ti rispondiamo entro poche ore lavorative, di solito molto prima.'}
                 </Avviso>
 
                 <div className="form-grid">
@@ -243,8 +269,9 @@ export function Contatti() {
                   </small>
                 )}
 
-                <Bottone type="submit" largo style={{ marginTop: 18 }}>
-                  Invia messaggio
+                <input {...propsEsca} value={esca} onChange={(e) => setEsca(e.target.value)} />
+                <Bottone type="submit" largo style={{ marginTop: 18 }} disabled={inCorso}>
+                  {inCorso ? 'Invio in corso…' : 'Invia messaggio'}
                 </Bottone>
                 <p className="faint" style={{ fontSize: '.76rem', marginTop: 12, textAlign: 'center' }}>
                   Non usiamo i tuoi dati per finalità commerciali senza consenso.

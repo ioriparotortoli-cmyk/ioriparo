@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, SOCIAL, TELEFONO_E164 } from '../dati/azienda'
 
-export const SITO_URL = 'https://www.ioriparo.it'
+export const SITO_URL = 'https://ioriparotortoli.it'
 
 interface Seo {
   titolo: string

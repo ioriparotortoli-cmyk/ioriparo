@@ -1,4 +1,4 @@
-# Io Riparo — https://www.ioriparo.it
+# Io Riparo — https://ioriparotortoli.it
 User-agent: *
 Allow: /
 
@@ -6,4 +6,4 @@ Allow: /
 Disallow: /gestionale
 Disallow: /area-clienti
 
-Sitemap: https://www.ioriparo.it/sitemap.xml
+Sitemap: https://ioriparotortoli.it/sitemap.xml

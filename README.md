@@ -216,9 +216,10 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
   funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,
   senza toccare interfaccia e componenti.
 - **Dominio**: `SITO_URL` (`src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`) vale
-  `https://www.ioriparo.it`. Se il dominio principale sarà l'apice `ioriparo.it`
-  senza `www`, va cambiato in entrambi i file, altrimenti canonical e sitemap
-  puntano a un indirizzo diverso da quello servito.
+  `https://ioriparotortoli.it`, senza `www`. Su Vercel va impostato lo stesso
+  indirizzo come dominio principale, con `www.ioriparotortoli.it` che vi rimanda:
+  canonical, sitemap, robots.txt e Open Graph devono puntare all'indirizzo
+  realmente servito, altrimenti Google riceve segnali contraddittori.
 
 ## Pubblicazione su Vercel
 

@@ -36,8 +36,11 @@ export const AZIENDA = {
    * alla pagina generica del servizio.
    */
   social: {
-    facebook: '',
-    instagram: '',
+    // Indirizzi ripuliti dai parametri di tracciamento (`mibextid`, `igsh`,
+    // `utm_*`): sono buoni solo per la sessione da cui è stato copiato il link
+    // e finirebbero anche nei dati strutturati letti dai motori di ricerca.
+    facebook: 'https://www.facebook.com/share/1cPv1cSjiz/',
+    instagram: 'https://www.instagram.com/ioriparo.tortoli/',
   },
 } as const
 
@@ -73,10 +76,9 @@ export const GOOGLE = {
 }
 
 /** Profili social effettivamente configurati: gli altri non vengono mostrati. */
-export const SOCIAL = Object.entries(AZIENDA.social).filter(([, url]) => url !== '') as [
-  keyof typeof AZIENDA.social,
-  string,
-][]
+export const SOCIAL = (
+  Object.entries(AZIENDA.social) as [keyof typeof AZIENDA.social, string][]
+).filter(([, url]) => url.trim() !== '')
 
 export const ORARI: FasciaOraria[] = [
   { giorno: 'Lunedì', indice: 1, orario: '09:00–13:00 · 16:00–19:30', fasce: [[9, 13], [16, 19.5]] },

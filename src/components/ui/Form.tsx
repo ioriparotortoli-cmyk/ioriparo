@@ -61,6 +61,75 @@ export function Input({
 }
 
 /**
+ * Campo di testo con suggerimenti.
+ *
+ * Non usa `<datalist>`: su iPhone il suggerimento nativo spesso non compare,
+ * e il modulo di accettazione si compila anche dal telefono al banco. L'elenco
+ * lo disegniamo noi, così si comporta allo stesso modo ovunque.
+ *
+ * Resta un campo libero: i suggerimenti aiutano, non vincolano.
+ */
+export function InputSuggerito({
+  value,
+  onChange,
+  suggerimenti,
+  massimo = 8,
+  className,
+  ...resto
+}: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'list'> & {
+  value: string
+  onChange: (valore: string) => void
+  suggerimenti: string[]
+  massimo?: number
+}) {
+  const [aperto, setAperto] = useState(false)
+
+  const scritto = value.trim().toLowerCase()
+  const visibili = suggerimenti
+    .filter((s) => !scritto || s.toLowerCase().includes(scritto))
+    .slice(0, massimo)
+
+  return (
+    <span className="relative block">
+      <input
+        className={cn(CAMPO_BASE, 'h-10', className)}
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value)
+          setAperto(true)
+        }}
+        onFocus={() => setAperto(true)}
+        // Il ritardo lascia passare il tocco su una voce prima di chiudere.
+        onBlur={() => window.setTimeout(() => setAperto(false), 120)}
+        autoComplete="off"
+        {...resto}
+      />
+
+      {aperto && visibili.length > 0 && (
+        <ul className="absolute inset-x-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-lg border border-line bg-surface py-1 shadow-lg">
+          {visibili.map((s) => (
+            <li key={s}>
+              <button
+                type="button"
+                className="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-surface-2"
+                // `pointerdown` arriva prima del blur: senza, il tocco si perde.
+                onPointerDown={(e) => {
+                  e.preventDefault()
+                  onChange(s)
+                  setAperto(false)
+                }}
+              >
+                {s}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </span>
+  )
+}
+
+/**
  * Campo data che mostra un'etichetta finché è vuoto: il segnaposto nativo
  * di `input[type=date]` dipende dalla lingua del browser e non è modificabile.
  */

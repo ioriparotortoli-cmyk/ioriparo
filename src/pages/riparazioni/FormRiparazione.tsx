@@ -18,6 +18,7 @@ import {
   GruppoSegmenti,
   Input,
   InputData,
+  InputSuggerito,
   Radio,
   Select,
   SezioneForm,
@@ -556,11 +557,11 @@ export function FormRiparazione({
                       : 'Scegli prima la marca per avere i modelli suggeriti'
                 }
               >
-                <Input
+                <InputSuggerito
                   value={dati.modello}
-                  onChange={(e) => aggiorna('modello', e.target.value)}
+                  onChange={(valore) => aggiorna('modello', valore)}
+                  suggerimenti={modelli}
                   placeholder={modelli[0] ?? 'iPhone 13'}
-                  list="elenco-modelli"
                 />
               </Campo>
 
@@ -797,12 +798,6 @@ export function FormRiparazione({
           {etichettaSalva}
         </Button>
       </div>
-
-      <datalist id="elenco-modelli">
-        {modelli.map((modello) => (
-          <option key={modello} value={modello} />
-        ))}
-      </datalist>
 
       <datalist id="elenco-tecnici">
         {[...new Set(db.riparazioni.map((r) => r.tecnico).filter(Boolean))].map((nome) => (

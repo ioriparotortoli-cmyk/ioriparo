@@ -155,7 +155,7 @@ export const CSS_STAMPA = `
     /* 22mm bastano per firmare comodamente e lasciano margine alla pagina:
        la scheda di accettazione e' il documento che cresce di piu' quando la
        riparazione ha molti interventi. */
-    height: 22mm;
+    height: 20mm;
     border: 1px solid #dde2ea;
     border-radius: 6px;
     display: flex;
@@ -172,21 +172,35 @@ export const CSS_STAMPA = `
     color: #6b7280;
   }
 
+  /*
+   * Le condizioni stanno su una pagina propria, in corpo leggibile.
+   * Comprimerle per farle entrare nel foglio della scheda significava
+   * ridurre a stampa minuta proprio il testo che il cliente deve leggere e
+   * firmare. Stampando fronte/retro resta comunque un foglio solo.
+   */
   .doc-condizioni {
-    margin-top: 12px;
-    font-size: 7.5pt;
-    line-height: 1.5;
-    color: #4b5563;
-    break-inside: avoid;
+    break-before: page;
+    margin-top: 0;
+    font-size: 8pt;
+    line-height: 1.55;
+    color: #3b4353;
   }
+  .doc-condizioni li { margin-bottom: 5px; }
   .doc-condizioni h2 {
-    margin: 0 0 4px;
-    font-size: 7pt;
+    margin: 0 0 8px;
+    font-size: 9pt;
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: #6b7280;
   }
-  .doc-condizioni ol { margin: 0; padding-left: 14px; }
+  .doc-condizioni ol { margin: 0; padding-left: 16px; }
+  .doc-condizioni-piede {
+    margin-top: 14px;
+    border-top: 1px solid #dde2ea;
+    padding-top: 6px;
+    font-size: 7pt;
+    color: #6b7280;
+  }
 
   .doc-piede {
     margin-top: 12px;

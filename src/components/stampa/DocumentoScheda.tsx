@@ -4,12 +4,19 @@ import { formatData, formatEuro } from '@/lib/format'
 import { STATI_RIPARAZIONE, TIPI_DISPOSITIVO } from '@/lib/stati'
 import type { Azienda, Cliente, Riparazione } from '@/types'
 
+/**
+ * Condizioni di servizio firmate dal cliente all'accettazione.
+ * Testo fornito dall'attività: si riporta alla lettera, senza riassunti.
+ */
 const CONDIZIONI_SERVIZIO = [
-  'Il preventivo di massima indicato non è vincolante: eventuali variazioni saranno comunicate e approvate dal cliente prima di procedere.',
-  'I dati presenti sul dispositivo non sono oggetto del servizio: il cliente dichiara di aver effettuato una copia di sicurezza.',
-  'La riparazione è garantita 12 mesi sul componente sostituito, esclusi danni da caduta, liquidi o manomissione.',
-  'I dispositivi non ritirati entro 90 giorni dalla comunicazione di fine lavori si intendono abbandonati ai sensi dell’art. 923 c.c.',
-  'Il ritiro avviene dietro presentazione del presente tagliando e di un documento di identità.',
+  'Il preventivo indicato è puramente indicativo e non vincolante. Eventuali variazioni saranno comunicate al cliente e dovranno essere approvate prima dell’esecuzione della riparazione.',
+  'I dati contenuti nel dispositivo non sono oggetto del servizio. Il cliente dichiara di aver effettuato un backup dei propri dati. Io Riparo non risponde della perdita di dati durante le operazioni di riparazione.',
+  'La riparazione è garantita da un minimo di 3 mesi fino a un massimo di 6 mesi, in base al componente sostituito e indicato in fattura o ricevuta. La garanzia copre esclusivamente il componente sostituito ed è esclusa in caso di cadute, urti, infiltrazioni di liquidi, ossidazione, manomissioni, utilizzo improprio o danni causati da terzi.',
+  'Per dispositivi con danni da liquidi o ossidazione, la riparazione ha il solo scopo di ripristinare temporaneamente il funzionamento, senza alcuna garanzia sulla durata nel tempo. Si raccomanda al cliente di effettuare il prima possibile il salvataggio dei propri dati.',
+  'Per ricambi ordinati su richiesta del cliente può essere richiesto un acconto. Qualora il cliente rinunci alla riparazione dopo l’ordine del ricambio o prima dello scadere dei 4/5 giorni lavorativi necessari per la consegna del ricambio, l’acconto versato non sarà restituito, salvo i casi previsti dalla legge.',
+  'Il tempo indicato di 4/5 giorni lavorativi si riferisce esclusivamente all’approvvigionamento del ricambio. Una volta disponibile, salvo imprevisti tecnici, la riparazione viene normalmente eseguita entro circa 1 ora.',
+  'I dispositivi non ritirati entro 90 giorni dalla comunicazione di fine lavori si intendono abbandonati ai sensi dell’art. 923 c.c., salvo diverso accordo scritto.',
+  'Il ritiro del dispositivo avviene previa presentazione del presente tagliando e, su richiesta, di un documento di identità.',
 ]
 
 /** Scheda di accettazione con firma del cliente e tagliando di ritiro. */
@@ -211,22 +218,13 @@ export function DocumentoScheda({
             ) : null}
           </div>
           <div className="doc-firma-etichetta">
-            Firma del cliente per accettazione delle condizioni
+            Il cliente dichiara di aver letto e accettato le condizioni di servizio riportate sul retro
           </div>
         </div>
         <div>
           <div className="doc-firma-riquadro" />
           <div className="doc-firma-etichetta">Timbro e firma dell’accettante</div>
         </div>
-      </div>
-
-      <div className="doc-condizioni">
-        <h2>Condizioni di servizio</h2>
-        <ol>
-          {CONDIZIONI_SERVIZIO.map((condizione) => (
-            <li key={condizione}>{condizione}</li>
-          ))}
-        </ol>
       </div>
 
       <div className="doc-tagliando">
@@ -255,6 +253,24 @@ export function DocumentoScheda({
       </div>
 
       <PiedeDocumento azienda={azienda} />
+
+      {/*
+        Condizioni sul retro, in corpo leggibile: e' il testo che il cliente
+        firma, comprimerlo per guadagnare spazio sarebbe stato il compromesso
+        sbagliato. La dichiarazione accanto alla firma le richiama.
+      */}
+      <div className="doc-condizioni">
+        <h2>Condizioni di servizio</h2>
+        <ol>
+          {CONDIZIONI_SERVIZIO.map((condizione) => (
+            <li key={condizione}>{condizione}</li>
+          ))}
+        </ol>
+        <div className="doc-condizioni-piede">
+          {azienda.nome} · {azienda.indirizzo}, {azienda.citta} · P.IVA {azienda.partitaIva} —
+          Scheda {riparazione.codice}
+        </div>
+      </div>
     </article>
   )
 }

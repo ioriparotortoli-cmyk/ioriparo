@@ -45,8 +45,7 @@ export function ModificaRiparazione() {
 
     aggiornaRiparazione(riparazione.id, {
       ...modifiche,
-      // Gli interventi si gestiscono dalla scheda, non dal modulo di accettazione.
-      interventi: riparazione.interventi,
+      interventi: dati.interventi.filter((r) => r.descrizione.trim() || r.prezzoUnitario > 0),
       dataConsegna:
         dati.stato === 'consegnato' ? (riparazione.dataConsegna ?? oggiISO()) : undefined,
     })

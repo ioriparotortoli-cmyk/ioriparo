@@ -26,7 +26,8 @@ export function riparazioneDaForm(dati: DatiForm, clienteId: string): Omit<Ripar
     consegnaPrevista: dati.consegnaPrevista || undefined,
     dataConsegna: dati.stato === 'consegnato' ? dati.dataAccettazione : undefined,
     tecnico: dati.tecnico.trim() || undefined,
-    interventi: [],
+    // Le voci concordate al banco: senza, la scheda stampata non ha prezzi.
+    interventi: dati.interventi.filter((r) => r.descrizione.trim() || r.prezzoUnitario > 0),
     acconto: Number.isFinite(acconto) && acconto > 0 ? acconto : undefined,
     foto: dati.foto.length ? dati.foto : undefined,
     firmaCliente: dati.firmaCliente,

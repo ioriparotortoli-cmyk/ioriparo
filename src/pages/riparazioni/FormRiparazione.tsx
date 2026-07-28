@@ -25,8 +25,8 @@ import {
 } from '@/components/ui/Form'
 import { Modal } from '@/components/ui/Modal'
 import { SignaturePad } from '@/components/ui/SignaturePad'
-import { useGestionale } from '@/data/store'
-import { oggiISO } from '@/lib/format'
+import { nuovoId, useGestionale } from '@/data/store'
+import { formatEuro, oggiISO } from '@/lib/format'
 import {
   MARCHE_PER_TIPO,
   ORDINE_STATI,
@@ -37,6 +37,7 @@ import type {
   CondizioneEsterna,
   Cliente,
   Riparazione,
+  RigaIntervento,
   StatoRiparazione,
   TipoDispositivo,
 } from '@/types'
@@ -73,6 +74,8 @@ export interface DatiForm {
   dataAccettazione: string
   consegnaPrevista: string
   tecnico: string
+  /** Voci del preventivo di massima concordato all'accettazione. */
+  interventi: RigaIntervento[]
   acconto: string
   noteInterne: string
 }
@@ -108,6 +111,7 @@ export function datiVuoti(): DatiForm {
     dataAccettazione: oggiISO(),
     consegnaPrevista: '',
     tecnico: '',
+    interventi: [],
     acconto: '',
     noteInterne: '',
   }
@@ -139,6 +143,7 @@ export function datiDaRiparazione(riparazione: Riparazione, cliente?: Cliente): 
     dataAccettazione: riparazione.dataAccettazione,
     consegnaPrevista: riparazione.consegnaPrevista ?? '',
     tecnico: riparazione.tecnico ?? '',
+    interventi: riparazione.interventi,
     acconto: riparazione.acconto ? String(riparazione.acconto) : '',
     noteInterne: riparazione.noteInterne ?? '',
   }
@@ -167,6 +172,33 @@ export function FormRiparazione({
   const [modoFirma, setModoFirma] = useState<'schermo' | 'carica'>('schermo')
   const inputFoto = useRef<HTMLInputElement>(null)
   const inputFirma = useRef<HTMLInputElement>(null)
+
+  /** Somma delle voci concordate, mostrata mentre si compila. */
+  const totalePreventivo = dati.interventi.reduce(
+    (somma, riga) => somma + riga.quantita * riga.prezzoUnitario,
+    0,
+  )
+
+  function aggiungiRiga() {
+    setDati((p) => ({
+      ...p,
+      interventi: [
+        ...p.interventi,
+        { id: nuovoId('int'), descrizione: '', quantita: 1, prezzoUnitario: 0 },
+      ],
+    }))
+  }
+
+  function cambiaRiga(id: string, modifiche: Partial<RigaIntervento>) {
+    setDati((p) => ({
+      ...p,
+      interventi: p.interventi.map((r) => (r.id === id ? { ...r, ...modifiche } : r)),
+    }))
+  }
+
+  function rimuoviRiga(id: string) {
+    setDati((p) => ({ ...p, interventi: p.interventi.filter((r) => r.id !== id) }))
+  }
 
   function aggiorna<K extends keyof DatiForm>(campo: K, valore: DatiForm[K]) {
     setDati((precedenti) => ({ ...precedenti, [campo]: valore }))
@@ -401,6 +433,66 @@ export function FormRiparazione({
                   placeholder="Da definire"
                 />
               </Campo>
+
+              {/*
+                Preventivo concordato al banco. Senza queste voci la scheda
+                stampata mostrava al cliente il solo acconto, senza il prezzo
+                dell'intervento: la cifra che gli interessa di piu'.
+              */}
+              <div className="col-span-2">
+                <span className="mb-1.5 block text-xs font-medium text-ink-muted">
+                  Preventivo di massima
+                </span>
+                <div className="space-y-2">
+                  {dati.interventi.map((riga) => (
+                    <div className="flex items-center gap-2" key={riga.id}>
+                      <Input
+                        className="flex-1"
+                        value={riga.descrizione}
+                        onChange={(e) => cambiaRiga(riga.id, { descrizione: e.target.value })}
+                        placeholder="Sostituzione display"
+                      />
+                      <Input
+                        className="w-28 shrink-0"
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={riga.prezzoUnitario ? String(riga.prezzoUnitario) : ''}
+                        onChange={(e) =>
+                          cambiaRiga(riga.id, {
+                            prezzoUnitario: Number.parseFloat(e.target.value.replace(',', '.')) || 0,
+                          })
+                        }
+                        placeholder="€ 0,00"
+                      />
+                      <Button
+                        dimensione="sm"
+                        variante="fantasma"
+                        onClick={() => rimuoviRiga(riga.id)}
+                        aria-label={`Rimuovi ${riga.descrizione || 'voce'}`}
+                      >
+                        <X className="size-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 flex items-center justify-between gap-3">
+                  <Button dimensione="sm" onClick={aggiungiRiga}>
+                    <Plus className="size-4" />
+                    Aggiungi voce
+                  </Button>
+                  {dati.interventi.length > 0 && (
+                    <span className="text-sm text-ink-muted">
+                      Totale <strong className="text-ink">{formatEuro(totalePreventivo)}</strong>
+                    </span>
+                  )}
+                </div>
+                {dati.interventi.length === 0 && (
+                  <p className="mt-2 text-xs text-ink-faint">
+                    Senza voci la scheda stampata non riporta alcun prezzo.
+                  </p>
+                )}
+              </div>
 
               <Campo etichetta="Acconto (€)" className="col-span-2">
                 <Input

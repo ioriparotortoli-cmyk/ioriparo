@@ -15,7 +15,21 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
  * gestionale continua a lavorare sull'archivio locale del browser: il sito
  * pubblico funziona lo stesso e nulla si rompe durante il passaggio.
  */
-const URL_PROGETTO = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim()
+/**
+ * Riporta l'indirizzo alla radice del progetto.
+ *
+ * Nel pannello Supabase l'indirizzo più visibile è quello dell'API REST
+ * (`…supabase.co/rest/v1/`), ed è naturale copiare quello. Al client serve
+ * invece la radice: i pezzi successivi li aggiunge da solo, e con la coda già
+ * presente costruirebbe indirizzi doppi che non rispondono. Togliamola qui,
+ * invece di lasciare che il collegamento fallisca in silenzio.
+ */
+function radiceProgetto(valore: string | undefined): string | undefined {
+  const pulito = valore?.trim().replace(/\/+$/, '')
+  return pulito ? pulito.replace(/\/(rest|auth|storage|realtime)\/v\d+$/, '') : undefined
+}
+
+const URL_PROGETTO = radiceProgetto(import.meta.env.VITE_SUPABASE_URL as string | undefined)
 const CHIAVE_ANON = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim()
 
 export const archivioOnline = Boolean(URL_PROGETTO && CHIAVE_ANON)

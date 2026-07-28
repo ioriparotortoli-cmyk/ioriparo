@@ -4,6 +4,7 @@ import { CampoSegnale } from '../componenti/CampoSegnale'
 import { schemaFaq } from '../componenti/Faq'
 import { Icona } from '../componenti/Icona'
 import { SchedaPratica } from '../componenti/SchedaPratica'
+import { Stagione } from '../componenti/Stagione'
 import { GrigliaServizi } from '../componenti/Servizi'
 import { Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
 import { AZIENDA, GARANZIA, GOOGLE, apertoOra, chiusuraDi, chiusuraOdierna, prossimaApertura } from '../dati/azienda'
@@ -67,6 +68,7 @@ export function Home() {
       <div className="hero">
         <CampoSegnale />
         <div className="hero__glow" aria-hidden="true" />
+        <Stagione />
         <div className="wrap">
           <div className="hero__grid">
             <div>

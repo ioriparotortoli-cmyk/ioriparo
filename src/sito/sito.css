@@ -243,6 +243,49 @@ body[data-sito]{
     radial-gradient(50% 40% at 8% 85%,color-mix(in srgb,var(--blue-glow) 14%,transparent),transparent 70%);
 }
 .hero .wrap{position:relative; z-index:2}
+
+/* ---------- dettaglio di stagione ---------- */
+/* Decorazione dell'apertura: sta dietro al contenuto e non riceve i clic.
+   Disegnata in SVG, quindi non aggiunge nulla da scaricare. */
+.stagione{position:absolute; inset:0; pointer-events:none; z-index:1; overflow:hidden}
+.stagione svg{position:absolute; stroke:var(--blue-bright); fill:none}
+
+.stagione__sole{
+  /* In basso a sinistra, appena sopra le onde: sole sul mare. In alto a destra
+     finiva dietro alla scheda pratica, che occupa esattamente quell'angolo, e
+     restavano in vista solo le punte dei raggi. */
+  left:clamp(-70px,-3vw,-24px); bottom:clamp(-56px,-2vw,-16px);
+  width:clamp(150px,18vw,240px); height:auto; opacity:.22;
+}
+.stagione__disco{stroke-width:2.5; fill:color-mix(in srgb,var(--blue-bright) 8%,transparent)}
+.stagione__raggi line{stroke-width:3; stroke-linecap:round}
+/* Un giro completo in due minuti: si nota solo se lo si guarda apposta. */
+.stagione__raggi{transform-origin:100px 100px; animation:gira 120s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+
+.stagione__onde{
+  left:0; right:0; bottom:0; width:100%; height:clamp(28px,4vw,54px);
+  opacity:.16; stroke-width:2;
+}
+/* Sul fondo scuro il tratto sottile si perde: serve un filo di opacita' in piu'. */
+@media (prefers-color-scheme: dark){
+  .stagione__sole{opacity:.3}
+  .stagione__onde{opacity:.24}
+}
+:root[data-theme="dark"] .stagione__sole{opacity:.3}
+:root[data-theme="dark"] .stagione__onde{opacity:.24}
+:root[data-theme="light"] .stagione__sole{opacity:.2}
+:root[data-theme="light"] .stagione__onde{opacity:.16}
+
+.stagione__onde path{animation:onda 14s ease-in-out infinite}
+.stagione__onda2{animation-delay:-7s !important; opacity:.6}
+@keyframes onda{50%{transform:translateX(-24px)}}
+
+/* Su schermi stretti il sole resta un accenno: lo spazio serve al testo. */
+@media (max-width: 760px){
+  .stagione__sole{width:130px; opacity:.14}
+  .stagione__onde{opacity:.1}
+}
 .hero__grid{display:grid; gap:clamp(32px,5vw,56px); align-items:center}
 .hero__badges{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}
 .hero h1{margin-block:16px 18px}

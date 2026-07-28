@@ -17,11 +17,11 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /display|schermo|vetro|rott/i,
-    'La sostituzione del display parte da 69 € per gli smartphone di fascia media e da 129 € per i top di gamma con OLED. Dimmi marca e modello e ti do la cifra esatta: se il ricambio è a magazzino lo montiamo in un’ora.',
+    'La sostituzione di un display OLED parte da 130 €: la cifra esatta dipende dal modello. Dimmi marca e modello e ti do il prezzo preciso; se il ricambio è a magazzino lo montiamo in un’ora.',
   ],
   [
     /batteri/i,
-    'Sostituzione batteria da 39 €, in circa 45 minuti. Prima misuriamo capacità residua e cicli: se la batteria è ancora sana te lo diciamo e non spendi nulla.',
+    'Batteria iPhone con ricambio originale 100 €, in circa 45 minuti: niente avviso di parte non originale e il telefono la riconosce come Apple. Per gli altri modelli dimmi quale e ti do il prezzo. Prima misuriamo capacità residua e cicli: se la batteria è ancora sana te lo diciamo e non spendi nulla.',
   ],
   [
     /tempi|quanto tempo|quando/i,
@@ -33,7 +33,7 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /telecamer|videosorvegli|sicurezza/i,
-    'Un impianto da 4 telecamere IP con registratore e installazione parte da 690 €, con garanzia di legge sugli apparati — 24 mesi con scontrino, 12 con fattura — e configurazione a norma Garante Privacy inclusa. Vuoi fissare un sopralluogo gratuito?',
+    'Gli impianti si preventivano dopo un sopralluogo gratuito: il prezzo dipende da quante telecamere servono e da come corrono i cavi. Sugli apparati vale la garanzia di legge — 24 mesi con scontrino, 12 con fattura — e la configurazione a norma Garante Privacy è inclusa. Vuoi fissare il sopralluogo?',
   ],
   [
     /dati|recupero|hard disk|ssd/i,

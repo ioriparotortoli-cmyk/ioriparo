@@ -121,7 +121,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Quanto costa un impianto di videosorveglianza?',
     risposta:
-      'Un impianto residenziale da quattro telecamere IP con registratore e installazione parte da 690 € IVA inclusa. Per attività commerciali e strutture ricettive facciamo sempre un sopralluogo gratuito: il prezzo dipende dalle inquadrature necessarie e dai percorsi dei cavi.',
+      'Il prezzo dipende da quante telecamere servono, dalle inquadrature e dai percorsi dei cavi, quindi facciamo sempre un sopralluogo gratuito e poi un preventivo scritto. Nessun impegno fino alla tua approvazione.',
   },
   {
     domanda: 'Posso pagare a rate o con fattura aziendale?',

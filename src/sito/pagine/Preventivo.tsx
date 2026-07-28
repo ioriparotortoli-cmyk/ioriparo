@@ -2,7 +2,7 @@ import { useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Intestazione, Sezione } from '../componenti/base'
-import { CATEGORIE_PREVENTIVO, GUASTI_PREVENTIVO, SERVIZI } from '../dati/servizi'
+import { CATEGORIE_PREVENTIVO, GUASTI_PREVENTIVO, STIME_PREVENTIVO, SERVIZI } from '../dati/servizi'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
 import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
@@ -65,14 +65,15 @@ export function Preventivo() {
   const stima = useMemo(() => {
     const c = CATEGORIE_PREVENTIVO.find((x) => x.id === categoria)!
     const g = GUASTI_PREVENTIVO.find((x) => x.id === guasto)!
-    const moltiplicatore = urgenza === 'express' ? 1.25 : 1
-    return {
-      categoria: c.titolo,
-      guasto: g.titolo,
-      minimo: Math.round(c.base[0] * g.k * moltiplicatore),
-      massimo: Math.round(c.base[1] * g.k * moltiplicatore * 0.72),
-    }
-  }, [categoria, guasto, urgenza])
+    const prezzo = STIME_PREVENTIVO[`${categoria}|${guasto}`]
+    // Si mostra una cifra solo quando esiste davvero a listino.
+    const testo = prezzo?.fisso
+      ? euro(prezzo.fisso)
+      : prezzo?.da
+        ? `da ${euro(prezzo.da)}`
+        : 'Su preventivo'
+    return { categoria: c.titolo, guasto: g.titolo, testo, nota: prezzo?.nota }
+  }, [categoria, guasto])
 
   const Riepilogo = () => (
     <div className="summary">
@@ -93,11 +94,14 @@ export function Preventivo() {
         <b>{TEMPI[urgenza]}</b>
       </div>
       <div className="summary__r summary__tot">
-        <span>Stima indicativa</span>
-        <b>
-          {euro(stima.minimo)} – {euro(stima.massimo)}
-        </b>
+        <span>Prezzo indicativo</span>
+        <b>{stima.testo}</b>
       </div>
+      {stima.nota && (
+        <p className="faint" style={{ fontSize: '.78rem', marginTop: 10 }}>
+          {stima.nota}.
+        </p>
+      )}
     </div>
   )
 
@@ -125,7 +129,7 @@ export function Preventivo() {
         Modello: modello || 'da comunicare',
         Urgenza: TEMPI[urgenza],
         Descrizione: note,
-        'Stima indicativa': `${euro(stima.minimo)} – ${euro(stima.massimo)}`,
+        'Prezzo indicativo': stima.testo,
       },
     })
     setInCorso(false)
@@ -140,7 +144,7 @@ export function Preventivo() {
     setInviato(
       esito.via === 'posta'
         ? `Abbiamo aperto il tuo programma di posta con la richiesta già compilata: invia il messaggio e ti rispondiamo ${new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'}.`
-        : `Richiesta inviata. Ti ricontattiamo ${new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'} con il preventivo definitivo (stima ${euro(stima.minimo)}–${euro(stima.massimo)}).`,
+        : `Richiesta inviata. Ti ricontattiamo ${new Date().getHours() < 17 ? 'entro oggi' : 'domani mattina'} con il preventivo definitivo.`,
     )
     notifica('Richiesta di preventivo inviata.')
   }

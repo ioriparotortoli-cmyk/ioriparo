@@ -49,8 +49,7 @@ export function ChiSiamo() {
               <h3>La nostra missione</h3>
               <p className="muted" style={{ marginTop: 9, fontSize: '.95rem' }}>
                 Rendere la riparazione la prima scelta, non l’ultima. Ogni dispositivo recuperato è denaro risparmiato
-                dal cliente e un rifiuto elettronico in meno: nell’ultimo anno abbiamo evitato oltre quattro tonnellate
-                di RAEE.
+                dal cliente e un rifiuto elettronico in meno.
               </p>
             </div>
             <div className="card">
@@ -96,32 +95,37 @@ export function ChiSiamo() {
       </Sezione>
 
       <Sezione>
-        <Intestazione
-          occhiello="Percorso"
-          titolo={
-            <>
-              {anni} anni,
-              <br />
-              in cinque tappe.
-            </>
-          }
-        />
-        <div className="card reveal">
-          <div className="steps">
-            {TAPPE.map((t, i) => (
-              <div className={`step ${i === TAPPE.length - 1 ? 'is-live' : 'is-done'}`} key={t.anno}>
-                <span className="step__bullet">
-                  <i />
-                </span>
-                <span>
-                  <b>{t.titolo}</b>
-                  <small>{t.testo}</small>
-                </span>
-                <time>{t.anno}</time>
+        {/* La cronologia compare solo quando ci sono tappe vere da raccontare. */}
+        {TAPPE.length > 0 && (
+          <>
+            <Intestazione
+              occhiello="Percorso"
+              titolo={
+                <>
+                  {anni} anni,
+                  <br />
+                  tappa dopo tappa.
+                </>
+              }
+            />
+            <div className="card reveal">
+              <div className="steps">
+                {TAPPE.map((t, i) => (
+                  <div className={`step ${i === TAPPE.length - 1 ? 'is-live' : 'is-done'}`} key={t.anno}>
+                    <span className="step__bullet">
+                      <i />
+                    </span>
+                    <span>
+                      <b>{t.titolo}</b>
+                      <small>{t.testo}</small>
+                    </span>
+                    <time>{t.anno}</time>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
 
         <div className="row" style={{ marginTop: 30 }}>
           <LinkBottone a="/contatti">Vieni a trovarci</LinkBottone>

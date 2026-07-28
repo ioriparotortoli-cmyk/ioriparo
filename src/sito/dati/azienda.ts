@@ -29,7 +29,7 @@ export const AZIENDA = {
   email: 'ioriparotortoli@gmail.com',
   emailPrivacy: 'ioriparotortoli@gmail.com',
   partitaIva: '01625710916',
-  fondata: 2013,
+  fondata: 2022,
   /**
    * Profili social ufficiali. Finché un indirizzo resta vuoto la relativa icona
    * non viene mostrata: meglio nessun collegamento che un collegamento che porta

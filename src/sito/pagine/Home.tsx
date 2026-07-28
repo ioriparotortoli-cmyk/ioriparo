@@ -97,7 +97,7 @@ export function Home() {
 
               <div className="hero__meta">
                 <div>
-                  <b>{new Date().getFullYear() - AZIENDA.fondata}+</b>
+                  <b>{new Date().getFullYear() - AZIENDA.fondata}</b>
                   <span>Anni di attività</span>
                 </div>
                 <div>
@@ -105,8 +105,8 @@ export function Home() {
                   <span>Riparazioni express</span>
                 </div>
                 <div>
-                  <b>18.400</b>
-                  <span>Dispositivi riparati</span>
+                  <b>12 mesi</b>
+                  <span>Garanzia sull’intervento</span>
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import type { NomeIcona } from '../componenti/Icona'
+import { AZIENDA, GOOGLE } from './azienda'
 import type { NomeScena } from '../componenti/Illustrazione'
 
 /* ─────────────── Galleria ─────────────── */
@@ -138,8 +139,8 @@ export interface Motivo {
 }
 
 export const MOTIVI: Motivo[] = [
-  { icona: 'tool', titolo: 'Esperienza', testo: 'Dal 2013 in laboratorio: microsaldatura, riball, diagnosi a livello di componente.' },
-  { icona: 'clock', titolo: 'Rapidità', testo: 'Il 78% delle riparazioni viene chiuso entro 24 ore. Display e batterie spesso in un’ora.' },
+  { icona: 'tool', titolo: 'Esperienza', testo: 'Laboratorio attrezzato: microsaldatura, riball, diagnosi a livello di componente.' },
+  { icona: 'clock', titolo: 'Rapidità', testo: 'Gran parte delle riparazioni si chiude entro 24 ore. Display e batterie spesso in un’ora.' },
   { icona: 'box', titolo: 'Ricambi di qualità', testo: 'Componenti originali o compatibili di grado AAA, sempre dichiarati nel preventivo.' },
   { icona: 'shield', titolo: 'Garanzia', testo: 'Dodici mesi su ricambio e manodopera, con tagliando digitale collegato alla pratica.' },
   { icona: 'chat', titolo: 'Assistenza', testo: 'Un tecnico dedicato ti aggiorna su ogni passaggio via WhatsApp o e-mail.' },
@@ -155,11 +156,17 @@ export const PROCESSO = [
   { titolo: 'Riconsegna', testo: 'Notifica automatica, garanzia digitale di 12 mesi e assistenza post riparazione.' },
 ]
 
+/**
+ * Numeri mostrati in Home. Devono essere verificabili: gli anni si calcolano
+ * dall'anno di apertura, la valutazione arriva dal profilo Google pubblico.
+ * Prima di aggiungerne altri (dispositivi riparati, impianti installati)
+ * servono cifre reali prese dal gestionale, non stime.
+ */
 export const NUMERI = [
-  { valore: 18400, suffisso: '', etichetta: 'Dispositivi riparati' },
-  { valore: 12, suffisso: '+', etichetta: 'Anni di attività' },
-  { valore: 98, suffisso: '%', etichetta: 'Clienti soddisfatti' },
-  { valore: 340, suffisso: '', etichetta: 'Impianti installati' },
+  { valore: new Date().getFullYear() - AZIENDA.fondata, suffisso: '', etichetta: 'Anni di attività' },
+  { valore: GOOGLE.recensioni, suffisso: '', etichetta: 'Recensioni su Google' },
+  { valore: 12, suffisso: ' mesi', etichetta: 'Garanzia sulle riparazioni' },
+  { valore: 24, suffisso: ' mesi', etichetta: 'Garanzia sugli impianti' },
 ]
 
 export const VALORI: Motivo[] = [
@@ -169,12 +176,11 @@ export const VALORI: Motivo[] = [
   { icona: 'tool', titolo: 'Formazione continua', testo: 'Aggiornamento costante su nuovi modelli, strumenti di microsaldatura e standard di rete.' },
 ]
 
-export const TAPPE = [
-  { anno: '2013', titolo: 'Apertura del laboratorio', testo: 'Prima postazione di microsaldatura e riparazione smartphone.' },
-  { anno: '2016', titolo: 'Reparto computer e recupero dati', testo: 'Strumentazione dedicata a hard disk, SSD e RAID.' },
-  { anno: '2019', titolo: 'Divisione reti e videosorveglianza', testo: 'Primi impianti chiavi in mano per hotel e attività commerciali.' },
-  { anno: '2023', titolo: 'Gestionale interno e tracking online', testo: 'Ogni pratica tracciabile dal cliente in tempo reale.' },
-  { anno: 'oggi', titolo: 'Contratti di assistenza gestita', testo: 'Monitoraggio proattivo delle reti dei clienti business.' },
-]
+/**
+ * Tappe dell'attività. Vuoto finché non ci sono date e fatti reali: una
+ * cronologia inventata e' peggio di una cronologia assente, e la sezione che
+ * la mostra si nasconde da sola quando l'elenco e' vuoto.
+ */
+export const TAPPE: { anno: string; titolo: string; testo: string }[] = []
 
 export const SETTORI = ['Hotel e resort', 'B&B e affitti brevi', 'Negozi e retail', 'Uffici e studi', 'Ristorazione', 'Industria leggera']

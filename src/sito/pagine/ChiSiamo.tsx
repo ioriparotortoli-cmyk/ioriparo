@@ -1,12 +1,14 @@
 import { Illustrazione } from '../componenti/Illustrazione'
 import { Recensioni } from '../componenti/Recensioni'
 import { Ico, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA } from '../dati/azienda'
+import { AZIENDA, GOOGLE } from '../dati/azienda'
 import { MOTIVI, PROCESSO, TAPPE, VALORI } from '../dati/contenuti'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
 
 export function ChiSiamo() {
+  const media = GOOGLE.media.toString().replace('.', ',')
+
   const rif = useRivela<HTMLDivElement>()
   const anni = new Date().getFullYear() - AZIENDA.fondata
 
@@ -182,10 +184,15 @@ export function ChiSiamo() {
       <Sezione tinta>
         <Intestazione
           occhiello="Recensioni · Google"
-          titolo="Cosa dicono i clienti."
-          testo="Le opinioni pubblicate sul nostro profilo Google Business, senza filtri."
+          titolo={`${media} su 5 da ${GOOGLE.recensioni} clienti.`}
+          testo="Alcune delle opinioni pubblicate sul nostro profilo Google, riportate come sono state scritte."
         />
         <Recensioni />
+        <div className="row" style={{ justifyContent: 'center', marginTop: 22 }}>
+          <LinkBottone a={GOOGLE.scheda} variante="soft" esterno>
+            Leggi tutte le recensioni su Google
+          </LinkBottone>
+        </div>
       </Sezione>
 
     </div>

@@ -57,6 +57,21 @@ export const MAPPA = `https://www.google.com/maps/search/?api=1&query=${encodeUR
   `${AZIENDA.nome}, ${INDIRIZZO_COMPLETO}`,
 )}`
 
+/**
+ * Scheda Google dell'attività e valutazione pubblica.
+ *
+ * I due numeri sono quelli che Google mostra sul profilo: vanno tenuti
+ * allineati alla realtà, perché finiscono anche nei dati strutturati che i
+ * motori di ricerca leggono. Chi legge può verificarli in un clic con il link.
+ */
+export const GOOGLE = {
+  scheda: 'https://share.google/T5zTx3HESxtTSTjuH',
+  media: 4.9,
+  recensioni: 136,
+  /** Data dell'ultimo allineamento con il profilo, per sapere quando aggiornare. */
+  aggiornato: '2026-07-28',
+}
+
 /** Profili social effettivamente configurati: gli altri non vengono mostrati. */
 export const SOCIAL = Object.entries(AZIENDA.social).filter(([, url]) => url !== '') as [
   keyof typeof AZIENDA.social,

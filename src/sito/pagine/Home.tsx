@@ -6,7 +6,7 @@ import { Icona } from '../componenti/Icona'
 import { SchedaPratica } from '../componenti/SchedaPratica'
 import { GrigliaServizi } from '../componenti/Servizi'
 import { Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, apertoOra, chiusuraOdierna } from '../dati/azienda'
+import { AZIENDA, GOOGLE, apertoOra, chiusuraOdierna } from '../dati/azienda'
 import { NUMERI } from '../dati/contenuti'
 import { useContatore, useRivela } from '../lib/hook'
 import { useSeo } from '../lib/seo'
@@ -72,7 +72,8 @@ export function Home() {
                   {aperto && chiusura ? `Aperti oggi fino alle ${chiusura}` : 'Scrivici: rispondiamo domani mattina'}
                 </Chip>
                 <Chip>
-                  <Icona nome="star" dimensione={13} pieno /> Dal 2013 a Tortolì
+                  <Icona nome="star" dimensione={13} pieno /> {GOOGLE.media.toString().replace('.', ',')}/5 su{' '}
+                  {GOOGLE.recensioni} recensioni Google
                 </Chip>
                 <Chip>Garanzia 12 mesi</Chip>
               </div>

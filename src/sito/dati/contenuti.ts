@@ -45,53 +45,37 @@ export interface Recensione {
 
 export const RECENSIONI: Recensione[] = [
   {
-    nome: 'Giuseppe Nardelli',
-    ruolo: 'Cliente privato',
-    colore: '#2563eb',
-    testo:
-      "Display dell'iPhone sostituito in un'ora, prezzo identico al preventivo dato al telefono. Mi hanno anche pulito il connettore di ricarica senza chiedere un euro in più.",
-  },
-  {
-    nome: 'Studio Bianchi',
-    ruolo: 'Studio commercialista',
+    nome: 'Renato Congiu',
+    ruolo: 'Google · giugno 2026',
     colore: '#7c3aed',
     testo:
-      "Hanno rifatto la rete dell'ufficio: prima cadeva la connessione ogni giorno, ora non abbiamo più avuto un fermo. Documentazione consegnata puntuale, cosa rarissima.",
+      'Sono contento di esser venuto a conoscenza di questa attività. Ho avuto dei problemi col mio cellulare e il signor Stefano l’ha risolto subito, suggerendomi anche alcuni consigli su come gestirlo. Lo consiglio vivamente per la gentilezza e professionalità dimostrata.',
   },
   {
-    nome: 'Anna Loiudice',
-    ruolo: 'Cliente privato',
-    colore: '#0ea5e9',
+    nome: 'kaess diezapart',
+    ruolo: 'Google · luglio 2026',
+    colore: '#0d9488',
     testo:
-      'Avevo perso le foto di dieci anni su un hard disk caduto. Le hanno recuperate quasi tutte e mi hanno spiegato ogni passaggio senza tecnicismi inutili.',
+      'Vorrei ringraziare il membro dello staff per la sua tempestività. Inizialmente mi era stato detto che ci sarebbero voluti 3-4 giorni per la sostituzione dello schermo del mio iPhone 17, ma tutto si è risolto in soli 2 giorni. Grazie di tutto, li consiglio vivamente.',
   },
   {
-    nome: 'Hotel Federico II',
-    ruolo: 'Struttura ricettiva · 48 camere',
-    colore: '#059669',
+    nome: 'Smeralda Flores',
+    ruolo: 'Local Guide · luglio 2026',
+    colore: '#92400e',
+    testo: 'Molto veloce e disponibile. Lo consiglio vivamente!',
+  },
+  {
+    nome: 'Livio',
+    ruolo: 'Google · luglio 2026',
+    colore: '#2563eb',
     testo:
-      'Wi-Fi in tutte le camere e videosorveglianza a norma. Da due anni chiamiamo solo per la manutenzione programmata: gli interventi urgenti sono spariti.',
+      'Decisamente competente ed efficiente: mi ha risolto il problema su iPhone in 10 secondi. Altamente raccomandato.',
   },
   {
-    nome: 'Francesco Miglionico',
-    ruolo: 'Cliente privato',
-    colore: '#d97706',
-    testo:
-      'Portatile che si spegneva per surriscaldamento. Pulizia, pasta termica nuova e SSD: sembra un computer appena comprato, spesa sotto i cento euro.',
-  },
-  {
-    nome: 'Farmacia Centrale',
-    ruolo: 'Attività commerciale',
-    colore: '#dc2626',
-    testo:
-      'Impianto di videosorveglianza installato in un giorno, senza chiudere. Ci hanno anche seguito nelle pratiche privacy e nella cartellonistica.',
-  },
-  {
-    nome: 'Chiara De Bellis',
-    ruolo: 'Cliente privato',
+    nome: 'Nicolò Greci',
+    ruolo: 'Google · luglio 2026',
     colore: '#4f46e5',
-    testo:
-      'Tablet della bambina caduto: preventivo onesto, mi hanno consigliato di sostituire solo il vetro invece del modulo intero risparmiando quasi metà.',
+    testo: 'Onesto, competente e molto simpatico.',
   },
 ]
 

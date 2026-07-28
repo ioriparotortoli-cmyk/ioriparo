@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, SOCIAL, TELEFONO_E164 } from '../dati/azienda'
+import { AZIENDA, GOOGLE, INDIRIZZO_COMPLETO, MAPPA, ORARI, SOCIAL, TELEFONO_E164 } from '../dati/azienda'
 
 export const SITO_URL = 'https://ioriparotortoli.it'
 
@@ -67,9 +67,13 @@ export const SCHEMA_ATTIVITA = {
       closes: ora(a),
     })),
   ),
-  // Nessun `aggregateRating`: un punteggio va dichiarato a Google solo se
-  // corrisponde a recensioni verificabili. Si aggiunge quando arrivano quelle
-  // vere del profilo Google, con il numero e la media reali.
+  // Valutazione del profilo Google, non un numero di comodo: corrisponde a
+  // quello che chiunque legge aprendo la scheda (`GOOGLE.scheda`).
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: String(GOOGLE.media),
+    reviewCount: String(GOOGLE.recensioni),
+  },
 }
 
 function ora(v: number) {

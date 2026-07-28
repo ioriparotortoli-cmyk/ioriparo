@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { Sidebar } from './Sidebar'
@@ -38,9 +38,28 @@ function ArchivioMancante() {
   )
 }
 
+/**
+ * Aggiungendo la pagina alla schermata Home, iPhone e Android non usano
+ * l'indirizzo aperto in quel momento ma quello dichiarato dal sito. Con un
+ * manifesto solo per il sito pubblico, l'icona del gestionale finiva per
+ * aprire la home: dentro al gestionale si dichiara quindi il suo.
+ */
+function useManifestoGestionale() {
+  useEffect(() => {
+    const tag = document.querySelector<HTMLLinkElement>('link[rel="manifest"]')
+    if (!tag) return
+    const precedente = tag.getAttribute('href')
+    tag.setAttribute('href', '/gestionale.webmanifest')
+    return () => {
+      if (precedente) tag.setAttribute('href', precedente)
+    }
+  }, [])
+}
+
 export function AppLayout() {
   const [menuAperto, setMenuAperto] = useState(false)
   const { sorgente } = useGestionale()
+  useManifestoGestionale()
 
   // Un gestionale pubblicato senza archivio online non ha alcun accesso da
   // superare: mostrerebbe i dati dell'attività a chiunque conosca l'indirizzo.

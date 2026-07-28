@@ -21,7 +21,7 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /batteri/i,
-    'Batteria iPhone con ricambio originale 100 €, in circa 45 minuti: niente avviso di parte non originale e il telefono la riconosce come Apple. Per gli altri modelli dimmi quale e ti do il prezzo. Prima misuriamo capacità residua e cicli: se la batteria è ancora sana te lo diciamo e non spendi nulla.',
+    'Sostituzione batteria da 100 €, in circa 45 minuti. Montiamo ricambi compatibili selezionati: su iPhone non compare l’avviso «Parte non originale» e il telefono la riconosce regolarmente. Il prezzo varia con il modello, dimmi quale hai. Prima misuriamo capacità residua e cicli: se la batteria è ancora sana te lo diciamo e non spendi nulla.',
   ],
   [
     /tempi|quanto tempo|quando/i,

@@ -180,9 +180,9 @@ export interface VoceListino {
 
 export const LISTINO: VoceListino[] = [
   { intervento: 'Display OLED', dispositivo: 'Smartphone', tempi: '60–90 min', da: 130, garanzia: '3–6 mesi' },
-  { intervento: 'Batteria iPhone originale', dispositivo: 'iPhone', tempi: '45 min', da: 100, garanzia: '3–6 mesi' },
-  { intervento: 'Connettore di ricarica originale', dispositivo: 'iPhone', tempi: '2 ore', da: 100, garanzia: '3–6 mesi' },
-  { intervento: 'Connettore di ricarica originale', dispositivo: 'Samsung', tempi: '2 ore', da: 80, garanzia: '3–6 mesi' },
+  { intervento: 'Batteria', dispositivo: 'iPhone e Android', tempi: '45 min', da: 100, garanzia: '3 mesi' },
+  { intervento: 'Connettore di ricarica originale', dispositivo: 'iPhone', tempi: '2 ore', da: 100, garanzia: '6 mesi' },
+  { intervento: 'Connettore di ricarica originale', dispositivo: 'Samsung', tempi: '2 ore', da: 80, garanzia: '6 mesi' },
   { intervento: 'Pulizia da caduta in acqua', dispositivo: 'Smartphone', tempi: '24–48 ore', da: 50, garanzia: '—' },
   { intervento: 'Trasferimento dati', dispositivo: 'Da telefono a telefono', tempi: '1 ora', da: 50, garanzia: '—' },
   { intervento: 'Pellicola idrogel', dispositivo: 'Tutti i cellulari', tempi: '10 min', da: 29.9, garanzia: '—' },
@@ -207,7 +207,10 @@ export const CATEGORIE_PREVENTIVO = [
  */
 export const STIME_PREVENTIVO: Record<string, { da?: number; fisso?: number; nota?: string }> = {
   'smartphone|display': { da: 130, nota: 'Display OLED: la cifra esatta dipende dal modello' },
-  'smartphone|batteria': { da: 100, nota: 'iPhone con ricambio originale, senza avviso di parte non originale' },
+  'smartphone|batteria': {
+    da: 100,
+    nota: 'Ricambio compatibile selezionato. Su iPhone non compare l’avviso «Parte non originale» e il telefono la riconosce regolarmente; la durata varia con il modello',
+  },
   'smartphone|liquidi': {
     fisso: 50,
     nota: 'Pulizia con alcool isopropilico. Il costo è lo stesso anche se il dispositivo non si recupera, e sull’esito non c’è garanzia',

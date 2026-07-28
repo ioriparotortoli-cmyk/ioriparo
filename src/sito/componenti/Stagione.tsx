@@ -136,6 +136,54 @@ export function Stagione() {
         </div>
       )}
 
+      {natale && (
+        <div className="stagione__slitta">
+          {/* Renne, tiro e slitta con Babbo Natale. È una silhouette: a
+              centocinquanta pixel non c'è spazio per il dettaglio, quindi
+              contano solo le sagome che si riconoscono da lontano — le corna,
+              il pattino ricurvo, il cappello con il pompon. */}
+          {/* La slitta attraversa da sinistra a destra: le renne stanno davanti,
+              a destra, e tirano; la slitta le segue. I tiranti sono spezzati
+              nei due vuoti, perché una riga sola passerebbe da parte a parte
+              dei corpi invece di attaccarsi al tiro. */}
+          <svg viewBox="0 0 260 92" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M84 54h20M152 48h20" strokeWidth="2.4" />
+
+            <g className="stagione__sacco" transform="translate(14 0)">
+              {/* Pattino: la punta ricurva davanti è il segno che dice «slitta». */}
+              <path d="M4 76h64M68 76c9 0 12-8 5-12" strokeWidth="3.6" />
+              <path d="M18 76v-6M56 76v-6" strokeWidth="3" />
+              {/* Scocca: schienale alto dietro, fronte che scende verso il tiro. */}
+              <path d="M6 70V48h40l16 22Z" fill="currentColor" />
+              <path d="M6 48c-1-10-10-12-13-4-3 8 4 13 9 10l2-5c-3 1-4-1-3-3 1-3 5-2 5 2Z" fill="currentColor" />
+              {/* Babbo Natale: pancia, barba, berretto col pompon, mano che saluta. */}
+              <path d="M20 48c0-8 5-13 11-13s11 5 11 13Z" fill="currentColor" />
+              <circle cx="31" cy="31" r="8" fill="currentColor" />
+              <path d="M25 34c1 7 12 7 13 0" strokeWidth="2" />
+              <path d="M40 26L18 12c-2-1-4 1-3 3l7 11Z" fill="currentColor" />
+              <path d="M20 26h21" strokeWidth="3.4" />
+              <circle cx="15" cy="12" r="3.4" fill="currentColor" />
+              {/* Il braccio va tenuto alto: alla stessa inclinazione della
+                  fiancata anteriore i due tratti si fondevano in uno solo. */}
+              <path d="M40 41l9-16" strokeWidth="4" />
+            </g>
+
+            <g className="stagione__renne">
+              {[92, 160].map((dx) => (
+                <g key={dx} transform={`translate(${dx} 0)`}>
+                  <path d="M20 55l-5 17M27 56l-1 16M39 56l2 16M45 54l6 16" strokeWidth="3.4" />
+                  <ellipse cx="32" cy="46" rx="17" ry="10" fill="currentColor" />
+                  <path d="M15 41l-6-5" strokeWidth="3" />
+                  <path d="M44 45l6-12" strokeWidth="9" />
+                  <path d="M47 29c6-4 14-1 14 4 0 4-4 7-8 6l-7-2c-4-1-3-6 1-8Z" fill="currentColor" />
+                  <path d="M50 25v-9m0 4l-6-4m6 1l4-6M57 24v-7m0 3l6-5" strokeWidth="2.2" />
+                </g>
+              ))}
+            </g>
+          </svg>
+        </div>
+      )}
+
       {FIOCCHI.map((f) => (
         <span className="stagione__cade" key={f.x} style={stile(f)}>
           <Fiocco />

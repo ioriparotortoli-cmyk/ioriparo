@@ -29,7 +29,7 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /telecamer|videosorvegli|sicurezza/i,
-    'Un impianto da 4 telecamere IP con registratore e installazione parte da 690 €, garanzia 24 mesi e configurazione a norma Garante Privacy inclusa. Vuoi fissare un sopralluogo gratuito?',
+    'Un impianto da 4 telecamere IP con registratore e installazione parte da 690 €, con garanzia di legge sugli apparati — 24 mesi con scontrino, 12 con fattura — e configurazione a norma Garante Privacy inclusa. Vuoi fissare un sopralluogo gratuito?',
   ],
   [
     /dati|recupero|hard disk|ssd/i,
@@ -42,7 +42,7 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /garanzia/i,
-    `${GARANZIA.riparazioni} ${GARANZIA.vendita} Sugli impianti la garanzia è di 24 mesi. La durata del tuo intervento è scritta sulla ricevuta.`,
+    `${GARANZIA.riparazioni} ${GARANZIA.vendita} La durata del tuo intervento è scritta sulla ricevuta.`,
   ],
   [
     /preventiv/i,

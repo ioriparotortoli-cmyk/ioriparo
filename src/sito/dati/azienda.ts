@@ -96,7 +96,7 @@ export const GARANZIA = {
   riparazioni:
     'Sulle riparazioni la garanzia copre il componente sostituito: 6 mesi con ricambio originale, 3 mesi con ricambio compatibile.',
   vendita:
-    'Sui prodotti venduti valgono i termini di legge: 24 mesi con scontrino, 12 mesi con fattura.',
+    'Sui prodotti venduti o installati — telefoni, computer, telecamere, apparati di rete — valgono i termini di legge: 24 mesi con scontrino, 12 mesi con fattura.',
   /** Casi esclusi, come nelle condizioni firmate. */
   esclusioni:
     'Restano esclusi cadute, urti, liquidi, ossidazione, manomissioni e uso improprio. Sui danni da liquidi l’intervento non ha garanzia di durata.',

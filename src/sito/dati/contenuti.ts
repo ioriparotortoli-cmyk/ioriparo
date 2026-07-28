@@ -111,7 +111,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Che garanzia offrite?',
     risposta:
-      `${GARANZIA.riparazioni} ${GARANZIA.esclusioni} ${GARANZIA.vendita} Sugli impianti di rete e videosorveglianza la garanzia è di 24 mesi. La durata applicata al tuo intervento è sempre scritta sulla ricevuta.`,
+      `${GARANZIA.riparazioni} ${GARANZIA.esclusioni} ${GARANZIA.vendita} La stessa regola vale per gli impianti di rete e videosorveglianza, dove la garanzia riguarda gli apparati installati. La durata applicata al tuo intervento è sempre scritta sulla ricevuta.`,
   },
   {
     domanda: "Riparate anche a domicilio o presso l'azienda?",
@@ -166,7 +166,7 @@ export const NUMERI = [
   { valore: new Date().getFullYear() - AZIENDA.fondata, suffisso: '', etichetta: 'Anni di attività' },
   { valore: GOOGLE.recensioni, suffisso: '', etichetta: 'Recensioni su Google' },
   { valore: GARANZIA.riparazioneOriginale, suffisso: ' mesi', etichetta: 'Garanzia sul ricambio originale' },
-  { valore: 24, suffisso: ' mesi', etichetta: 'Garanzia sugli impianti' },
+  { valore: GARANZIA.venditaConsumatore, suffisso: ' mesi', etichetta: 'Garanzia sui prodotti venduti' },
 ]
 
 export const VALORI: Motivo[] = [

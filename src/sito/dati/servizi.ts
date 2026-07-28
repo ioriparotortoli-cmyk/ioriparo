@@ -183,12 +183,12 @@ export const LISTINO: VoceListino[] = [
   { intervento: 'Sostituzione batteria', dispositivo: 'Smartphone / tablet', tempi: '45 min', da: 39, garanzia: '3–6 mesi' },
   { intervento: 'Riparazione connettore di ricarica', dispositivo: 'Smartphone', tempi: '2 ore', da: 49, garanzia: '3–6 mesi' },
   { intervento: 'Trattamento ossido da liquidi', dispositivo: 'Tutti', tempi: '24–48 ore', da: 59, garanzia: '—' },
-  { intervento: 'Upgrade SSD + clonazione', dispositivo: 'Notebook / desktop', tempi: '3 ore', da: 89, garanzia: '24 mesi' },
+  { intervento: 'Upgrade SSD + clonazione', dispositivo: 'Notebook / desktop', tempi: '3 ore', da: 89, garanzia: '12–24 mesi' },
   { intervento: 'Sostituzione tastiera o cerniere', dispositivo: 'Notebook', tempi: '1 giorno', da: 79, garanzia: '3–6 mesi' },
   { intervento: 'Recupero dati logico', dispositivo: 'HDD / SSD / memorie', tempi: '2–5 giorni', da: 99, garanzia: '—' },
-  { intervento: 'Impianto TVCC 4 telecamere', dispositivo: 'Casa / negozio', tempi: '1 giorno', da: 690, garanzia: '24 mesi' },
-  { intervento: 'Access point Wi-Fi 6 + configurazione', dispositivo: 'Ufficio / struttura', tempi: 'mezza giornata', da: 240, garanzia: '24 mesi' },
-  { intervento: 'Punto rete certificato Cat.6', dispositivo: 'Cablaggio', tempi: 'su misura', da: 60, garanzia: '24 mesi' },
+  { intervento: 'Impianto TVCC 4 telecamere', dispositivo: 'Casa / negozio', tempi: '1 giorno', da: 690, garanzia: '12–24 mesi' },
+  { intervento: 'Access point Wi-Fi 6 + configurazione', dispositivo: 'Ufficio / struttura', tempi: 'mezza giornata', da: 240, garanzia: '12–24 mesi' },
+  { intervento: 'Punto rete certificato Cat.6', dispositivo: 'Cablaggio', tempi: 'su misura', da: 60, garanzia: '12–24 mesi' },
 ]
 
 /** Categorie e guasti del preventivo online: la stima nasce da questi valori. */

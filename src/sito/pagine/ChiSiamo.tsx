@@ -182,7 +182,7 @@ export function ChiSiamo() {
       <Sezione tinta>
         <Intestazione
           occhiello="Recensioni · Google"
-          titolo="4,9 su 5 da 214 clienti."
+          titolo="Cosa dicono i clienti."
           testo="Le opinioni pubblicate sul nostro profilo Google Business, senza filtri."
         />
         <Recensioni />

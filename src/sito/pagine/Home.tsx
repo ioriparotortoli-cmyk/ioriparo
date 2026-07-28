@@ -72,7 +72,7 @@ export function Home() {
                   {aperto && chiusura ? `Aperti oggi fino alle ${chiusura}` : 'Scrivici: rispondiamo domani mattina'}
                 </Chip>
                 <Chip>
-                  <Icona nome="star" dimensione={13} pieno /> 4,9/5 su 214 recensioni
+                  <Icona nome="star" dimensione={13} pieno /> Dal 2013 a Tortolì
                 </Chip>
                 <Chip>Garanzia 12 mesi</Chip>
               </div>

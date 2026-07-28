@@ -67,7 +67,9 @@ export const SCHEMA_ATTIVITA = {
       closes: ora(a),
     })),
   ),
-  aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.9', reviewCount: '214' },
+  // Nessun `aggregateRating`: un punteggio va dichiarato a Google solo se
+  // corrisponde a recensioni verificabili. Si aggiunge quando arrivano quelle
+  // vere del profilo Google, con il numero e la media reali.
 }
 
 function ora(v: number) {

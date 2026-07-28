@@ -5,7 +5,7 @@
  * non è disponibile. Volutamente indipendente da Tailwind e dal tema scuro.
  */
 export const CSS_STAMPA = `
-  @page { size: A4; margin: 14mm; }
+  @page { size: A4; margin: 12mm; }
 
   * { box-sizing: border-box; }
 
@@ -20,7 +20,12 @@ export const CSS_STAMPA = `
     print-color-adjust: exact;
   }
 
-  .doc { max-width: 190mm; margin: 0 auto; padding: 8mm 0; }
+  /*
+   * Nessun margine verticale: lo spazio dal bordo del foglio lo mette gia'
+   * @page. Sommarli faceva sforare di poco l'A4, e bastava quel poco per far
+   * nascere una seconda pagina con sopra il solo pie' di pagina.
+   */
+  .doc { max-width: 190mm; margin: 0 auto; }
 
   .doc-testata {
     display: flex;
@@ -143,11 +148,14 @@ export const CSS_STAMPA = `
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
-    margin-top: 20px;
+    margin-top: 16px;
     break-inside: avoid;
   }
   .doc-firma-riquadro {
-    height: 26mm;
+    /* 22mm bastano per firmare comodamente e lasciano margine alla pagina:
+       la scheda di accettazione e' il documento che cresce di piu' quando la
+       riparazione ha molti interventi. */
+    height: 22mm;
     border: 1px solid #dde2ea;
     border-radius: 6px;
     display: flex;
@@ -165,7 +173,7 @@ export const CSS_STAMPA = `
   }
 
   .doc-condizioni {
-    margin-top: 16px;
+    margin-top: 12px;
     font-size: 7.5pt;
     line-height: 1.5;
     color: #4b5563;
@@ -181,7 +189,7 @@ export const CSS_STAMPA = `
   .doc-condizioni ol { margin: 0; padding-left: 14px; }
 
   .doc-piede {
-    margin-top: 18px;
+    margin-top: 12px;
     border-top: 1px solid #dde2ea;
     padding-top: 6px;
     display: flex;
@@ -231,6 +239,10 @@ export const CSS_STAMPA = `
     font-size: 9.5pt;
     font-weight: 600;
     cursor: pointer;
+  }
+
+  @media screen {
+    .doc { padding: 8mm 0; }
   }
 
   @media print {

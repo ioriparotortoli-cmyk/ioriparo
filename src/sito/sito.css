@@ -717,7 +717,7 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
 .skip:focus{top:0}
 
 /* ---------- marchio ---------- */
-.marchio{height:var(--altezza-marchio,46px); width:auto; max-width:none; transition:transform .5s var(--ease), opacity .25s}
+.marchio{height:var(--altezza-marchio,58px); width:auto; max-width:none; transition:transform .5s var(--ease), opacity .25s}
 .brand:hover .marchio{transform:scale(1.03)}
 /* Sui fondi scuri va la versione con lettering chiaro, e viceversa.
    I selettori includono #app perché le regole di base delle immagini
@@ -730,7 +730,7 @@ select.inp{appearance:none; background-image:linear-gradient(45deg,transparent 5
   :root:not([data-theme="light"]) #app .marchio--chiaro{display:block}
 }
 @media (max-width: 560px){
-  #app .marchio{height:42px}
+  #app .marchio{height:53px}
 }
 
 /* ---------- collegamento al gestionale ---------- */

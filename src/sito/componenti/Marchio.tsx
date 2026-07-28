@@ -8,7 +8,7 @@ import { AZIENDA } from '../dati/azienda'
  * Il cambio avviene via CSS, così non c'è alcun salto durante il caricamento.
  */
 export function Marchio({
-  altezza = 46,
+  altezza = 58,
   className,
   senzaLink,
 }: {

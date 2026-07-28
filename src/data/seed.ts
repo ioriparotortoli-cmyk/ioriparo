@@ -575,7 +575,7 @@ export const AZIENDA: Azienda = {
 
 /** Profilo di chi usa il gestionale: si modifica dalla pagina Profilo. */
 export const UTENTE: Utente = {
-  nome: 'Stefano Puddu',
+  nome: 'Stefano Pes',
   ruolo: 'Titolare',
   email: 'ioriparotortoli@gmail.com',
   telefono: '338 435 6603',

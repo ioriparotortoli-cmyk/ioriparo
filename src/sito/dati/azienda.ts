@@ -29,6 +29,8 @@ export const AZIENDA = {
   email: 'ioriparotortoli@gmail.com',
   emailPrivacy: 'ioriparotortoli@gmail.com',
   partitaIva: '01625710916',
+  /** Chi risponde in negozio: usato dalla chat e come profilo del gestionale. */
+  titolare: 'Stefano Pes',
   fondata: 2022,
   /**
    * Profili social ufficiali. Finché un indirizzo resta vuoto la relativa icona

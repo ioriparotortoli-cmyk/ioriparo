@@ -12,6 +12,10 @@ interface Messaggio {
 /** Risposte automatiche: coprono le domande più frequenti in negozio. */
 const RISPOSTE: [RegExp, string][] = [
   [
+    /titolare|proprietari|chi siete|con chi parlo|come ti chiami|come si chiama/i,
+    `Il titolare è ${AZIENDA.titolare}: lo trovi in negozio, in ${AZIENDA.indirizzo} a ${AZIENDA.citta}. Se preferisci sentirlo direttamente, chiama lo ${AZIENDA.telefono} o scrivi su WhatsApp al ${AZIENDA.cellulare}.`,
+  ],
+  [
     /display|schermo|vetro|rott/i,
     'La sostituzione del display parte da 69 € per gli smartphone di fascia media e da 129 € per i top di gamma con OLED. Dimmi marca e modello e ti do la cifra esatta: se il ricambio è a magazzino lo montiamo in un’ora.',
   ],

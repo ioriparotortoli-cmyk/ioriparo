@@ -65,7 +65,7 @@ export const RECENSIONI: Recensione[] = [
     testo: 'Molto veloce e disponibile. Lo consiglio vivamente!',
   },
   {
-    nome: 'Livio',
+    nome: 'Livio Angoletta',
     ruolo: 'Google · luglio 2026',
     colore: '#2563eb',
     testo:

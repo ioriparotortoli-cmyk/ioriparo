@@ -39,7 +39,7 @@ export const AZIENDA = {
     // Indirizzi ripuliti dai parametri di tracciamento (`mibextid`, `igsh`,
     // `utm_*`): sono buoni solo per la sessione da cui è stato copiato il link
     // e finirebbero anche nei dati strutturati letti dai motori di ricerca.
-    facebook: 'https://www.facebook.com/share/1cPv1cSjiz/',
+    facebook: 'https://www.facebook.com/ioriparotortoli',
     instagram: 'https://www.instagram.com/ioriparo.tortoli/',
   },
 } as const

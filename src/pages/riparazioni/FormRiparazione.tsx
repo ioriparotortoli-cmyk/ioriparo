@@ -29,6 +29,7 @@ import { nuovoId, useGestionale } from '@/data/store'
 import { formatEuro, oggiISO } from '@/lib/format'
 import {
   MARCHE_PER_TIPO,
+  modelliSuggeriti,
   ORDINE_STATI,
   STATI_RIPARAZIONE,
   TIPI_DISPOSITIVO,
@@ -276,6 +277,8 @@ export function FormRiparazione({
   }
 
   const marche = MARCHE_PER_TIPO[dati.tipoDispositivo]
+  // Suggerimenti per la coppia tipo + marca: il campo resta comunque libero.
+  const modelli = modelliSuggeriti(dati.tipoDispositivo, dati.marca)
 
   return (
     <div className="space-y-4">
@@ -541,11 +544,23 @@ export function FormRiparazione({
                 </Select>
               </Campo>
 
-              <Campo etichetta="Modello" obbligatorio errore={errori.modello}>
+              <Campo
+                etichetta="Modello"
+                obbligatorio
+                errore={errori.modello}
+                aiuto={
+                  modelli.length
+                    ? 'Scegli dall’elenco o scrivi il modello se non c’è'
+                    : dati.marca
+                      ? undefined
+                      : 'Scegli prima la marca per avere i modelli suggeriti'
+                }
+              >
                 <Input
                   value={dati.modello}
                   onChange={(e) => aggiorna('modello', e.target.value)}
-                  placeholder="iPhone 13"
+                  placeholder={modelli[0] ?? 'iPhone 13'}
+                  list="elenco-modelli"
                 />
               </Campo>
 
@@ -782,6 +797,12 @@ export function FormRiparazione({
           {etichettaSalva}
         </Button>
       </div>
+
+      <datalist id="elenco-modelli">
+        {modelli.map((modello) => (
+          <option key={modello} value={modello} />
+        ))}
+      </datalist>
 
       <datalist id="elenco-tecnici">
         {[...new Set(db.riparazioni.map((r) => r.tecnico).filter(Boolean))].map((nome) => (

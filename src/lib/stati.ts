@@ -226,3 +226,102 @@ export const MARCHE_PER_TIPO: Record<TipoDispositivo, string[]> = {
   smartwatch: ['Apple', 'Samsung', 'Garmin', 'Huawei', 'Altro'],
   altro: ['Altro'],
 }
+
+/**
+ * Modelli suggeriti per marca, divisi per tipo di dispositivo.
+ *
+ * Servono a compilare in fretta l'accettazione, non a vincolare: il campo
+ * resta libero, perché nessun elenco copre ogni modello in circolazione e
+ * quelli nuovi escono di continuo. Le voci qui sotto sono i modelli più
+ * frequenti al banco; per gli altri si scrive a mano.
+ */
+export const MODELLI_PER_MARCA: Partial<Record<TipoDispositivo, Record<string, string[]>>> = {
+  smartphone: {
+    Apple: [
+      'iPhone 17 Pro Max', 'iPhone 17 Pro', 'iPhone 17', 'iPhone Air',
+      'iPhone 16 Pro Max', 'iPhone 16 Pro', 'iPhone 16 Plus', 'iPhone 16', 'iPhone 16e',
+      'iPhone 15 Pro Max', 'iPhone 15 Pro', 'iPhone 15 Plus', 'iPhone 15',
+      'iPhone 14 Pro Max', 'iPhone 14 Pro', 'iPhone 14 Plus', 'iPhone 14',
+      'iPhone 13 Pro Max', 'iPhone 13 Pro', 'iPhone 13', 'iPhone 13 mini',
+      'iPhone 12 Pro Max', 'iPhone 12 Pro', 'iPhone 12', 'iPhone 12 mini',
+      'iPhone 11 Pro Max', 'iPhone 11 Pro', 'iPhone 11',
+      'iPhone SE (2022)', 'iPhone SE (2020)', 'iPhone XR', 'iPhone XS', 'iPhone X', 'iPhone 8',
+    ],
+    Samsung: [
+      'Galaxy S25 Ultra', 'Galaxy S25+', 'Galaxy S25',
+      'Galaxy S24 Ultra', 'Galaxy S24+', 'Galaxy S24', 'Galaxy S24 FE',
+      'Galaxy S23 Ultra', 'Galaxy S23+', 'Galaxy S23', 'Galaxy S23 FE',
+      'Galaxy S22 Ultra', 'Galaxy S22+', 'Galaxy S22', 'Galaxy S21', 'Galaxy S20',
+      'Galaxy Z Fold 6', 'Galaxy Z Fold 5', 'Galaxy Z Flip 6', 'Galaxy Z Flip 5',
+      'Galaxy A56', 'Galaxy A55', 'Galaxy A54', 'Galaxy A36', 'Galaxy A35', 'Galaxy A34',
+      'Galaxy A26', 'Galaxy A25', 'Galaxy A16', 'Galaxy A15', 'Galaxy A14', 'Galaxy A05s',
+    ],
+    Xiaomi: [
+      'Xiaomi 15 Ultra', 'Xiaomi 15 Pro', 'Xiaomi 15', 'Xiaomi 14 Ultra', 'Xiaomi 14', 'Xiaomi 13',
+      'Redmi Note 14 Pro+', 'Redmi Note 14 Pro', 'Redmi Note 14',
+      'Redmi Note 13 Pro+', 'Redmi Note 13 Pro', 'Redmi Note 13', 'Redmi Note 12',
+      'Redmi 14C', 'Redmi 13C', 'Redmi A3',
+      'Poco X7 Pro', 'Poco X6 Pro', 'Poco F6', 'Poco M6 Pro',
+    ],
+    Huawei: [
+      'P60 Pro', 'P50 Pro', 'P40 Lite', 'P30 Lite',
+      'Mate 50 Pro', 'Nova 12', 'Nova 11', 'Nova 9',
+    ],
+    OnePlus: ['OnePlus 13', 'OnePlus 12', 'OnePlus 11', 'Nord 4', 'Nord 3', 'Nord CE 4'],
+    Oppo: ['Find X8 Pro', 'Find X8', 'Reno 12', 'Reno 11', 'Reno 10', 'A79', 'A78', 'A58'],
+    Motorola: ['Edge 50 Pro', 'Edge 50', 'Edge 40', 'Moto G84', 'Moto G54', 'Moto G34', 'Razr 50'],
+  },
+
+  tablet: {
+    Apple: [
+      'iPad Pro 13" (M4)', 'iPad Pro 11" (M4)', 'iPad Air 13"', 'iPad Air 11"',
+      'iPad (10ª gen)', 'iPad (9ª gen)', 'iPad mini (7ª gen)', 'iPad mini (6ª gen)',
+    ],
+    Samsung: [
+      'Galaxy Tab S10 Ultra', 'Galaxy Tab S10+', 'Galaxy Tab S9 Ultra', 'Galaxy Tab S9',
+      'Galaxy Tab S6 Lite', 'Galaxy Tab A9+', 'Galaxy Tab A9',
+    ],
+    Lenovo: ['Tab P12', 'Tab P11', 'Tab M11', 'Tab M10'],
+    Huawei: ['MatePad Pro 12.2', 'MatePad 11.5', 'MatePad SE'],
+    Microsoft: ['Surface Pro 11', 'Surface Pro 9', 'Surface Go 4', 'Surface Go 3'],
+  },
+
+  notebook: {
+    Apple: [
+      'MacBook Air 13" M4', 'MacBook Air 15" M4', 'MacBook Air 13" M3', 'MacBook Air M2', 'MacBook Air M1',
+      'MacBook Pro 14" M4', 'MacBook Pro 16" M4', 'MacBook Pro 14" M3', 'MacBook Pro 13" M2',
+    ],
+    HP: ['Pavilion 15', 'Pavilion x360', 'EliteBook 840', 'ProBook 450', 'Victus 15', 'Omen 16', 'HP 255 G9'],
+    Dell: ['XPS 13', 'XPS 15', 'Latitude 5450', 'Latitude 7440', 'Inspiron 15', 'Vostro 15', 'G15'],
+    Lenovo: ['ThinkPad X1 Carbon', 'ThinkPad E14', 'ThinkPad T14', 'IdeaPad 3', 'IdeaPad Slim 5', 'Legion 5', 'Yoga Slim 7'],
+    Asus: ['Zenbook 14', 'Vivobook 15', 'Vivobook Go 15', 'ROG Strix G16', 'TUF Gaming A15', 'ProArt 16'],
+    Acer: ['Aspire 3', 'Aspire 5', 'Swift Go 14', 'Nitro V 15', 'Predator Helios 16', 'TravelMate P2'],
+    MSI: ['Katana 15', 'Thin 15', 'Modern 15', 'Stealth 16', 'Cyborg 15'],
+  },
+
+  desktop: {
+    Apple: ['iMac 24" M4', 'iMac 24" M3', 'Mac mini M4', 'Mac mini M2', 'Mac Studio'],
+    HP: ['ProDesk 400', 'EliteDesk 800', 'Pavilion Desktop TP01', 'Victus 15L'],
+    Dell: ['OptiPlex 7010', 'OptiPlex 3000', 'Vostro 3020', 'XPS Desktop 8960'],
+    Lenovo: ['ThinkCentre M70q', 'ThinkCentre M90t', 'IdeaCentre 3', 'Legion Tower 5'],
+    Acer: ['Aspire TC', 'Veriton S', 'Predator Orion 3000'],
+  },
+
+  console: {
+    Sony: ['PlayStation 5 Pro', 'PlayStation 5 Slim', 'PlayStation 5', 'PlayStation 4 Pro', 'PlayStation 4 Slim', 'PlayStation 4', 'PlayStation Portal'],
+    Microsoft: ['Xbox Series X', 'Xbox Series S', 'Xbox One X', 'Xbox One S', 'Xbox One'],
+    Nintendo: ['Switch 2', 'Switch OLED', 'Switch Lite', 'Switch'],
+  },
+
+  smartwatch: {
+    Apple: ['Apple Watch Series 10', 'Apple Watch Series 9', 'Apple Watch SE (2ª gen)', 'Apple Watch Ultra 2', 'Apple Watch Ultra'],
+    Samsung: ['Galaxy Watch 7', 'Galaxy Watch 6', 'Galaxy Watch 6 Classic', 'Galaxy Watch FE', 'Galaxy Fit 3'],
+    Garmin: ['Forerunner 265', 'Forerunner 55', 'Fenix 7', 'Venu 3', 'Instinct 2'],
+    Huawei: ['Watch GT 5', 'Watch GT 4', 'Watch Fit 3', 'Band 9'],
+  },
+}
+
+/** Modelli suggeriti per la coppia tipo + marca; vuoto se non ce ne sono. */
+export function modelliSuggeriti(tipo: TipoDispositivo, marca: string): string[] {
+  return MODELLI_PER_MARCA[tipo]?.[marca] ?? []
+}

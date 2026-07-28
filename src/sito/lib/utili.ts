@@ -27,6 +27,16 @@ const MESI = [
 
 export const dataEstesa = (d: Date) => `${GIORNI[d.getDay()]} ${d.getDate()} ${MESI[d.getMonth()]}`
 
+/** Periodo di chiusura in forma breve: «13 – 15 agosto», «23 dic – 27 dic». */
+export const periodo = (dal: string, al: string) => {
+  const a = new Date(dal)
+  const b = new Date(al)
+  const stessoMese = a.getMonth() === b.getMonth()
+  return stessoMese
+    ? `${a.getDate()} – ${b.getDate()} ${MESI[b.getMonth()]}`
+    : `${a.getDate()} ${MESI[a.getMonth()]} – ${b.getDate()} ${MESI[b.getMonth()]}`
+}
+
 export const dataBreve = (iso: string) => {
   const d = new Date(iso)
   return Number.isNaN(d.getTime()) ? iso : d.toLocaleDateString('it-IT')

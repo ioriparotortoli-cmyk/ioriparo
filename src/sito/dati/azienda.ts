@@ -119,8 +119,42 @@ export const ORARI: FasciaOraria[] = [
   { giorno: 'Domenica', indice: 0, orario: 'Chiuso', fasce: [] },
 ]
 
+/**
+ * Chiusure straordinarie: ferie e festività.
+ *
+ * Gli orari settimanali da soli non bastano — il 15 agosto cade di sabato e
+ * il sito lo darebbe come giorno di apertura normale, mandando gente davanti
+ * alla saracinesca. Estremi compresi, in formato AAAA-MM-GG.
+ */
+export const CHIUSURE: { dal: string; al: string; motivo: string }[] = [
+  { dal: '2026-08-13', al: '2026-08-15', motivo: 'Ferie di Ferragosto' },
+  { dal: '2026-12-23', al: '2026-12-27', motivo: 'Chiusura natalizia' },
+]
+
+const iso = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+/** La chiusura in corso nel giorno indicato, se ce n'è una. */
+export function chiusuraDi(adesso = new Date()) {
+  const giorno = iso(adesso)
+  return CHIUSURE.find((c) => giorno >= c.dal && giorno <= c.al) ?? null
+}
+
+/** Primo giorno di riapertura: salta ferie e giorni di riposo settimanale. */
+export function prossimaApertura(adesso = new Date()): Date | null {
+  const giorno = new Date(adesso)
+  // Un anno di margine: oltre, vuol dire che gli orari sono tutti vuoti.
+  for (let i = 0; i < 365; i++) {
+    giorno.setDate(giorno.getDate() + 1)
+    const orari = ORARI.find((o) => o.indice === giorno.getDay())
+    if (orari?.fasce.length && !chiusuraDi(giorno)) return new Date(giorno)
+  }
+  return null
+}
+
 /** Vero se l'attività è aperta nell'istante indicato. */
 export function apertoOra(adesso = new Date()): boolean {
+  if (chiusuraDi(adesso)) return false
   const oggi = ORARI.find((o) => o.indice === adesso.getDay())
   if (!oggi) return false
   const ora = adesso.getHours() + adesso.getMinutes() / 60
@@ -129,6 +163,7 @@ export function apertoOra(adesso = new Date()): boolean {
 
 /** Orario di chiusura successivo, per il messaggio "aperti fino alle …". */
 export function chiusuraOdierna(adesso = new Date()): string | null {
+  if (chiusuraDi(adesso)) return null
   const oggi = ORARI.find((o) => o.indice === adesso.getDay())
   if (!oggi || !oggi.fasce.length) return null
   const ora = adesso.getHours() + adesso.getMinutes() / 60

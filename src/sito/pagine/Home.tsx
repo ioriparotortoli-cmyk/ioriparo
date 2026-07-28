@@ -6,11 +6,11 @@ import { Icona } from '../componenti/Icona'
 import { SchedaPratica } from '../componenti/SchedaPratica'
 import { GrigliaServizi } from '../componenti/Servizi'
 import { Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, GARANZIA, GOOGLE, apertoOra, chiusuraOdierna } from '../dati/azienda'
+import { AZIENDA, GARANZIA, GOOGLE, apertoOra, chiusuraDi, chiusuraOdierna, prossimaApertura } from '../dati/azienda'
 import { NUMERI } from '../dati/contenuti'
 import { useContatore, useRivela } from '../lib/hook'
 import { useSeo } from '../lib/seo'
-import { numero } from '../lib/utili'
+import { dataEstesa, numero } from '../lib/utili'
 
 
 const GARANZIE = [
@@ -51,6 +51,9 @@ export function Home() {
 
   const aperto = apertoOra()
   const chiusura = chiusuraOdierna()
+  // Durante le ferie il sito lo dice, invece di lasciar credere di essere aperto.
+  const ferie = chiusuraDi()
+  const riapertura = ferie ? prossimaApertura() : null
 
   /** In vetrina la pratica aperta più recente: è la stessa del gestionale. */
   const inLavorazione =
@@ -69,7 +72,11 @@ export function Home() {
             <div>
               <div className="hero__badges">
                 <Chip variante={aperto ? 'blue' : 'alert'} punto>
-                  {aperto && chiusura ? `Aperti oggi fino alle ${chiusura}` : 'Scrivici: rispondiamo domani mattina'}
+                  {ferie
+                    ? `${ferie.motivo}${riapertura ? ` · riapriamo ${dataEstesa(riapertura)}` : ''}`
+                    : aperto && chiusura
+                      ? `Aperti oggi fino alle ${chiusura}`
+                      : 'Scrivici: rispondiamo domani mattina'}
                 </Chip>
                 <Chip>
                   <Icona nome="star" dimensione={13} pieno /> {GOOGLE.media.toString().replace('.', ',')}/5 su{' '}

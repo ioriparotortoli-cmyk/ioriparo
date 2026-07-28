@@ -4,11 +4,11 @@ import { TEL, useChiamata } from '../componenti/Contatto'
 import { Icona } from '../componenti/Icona'
 import { useNotifica } from '../componenti/Notifiche'
 import { Avviso, Bottone, Campo, Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, INDIRIZZO_COMPLETO, MAPPA, ORARI, WHATSAPP, apertoOra } from '../dati/azienda'
+import { AZIENDA, CHIUSURE, INDIRIZZO_COMPLETO, MAPPA, ORARI, WHATSAPP, apertoOra, chiusuraDi, prossimaApertura } from '../dati/azienda'
 import { useRivela } from '../lib/hook'
 import { briciole, useSeo } from '../lib/seo'
 import { inviaModulo, propsEsca, sospetto } from '../lib/moduli'
-import { cn, emailValida } from '../lib/utili'
+import { cn, dataEstesa, emailValida, periodo } from '../lib/utili'
 
 const MOTIVI_CONTATTO = [
   'Riparazione dispositivo',
@@ -92,6 +92,10 @@ export function Contatti() {
 
   const oggi = new Date().getDay()
   const aperto = apertoOra()
+  const ferie = chiusuraDi()
+  const riapertura = ferie ? prossimaApertura() : null
+  // Solo le chiusure ancora da venire: quelle passate non interessano nessuno.
+  const chiusureFuture = CHIUSURE.filter((c) => c.al >= new Date().toISOString().slice(0, 10))
 
   const invia = async (e: FormEvent) => {
     e.preventDefault()
@@ -195,7 +199,13 @@ export function Contatti() {
               <div className="row" style={{ justifyContent: 'space-between', marginBottom: 10 }}>
                 <h3>Orari di apertura</h3>
                 <Chip variante={aperto ? 'ok' : 'alert'} punto>
-                  {aperto ? 'Aperto ora' : 'Chiuso ora'}
+                  {ferie
+                    ? riapertura
+                      ? `Chiusi, riapriamo ${dataEstesa(riapertura)}`
+                      : 'Chiusi'
+                    : aperto
+                      ? 'Aperto ora'
+                      : 'Chiuso ora'}
                 </Chip>
               </div>
               <div className="hours">
@@ -206,6 +216,21 @@ export function Contatti() {
                   </div>
                 ))}
               </div>
+
+              {/* Ferie e festività: chi cerca gli orari vuole sapere anche queste. */}
+              {chiusureFuture.length > 0 && (
+                <div style={{ marginTop: 14, borderTop: '1px solid var(--line)', paddingTop: 12 }}>
+                  <span className="eyebrow">Chiusure</span>
+                  <div className="hours" style={{ marginTop: 8 }}>
+                    {chiusureFuture.map((c) => (
+                      <div key={c.dal}>
+                        <b>{c.motivo}</b>
+                        <span>{periodo(c.dal, c.al)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

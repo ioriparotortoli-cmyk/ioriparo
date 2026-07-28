@@ -75,6 +75,33 @@ export const GOOGLE = {
   aggiornato: '2026-07-28',
 }
 
+/**
+ * Garanzie, come sono scritte nelle condizioni di servizio che il cliente
+ * firma all'accettazione. Stanno qui e non sparse nelle pagine perché sito e
+ * foglio firmato devono dire la stessa cosa: se un giorno cambiano, si cambia
+ * un punto solo.
+ *
+ * Riparazione e vendita seguono regole diverse. Sulla riparazione la garanzia
+ * copre il componente sostituito e dura pochi mesi; sui prodotti venduti
+ * valgono i termini di legge, più lunghi.
+ */
+export const GARANZIA = {
+  riparazioneOriginale: 6,
+  riparazioneCompatibile: 3,
+  venditaConsumatore: 24,
+  venditaFattura: 12,
+  /** Per targhette e spazi stretti. */
+  breve: '3–6 mesi sulle riparazioni',
+  /** Una riga, quando serve la regola completa. */
+  riparazioni:
+    'Sulle riparazioni la garanzia copre il componente sostituito: 6 mesi con ricambio originale, 3 mesi con ricambio compatibile.',
+  vendita:
+    'Sui prodotti venduti valgono i termini di legge: 24 mesi con scontrino, 12 mesi con fattura.',
+  /** Casi esclusi, come nelle condizioni firmate. */
+  esclusioni:
+    'Restano esclusi cadute, urti, liquidi, ossidazione, manomissioni e uso improprio. Sui danni da liquidi l’intervento non ha garanzia di durata.',
+}
+
 /** Profili social effettivamente configurati: gli altri non vengono mostrati. */
 export const SOCIAL = (
   Object.entries(AZIENDA.social) as [keyof typeof AZIENDA.social, string][]

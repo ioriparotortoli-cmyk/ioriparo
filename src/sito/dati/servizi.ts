@@ -179,12 +179,12 @@ export interface VoceListino {
 }
 
 export const LISTINO: VoceListino[] = [
-  { intervento: 'Sostituzione display', dispositivo: 'Smartphone', tempi: '60–90 min', da: 69, garanzia: '12 mesi' },
-  { intervento: 'Sostituzione batteria', dispositivo: 'Smartphone / tablet', tempi: '45 min', da: 39, garanzia: '12 mesi' },
-  { intervento: 'Riparazione connettore di ricarica', dispositivo: 'Smartphone', tempi: '2 ore', da: 49, garanzia: '12 mesi' },
-  { intervento: 'Trattamento ossido da liquidi', dispositivo: 'Tutti', tempi: '24–48 ore', da: 59, garanzia: '3 mesi' },
+  { intervento: 'Sostituzione display', dispositivo: 'Smartphone', tempi: '60–90 min', da: 69, garanzia: '3–6 mesi' },
+  { intervento: 'Sostituzione batteria', dispositivo: 'Smartphone / tablet', tempi: '45 min', da: 39, garanzia: '3–6 mesi' },
+  { intervento: 'Riparazione connettore di ricarica', dispositivo: 'Smartphone', tempi: '2 ore', da: 49, garanzia: '3–6 mesi' },
+  { intervento: 'Trattamento ossido da liquidi', dispositivo: 'Tutti', tempi: '24–48 ore', da: 59, garanzia: '—' },
   { intervento: 'Upgrade SSD + clonazione', dispositivo: 'Notebook / desktop', tempi: '3 ore', da: 89, garanzia: '24 mesi' },
-  { intervento: 'Sostituzione tastiera o cerniere', dispositivo: 'Notebook', tempi: '1 giorno', da: 79, garanzia: '12 mesi' },
+  { intervento: 'Sostituzione tastiera o cerniere', dispositivo: 'Notebook', tempi: '1 giorno', da: 79, garanzia: '3–6 mesi' },
   { intervento: 'Recupero dati logico', dispositivo: 'HDD / SSD / memorie', tempi: '2–5 giorni', da: 99, garanzia: '—' },
   { intervento: 'Impianto TVCC 4 telecamere', dispositivo: 'Casa / negozio', tempi: '1 giorno', da: 690, garanzia: '24 mesi' },
   { intervento: 'Access point Wi-Fi 6 + configurazione', dispositivo: 'Ufficio / struttura', tempi: 'mezza giornata', da: 240, garanzia: '24 mesi' },

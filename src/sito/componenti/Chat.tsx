@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AZIENDA, INDIRIZZO_COMPLETO } from '../dati/azienda'
+import { AZIENDA, GARANZIA, INDIRIZZO_COMPLETO } from '../dati/azienda'
 import { cn } from '../lib/utili'
 import { Icona } from './Icona'
 
@@ -42,7 +42,7 @@ const RISPOSTE: [RegExp, string][] = [
   ],
   [
     /garanzia/i,
-    'Dodici mesi su ricambio e manodopera per le riparazioni, ventiquattro sugli impianti. La garanzia è digitale ed è collegata al codice pratica: la trovi sempre nell’area clienti.',
+    `${GARANZIA.riparazioni} ${GARANZIA.vendita} Sugli impianti la garanzia è di 24 mesi. La durata del tuo intervento è scritta sulla ricevuta.`,
   ],
   [
     /preventiv/i,

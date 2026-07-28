@@ -1,5 +1,6 @@
 import type { Riparazione, StatoRiparazione, TipoDispositivo } from '@/types'
 import { totaleRiparazione } from '@/lib/calcoli'
+import { GARANZIA } from '../dati/azienda'
 import { formatData } from '@/lib/format'
 import { euro } from '../lib/utili'
 import { Icona, type NomeIcona } from './Icona'
@@ -148,7 +149,7 @@ export function SchedaPratica({
               <div className="faint" style={{ fontSize: '.75rem' }}>
                 Garanzia
               </div>
-              <b style={{ fontSize: '.9rem' }}>12 mesi</b>
+              <b style={{ fontSize: '.9rem' }}>{GARANZIA.breve}</b>
             </>
           ) : (
             <>

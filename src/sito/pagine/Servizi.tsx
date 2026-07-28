@@ -7,7 +7,7 @@ import { SETTORI } from '../dati/contenuti'
 import { useRivela } from '../lib/hook'
 import { SITO_URL, briciole, useSeo } from '../lib/seo'
 import { euro } from '../lib/utili'
-import { AZIENDA } from '../dati/azienda'
+import { AZIENDA, GARANZIA } from '../dati/azienda'
 
 export function Servizi() {
   const rif = useRivela<HTMLDivElement>()
@@ -89,6 +89,10 @@ export function Servizi() {
         <p className="faint" style={{ fontSize: '.8rem', marginTop: 12 }}>
           I prezzi variano in base al modello e alla disponibilità dei ricambi. La diagnosi è sempre gratuita e non
           impegna al preventivo.
+        </p>
+        <p className="faint" style={{ fontSize: '.8rem', marginTop: 8 }}>
+          {GARANZIA.riparazioni} {GARANZIA.esclusioni} {GARANZIA.vendita} La durata applicata al tuo intervento è
+          scritta sulla ricevuta.
         </p>
         <div className="row" style={{ marginTop: 26 }}>
           <LinkBottone a="/preventivo">Calcola il tuo preventivo</LinkBottone>

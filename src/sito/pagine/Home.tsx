@@ -6,7 +6,7 @@ import { Icona } from '../componenti/Icona'
 import { SchedaPratica } from '../componenti/SchedaPratica'
 import { GrigliaServizi } from '../componenti/Servizi'
 import { Chip, Intestazione, LinkBottone, Sezione } from '../componenti/base'
-import { AZIENDA, GOOGLE, apertoOra, chiusuraOdierna } from '../dati/azienda'
+import { AZIENDA, GARANZIA, GOOGLE, apertoOra, chiusuraOdierna } from '../dati/azienda'
 import { NUMERI } from '../dati/contenuti'
 import { useContatore, useRivela } from '../lib/hook'
 import { useSeo } from '../lib/seo'
@@ -16,7 +16,7 @@ import { numero } from '../lib/utili'
 const GARANZIE = [
   'Ricambi originali e compatibili AAA',
   'Riparazioni in giornata',
-  'Garanzia 12 mesi sull’intervento',
+  'Garanzia sul componente sostituito',
   'Recupero dati eseguito internamente',
   'Preventivo gratuito e senza impegno',
   'Assistenza aziende con SLA dedicato',
@@ -44,7 +44,7 @@ export function Home() {
   useSeo({
     titolo: 'Io Riparo — Riparazioni Smartphone, Computer e Soluzioni Tecnologiche',
     descrizione:
-      'Riparazione smartphone, tablet, computer e notebook, recupero dati, videosorveglianza, reti aziendali e impianti Wi-Fi a Tortolì e in tutta l’Ogliastra. Preventivo gratuito, garanzia 12 mesi.',
+      'Riparazione smartphone, tablet, computer e notebook, recupero dati, videosorveglianza, reti aziendali e impianti Wi-Fi a Tortolì e in tutta l’Ogliastra. Preventivo gratuito, garanzia sul componente sostituito.',
     percorso: '/',
     datiStrutturati: schemaFaq(),
   })
@@ -75,7 +75,7 @@ export function Home() {
                   <Icona nome="star" dimensione={13} pieno /> {GOOGLE.media.toString().replace('.', ',')}/5 su{' '}
                   {GOOGLE.recensioni} recensioni Google
                 </Chip>
-                <Chip>Garanzia 12 mesi</Chip>
+                <Chip>Garanzia {GARANZIA.breve}</Chip>
               </div>
 
               <h1>
@@ -105,8 +105,8 @@ export function Home() {
                   <span>Riparazioni express</span>
                 </div>
                 <div>
-                  <b>12 mesi</b>
-                  <span>Garanzia sull’intervento</span>
+                  <b>{GARANZIA.riparazioneOriginale} mesi</b>
+                  <span>Con ricambio originale</span>
                 </div>
               </div>
             </div>

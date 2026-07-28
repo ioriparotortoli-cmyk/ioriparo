@@ -1,5 +1,5 @@
 import type { NomeIcona } from '../componenti/Icona'
-import { AZIENDA, GOOGLE } from './azienda'
+import { AZIENDA, GARANZIA, GOOGLE } from './azienda'
 import type { NomeScena } from '../componenti/Illustrazione'
 
 /* ─────────────── Galleria ─────────────── */
@@ -101,7 +101,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Usate ricambi originali?',
     risposta:
-      'Quando disponibili sì, e lo scriviamo nel preventivo. Per molti modelli proponiamo anche compatibili di grado AAA selezionati, che costano meno e che garantiamo 12 mesi esattamente come gli originali. La scelta resta sempre tua, con i prezzi di entrambe le opzioni sotto gli occhi.',
+      'Quando disponibili sì, e lo scriviamo nel preventivo. Per molti modelli proponiamo anche compatibili di grado AAA selezionati, che costano meno. La differenza sta anche nella garanzia: 6 mesi sul ricambio originale, 3 mesi sul compatibile. La scelta resta tua, con prezzi e durata di entrambe le opzioni sotto gli occhi.',
   },
   {
     domanda: 'I miei dati sono al sicuro durante la riparazione?',
@@ -111,7 +111,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Che garanzia offrite?',
     risposta:
-      'Dodici mesi su ricambio e manodopera per le riparazioni, ventiquattro mesi sugli impianti di rete e videosorveglianza. La garanzia è digitale, collegata al codice pratica e consultabile in qualsiasi momento dall’area clienti.',
+      `${GARANZIA.riparazioni} ${GARANZIA.esclusioni} ${GARANZIA.vendita} Sugli impianti di rete e videosorveglianza la garanzia è di 24 mesi. La durata applicata al tuo intervento è sempre scritta sulla ricevuta.`,
   },
   {
     domanda: "Riparate anche a domicilio o presso l'azienda?",
@@ -142,7 +142,7 @@ export const MOTIVI: Motivo[] = [
   { icona: 'tool', titolo: 'Esperienza', testo: 'Laboratorio attrezzato: microsaldatura, riball, diagnosi a livello di componente.' },
   { icona: 'clock', titolo: 'Rapidità', testo: 'Gran parte delle riparazioni si chiude entro 24 ore. Display e batterie spesso in un’ora.' },
   { icona: 'box', titolo: 'Ricambi di qualità', testo: 'Componenti originali o compatibili di grado AAA, sempre dichiarati nel preventivo.' },
-  { icona: 'shield', titolo: 'Garanzia', testo: 'Dodici mesi su ricambio e manodopera, con tagliando digitale collegato alla pratica.' },
+  { icona: 'shield', titolo: 'Garanzia', testo: 'Sei mesi sul ricambio originale, tre sul compatibile: la durata è scritta sulla ricevuta, non promessa a voce.' },
   { icona: 'chat', titolo: 'Assistenza', testo: 'Un tecnico dedicato ti aggiorna su ogni passaggio via WhatsApp o e-mail.' },
   { icona: 'euro', titolo: 'Preventivi trasparenti', testo: 'Costo fisso comunicato prima dell’intervento. Se non ripariamo, non paghi la diagnosi.' },
   { icona: 'net', titolo: 'Supporto tecnico', testo: 'Contratti di assistenza con SLA per uffici, hotel, B&B e negozi, anche da remoto.' },
@@ -153,7 +153,7 @@ export const PROCESSO = [
   { titolo: 'Diagnosi', testo: 'Gratuita e senza impegno, in sede o da remoto. Ti diciamo cosa è successo e cosa serve davvero.' },
   { titolo: 'Preventivo', testo: 'Costo fisso, tempi certi e tipo di ricambio dichiarato. Approvi con un clic dall’area clienti.' },
   { titolo: 'Riparazione', testo: 'Intervento in laboratorio con strumenti professionali e collaudo su 18 punti di controllo.' },
-  { titolo: 'Riconsegna', testo: 'Notifica automatica, garanzia digitale di 12 mesi e assistenza post riparazione.' },
+  { titolo: 'Riconsegna', testo: 'Notifica automatica, garanzia sul componente sostituito indicata sulla ricevuta e assistenza post riparazione.' },
 ]
 
 /**
@@ -165,7 +165,7 @@ export const PROCESSO = [
 export const NUMERI = [
   { valore: new Date().getFullYear() - AZIENDA.fondata, suffisso: '', etichetta: 'Anni di attività' },
   { valore: GOOGLE.recensioni, suffisso: '', etichetta: 'Recensioni su Google' },
-  { valore: 12, suffisso: ' mesi', etichetta: 'Garanzia sulle riparazioni' },
+  { valore: GARANZIA.riparazioneOriginale, suffisso: ' mesi', etichetta: 'Garanzia sul ricambio originale' },
   { valore: 24, suffisso: ' mesi', etichetta: 'Garanzia sugli impianti' },
 ]
 

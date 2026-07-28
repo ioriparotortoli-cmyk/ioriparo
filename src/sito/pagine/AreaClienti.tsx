@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useGestionale } from '@/data/store'
 import { archivioOnline } from '@/lib/supabase'
+import { GARANZIA } from '../dati/azienda'
 import { totaleFattura, totaleRiparazione } from '@/lib/calcoli'
 import { formatData } from '@/lib/format'
 import type { Cliente } from '@/types'
@@ -337,7 +338,7 @@ export function AreaClienti() {
                 {dati.concluse.slice(0, 2).map((r) => (
                   <div key={`gar-${r.id}`}>
                     <b>Certificato di garanzia {r.codice}</b>
-                    <span>12 mesi dalla consegna</span>
+                    <span>{GARANZIA.breve}, dalla consegna</span>
                   </div>
                 ))}
               </div>

@@ -46,6 +46,7 @@ const rotteGestionale = !conGestionale
             lazy: pagina(() => import('@/pages/riparazioni/ModificaRiparazione'), 'ModificaRiparazione'),
           },
 
+          { path: 'richieste', lazy: pagina(() => import('@/pages/Richieste'), 'Richieste') },
           { path: 'preventivi', lazy: pagina(() => import('@/pages/Preventivi'), 'Preventivi') },
           { path: 'fatture', lazy: pagina(() => import('@/pages/Fatture'), 'Fatture') },
           { path: 'magazzino', lazy: pagina(() => import('@/pages/Magazzino'), 'Magazzino') },

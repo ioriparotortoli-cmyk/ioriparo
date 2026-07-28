@@ -6,6 +6,7 @@ import {
   DatabaseBackup,
   FileText,
   Globe,
+  Inbox,
   LayoutDashboard,
   type LucideIcon,
   Receipt,
@@ -39,7 +40,10 @@ interface GruppoMenu {
  */
 export const GRUPPI_MENU: GruppoMenu[] = [
   {
-    voci: [{ etichetta: 'Dashboard', percorso: '/gestionale', icona: LayoutDashboard }],
+    voci: [
+      { etichetta: 'Dashboard', percorso: '/gestionale', icona: LayoutDashboard },
+      { etichetta: 'Richieste dal sito', percorso: '/gestionale/richieste', icona: Inbox },
+    ],
   },
   {
     titolo: 'Laboratorio',

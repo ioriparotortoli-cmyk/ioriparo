@@ -1,3 +1,4 @@
+import { depositaRichiesta } from '@/lib/supabase'
 import { AZIENDA } from '../dati/azienda'
 
 /**
@@ -97,6 +98,30 @@ const rispostaA = (dati: DatiModulo) => {
 const oggettoDi = (modulo: Modulo, dati: DatiModulo) =>
   `${OGGETTI[modulo]} — ${dati.nome ?? rispostaA(dati) ?? AZIENDA.nome}`
 
+/**
+ * Recapito del telefono fra i campi del modulo, per la scheda che finisce nel
+ * gestionale. Le chiavi sono le etichette mostrate al visitatore, quindi si
+ * cerca per parola e non per nome esatto.
+ */
+const telefonoDi = (dati: DatiModulo) =>
+  Object.entries(dati.campi).find(([etichetta]) => /telefono|cellulare/i.test(etichetta))?.[1]?.trim()
+
+/**
+ * Fa arrivare la richiesta anche nel gestionale, sotto «Richieste dal sito».
+ *
+ * È un canale in più rispetto all'e-mail, non un suo sostituto: se l'archivio
+ * online non è configurato la funzione non fa nulla, e un suo errore non tocca
+ * in alcun modo l'esito mostrato al visitatore.
+ */
+function annotaNelGestionale(modulo: Modulo, dati: DatiModulo) {
+  void depositaRichiesta(modulo, {
+    nome: dati.nome,
+    telefono: telefonoDi(dati),
+    email: rispostaA(dati),
+    campi: dati.campi,
+  }).catch(() => false)
+}
+
 /** Apre il client di posta con il messaggio già pronto. */
 function apriPosta(modulo: Modulo, dati: DatiModulo): Esito {
   const oggetto = encodeURIComponent(oggettoDi(modulo, dati))
@@ -116,6 +141,8 @@ function apriPosta(modulo: Modulo, dati: DatiModulo): Esito {
  * il sito utilizzabile ma richiede al visitatore di premere "Invia".
  */
 export async function inviaModulo(modulo: Modulo, dati: DatiModulo): Promise<Esito> {
+  annotaNelGestionale(modulo, dati)
+
   if (!ENDPOINT) return apriPosta(modulo, dati)
 
   const risposta = rispostaA(dati)

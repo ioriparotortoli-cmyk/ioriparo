@@ -85,6 +85,7 @@ Ogni pagina imposta titolo, descrizione, canonical, Open Graph, Twitter Card e J
 | Percorso | Contenuto |
 | --- | --- |
 | `/gestionale` | Dashboard: riepiloghi, azioni rapide, riparazioni per stato, ultime pratiche, scadenze |
+| `/gestionale/richieste` | Preventivi, appuntamenti e messaggi arrivati dai moduli del sito |
 | `/gestionale/riparazioni` | Elenco con filtri, ricerca, ordinamento, paginazione ed esportazione CSV |
 | `/gestionale/riparazioni/nuova` | Accettazione: dati cliente e dispositivo, difetto, accessori, foto, firma |
 | `/gestionale/riparazioni/:id` | Scheda con stato, interventi, ricambi, totali IVA, stampa |
@@ -95,7 +96,7 @@ Ogni pagina imposta titolo, descrizione, canonical, Open Graph, Twitter Card e J
 | `/gestionale/statistiche` | Incassi, riparazioni per mese, ricavi per categoria, più venduti |
 | `/gestionale/profilo` | **Solo** i dati di chi usa il gestionale e le preferenze del suo account |
 | `/gestionale/impostazioni` | Dati dell'attività e valori predefiniti dei documenti |
-| `/gestionale/backup` | Archivio locale, backup JSON ed esportazioni CSV |
+| `/gestionale/backup` | Archivio (locale o online), backup JSON ed esportazioni CSV |
 
 Ogni sezione ha una pagina propria, con il suo modulo caricato separatamente: la
 dashboard non scarica il codice delle statistiche e viceversa. Il menu laterale è
@@ -113,6 +114,50 @@ La divisione delle responsabilità è netta:
 
 Le due aree condividono l'archivio: la pratica che il tecnico aggiorna nel gestionale è la
 stessa che il cliente vede su `/stato-riparazione` e nell'area riservata.
+
+## Archivio online (Supabase)
+
+Senza configurazione il gestionale lavora sull'archivio locale del browser: comodo per
+provare, ma i dati restano su un solo dispositivo e il sito non può mostrare stati reali.
+Collegando Supabase le due cose diventano una sola — il laboratorio scrive, il cliente legge.
+
+**Cosa cambia una volta collegato**
+
+- il gestionale chiede e-mail e password prima di aprirsi: senza accesso le tabelle non
+  restituiscono nulla, quindi non è una protezione di facciata;
+- ogni modifica fatta nel gestionale finisce anche nell'archivio condiviso, così le stesse
+  pratiche si vedono dal negozio, da casa e dal telefono;
+- `/stato-riparazione` legge lo stato vero della pratica, senza che nessuno debba ricopiarlo;
+- le richieste dei moduli del sito arrivano in `/gestionale/richieste` **oltre** che per
+  e-mail: i due canali sono indipendenti, se uno non funziona la richiesta non si perde.
+
+**Come si collega**
+
+1. crea un progetto su [supabase.com](https://supabase.com) (il piano gratuito basta);
+2. apri **SQL Editor**, incolla il contenuto di `supabase/schema.sql` ed esegui: crea le
+   tabelle, i permessi e la funzione `stato_riparazione`;
+3. in **Authentication → Users** crea l'utenza del personale (e-mail e password): non
+   esiste registrazione libera, gli account si creano solo da qui;
+4. in **Project Settings → API** copia *Project URL* e chiave *anon public* e mettile in
+   `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` (in `.env` e su Vercel);
+5. al primo accesso, da `/gestionale/backup`, usa **Trasferisci l'archivio di questo
+   browser** per portare online il lavoro già fatto sul computer.
+
+**Cosa vede il pubblico.** Una sola porta: la funzione `stato_riparazione`, che a fronte di
+un codice pratica restituisce dispositivo, stato e date. Nome, telefono, indirizzo e importi
+non escono mai dal database. Tutte le tabelle hanno Row Level Security attiva e l'unica cosa
+che un visitatore può scrivere è una riga in `richieste`.
+
+**Sui codici pratica.** Il progressivo da solo (`#26-0007`) sarebbe indovinabile: chiunque
+potrebbe scorrere i numeri e vedere dispositivo e stato di tutti i clienti. Per questo i
+codici nuovi hanno tre caratteri casuali in coda — `#26-0007-K7M` — scelti fra lettere e
+cifre non confondibili, così restano leggibili al telefono. I codici già emessi continuano a
+funzionare: la ricerca ignora spazi, trattini e maiuscole.
+
+**Sulle chiavi.** `VITE_SUPABASE_URL` e la chiave *anon* non sono segreti: finiscono nel
+codice di qualunque sito che usi Supabase e da sole non aprono niente, perché i permessi li
+decide il database. La chiave `service_role`, invece, è segreta e non va mai messa nel
+progetto né su Vercel come variabile `VITE_*`.
 
 ## Struttura del progetto
 
@@ -227,10 +272,10 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
 - **Profili social**: `social.facebook` e `social.instagram` in `src/sito/dati/azienda.ts` sono
   vuoti, quindi le due icone non compaiono nel piè di pagina. Basta incollare l'indirizzo del
   profilo perché l'icona torni visibile e finisca anche nei dati strutturati (`sameAs`).
-- **Backend**: moduli, area clienti e tracking oggi lavorano sull'archivio locale del browser.
-  Il sito è pubblicabile così com'è; quando servirà la persistenza reale basterà sostituire le
-  funzioni di invio dei moduli e le letture in `src/sito/pagine/` con chiamate alle API,
-  senza toccare interfaccia e componenti.
+- **Archivio online**: finché `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` non sono
+  impostate, tracking e area clienti leggono l'archivio locale del browser, cioè dati di
+  esempio. Il sito è pubblicabile così com'è, ma la pagina «Stato riparazione» diventa utile
+  solo con il collegamento a Supabase (vedi sopra).
 - **Dominio**: `SITO_URL` (`src/sito/lib/seo.ts` e `scripts/genera-sitemap.mjs`) vale
   `https://ioriparotortoli.it`, senza `www`. Su Vercel va impostato lo stesso
   indirizzo come dominio principale, con `www.ioriparotortoli.it` che vi rimanda:
@@ -253,5 +298,9 @@ informative, dati strutturati e pulsanti "Chiama ora" e WhatsApp.
 - **intestazioni di sicurezza**: `X-Content-Type-Options`, `Referrer-Policy`,
   `X-Frame-Options`, `Permissions-Policy`.
 
-Su Vercel bastano le impostazioni predefinite (`npm run build` → `dist`): non
-servono variabili d'ambiente, l'endpoint dei moduli è nel codice.
+Su Vercel bastano le impostazioni predefinite (`npm run build` → `dist`). L'endpoint dei
+moduli è nel codice, quindi il sito funziona senza configurare nulla; per l'archivio online
+vanno aggiunte in **Settings → Environment Variables** `VITE_SUPABASE_URL`,
+`VITE_SUPABASE_ANON_KEY` e, se si vuole il gestionale sullo stesso indirizzo,
+`VITE_GESTIONALE=1`. Le variabili sono lette in compilazione: dopo averle aggiunte serve un
+nuovo deploy perché abbiano effetto.

@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useGestionale } from '@/data/store'
+import { archivioOnline } from '@/lib/supabase'
 import { totaleFattura, totaleRiparazione } from '@/lib/calcoli'
 import { formatData } from '@/lib/format'
 import type { Cliente } from '@/types'
@@ -16,6 +17,13 @@ const VANTAGGI = [
   { icona: 'doc' as const, titolo: 'Documenti sempre disponibili', testo: 'Fatture, ricevute e certificati di garanzia archiviati e scaricabili quando vuoi.' },
   { icona: 'check' as const, titolo: 'Preventivi approvabili online', testo: 'Un clic per autorizzare l’intervento: il laboratorio parte subito.' },
   { icona: 'shield' as const, titolo: 'Accesso protetto', testo: 'Connessione cifrata, sessione a scadenza e verifica in due passaggi opzionale.' },
+]
+
+/** Come funziona davvero il servizio quando l'archivio del laboratorio è collegato. */
+const VANTAGGI_CODICE = [
+  { icona: 'check' as const, titolo: 'Nessuna registrazione', testo: 'Niente account da creare né password da ricordare: basta il codice sulla ricevuta.' },
+  { icona: 'doc' as const, titolo: 'Aggiornato dal laboratorio', testo: 'Lo stato che leggi è quello che il tecnico scrive sulla pratica, non una copia.' },
+  { icona: 'shield' as const, titolo: 'I tuoi dati restano qui', testo: 'La pagina mostra solo dispositivo, stato e date: nome e recapiti non escono dal negozio.' },
 ]
 
 export function AreaClienti() {
@@ -85,11 +93,44 @@ export function AreaClienti() {
                   <br />i tuoi documenti.
                 </>
               }
-              testo="Accedi per seguire le riparazioni, approvare i preventivi e scaricare fatture e certificati di garanzia."
+              testo={
+                archivioOnline
+                  ? 'Con il codice pratica della ricevuta segui la riparazione passo per passo, senza registrarti.'
+                  : 'Accedi per seguire le riparazioni, approvare i preventivi e scaricare fatture e certificati di garanzia.'
+              }
             />
 
             <div className="split" style={{ alignItems: 'start' }}>
               <div className="card reveal">
+                {/*
+                  Gli account cliente non esistono: le riparazioni si seguono con
+                  il codice pratica della ricevuta. Con l'archivio online
+                  collegato — cioè quando i dati sono veri — al posto del modulo
+                  di accesso si mostra la strada che funziona davvero, invece di
+                  una porta che non apre nulla.
+                */}
+                {archivioOnline ? (
+                  <div>
+                    <h3>Segui la tua riparazione</h3>
+                    <p className="muted" style={{ fontSize: '.9rem', marginTop: 10 }}>
+                      Non serve registrarsi. Sulla ricevuta di accettazione trovi il codice
+                      pratica: bastano quello e pochi secondi per sapere a che punto siamo.
+                    </p>
+                    <div style={{ marginTop: 18 }}>
+                      <LinkBottone a="/stato-riparazione" largo>
+                        Verifica lo stato con il codice
+                      </LinkBottone>
+                    </div>
+                    <p className="faint" style={{ fontSize: '.78rem', marginTop: 14, textAlign: 'center' }}>
+                      Preventivi, fatture e certificati di garanzia te li consegniamo in negozio o
+                      via e-mail. Per una copia,{' '}
+                      <Link className="link" to="/contatti">
+                        scrivici
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                ) : (
                 <form onSubmit={entra} noValidate>
                   <Avviso variante="err" visibile={!!errore}>
                     {errore}
@@ -130,10 +171,11 @@ export function AreaClienti() {
                     L’accesso viene attivato in negozio al momento dell’accettazione.
                   </p>
                 </form>
+                )}
               </div>
 
               <div className="reveal" style={{ display: 'grid', gap: 14 }}>
-                {VANTAGGI.map((v) => (
+                {(archivioOnline ? VANTAGGI_CODICE : VANTAGGI).map((v) => (
                   <div className="card" key={v.titolo}>
                     <div className="row" style={{ gap: 12, flexWrap: 'nowrap', alignItems: 'flex-start' }}>
                       <Ico nome={v.icona} />

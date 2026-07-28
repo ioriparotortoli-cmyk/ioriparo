@@ -6,6 +6,7 @@ import { Campo, Checkbox, Input, Select } from '@/components/ui/Form'
 import { Badge } from '@/components/ui/Badge'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
+import { supabase } from '@/lib/supabase'
 import type { PreferenzeUtente, Utente } from '@/types'
 
 /** Pagine su cui si può aprire il gestionale all'accesso. */
@@ -34,9 +35,44 @@ const iniziali = (nome: string) =>
 export function Profilo() {
   useIntestazione({ titolo: 'Profilo personale', sottotitolo: 'I tuoi dati e le preferenze dell’account' })
 
-  const { db, aggiornaUtente, aggiornaPreferenze } = useGestionale()
+  const { db, sorgente, aggiornaUtente, aggiornaPreferenze } = useGestionale()
   const [form, setForm] = useState<Utente>(db.utente)
   const [salvato, setSalvato] = useState(false)
+
+  const online = sorgente === 'online'
+  const [inCorso, setInCorso] = useState(false)
+  const [messaggio, setMessaggio] = useState<string | null>(null)
+
+  async function esci() {
+    if (!supabase) return
+    setInCorso(true)
+    await supabase.auth.signOut()
+    setInCorso(false)
+  }
+
+  /**
+   * La password non passa da qui: Supabase invia un collegamento all'indirizzo
+   * dell'account, che è l'unico modo per cambiarla senza conoscerla.
+   */
+  async function cambiaPassword() {
+    if (!supabase) return
+    setInCorso(true)
+    setMessaggio(null)
+    const { data } = await supabase.auth.getUser()
+    const indirizzo = data.user?.email
+    if (!indirizzo) {
+      setInCorso(false)
+      setMessaggio('Non riesco a leggere l’indirizzo dell’account.')
+      return
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(indirizzo)
+    setInCorso(false)
+    setMessaggio(
+      error
+        ? 'Invio non riuscito. Riprova fra poco.'
+        : `Ti abbiamo inviato a ${indirizzo} il collegamento per impostare una nuova password.`,
+    )
+  }
 
   const modificato = useMemo(
     () => JSON.stringify(form) !== JSON.stringify(db.utente),
@@ -179,20 +215,21 @@ export function Profilo() {
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <span className="inline-flex items-center gap-2 rounded-lg border border-line-soft bg-surface-2 px-3 py-2 text-sm text-ink-muted">
             <ShieldCheck className="size-4 shrink-0" aria-hidden="true" />
-            Accesso non ancora protetto da password
+            {online ? 'Archivio online, accesso protetto da password' : 'Archivio locale di questo dispositivo'}
           </span>
-          <Button disabled title="Disponibile quando il gestionale avrà un accesso vero">
+          <Button onClick={() => void cambiaPassword()} disabled={!online || inCorso}>
             Cambia password
           </Button>
-          <Button variante="fantasma" disabled title="Disponibile quando il gestionale avrà un accesso vero">
+          <Button variante="fantasma" onClick={() => void esci()} disabled={!online || inCorso}>
             <LogOut className="size-4" aria-hidden="true" />
             Esci
           </Button>
         </div>
+        {messaggio && <p className="mt-3 text-xs text-ink-muted">{messaggio}</p>}
         <p className="mt-3 text-xs text-ink-muted">
-          Il gestionale lavora sull’archivio locale di questo dispositivo e non ha ancora un sistema di
-          accesso: chiunque apra questo indirizzo vede gli stessi dati. Password e uscita si attiveranno
-          insieme all’autenticazione.
+          {online
+            ? 'I dati stanno nell’archivio condiviso: chi non ha accesso non vede nulla, e ogni dispositivo su cui entri mostra le stesse pratiche.'
+            : 'Il gestionale sta lavorando sull’archivio locale di questo browser: i dati non escono da questo dispositivo e chiunque lo apra li vede. Collega l’archivio online per proteggerli e condividerli.'}
         </p>
       </Card>
 

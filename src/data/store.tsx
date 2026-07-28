@@ -8,6 +8,14 @@ import {
   type ReactNode,
 } from 'react'
 import { creaDatabaseIniziale } from './seed'
+import {
+  eliminaVoce,
+  salvaImpostazioni,
+  salvaVoce,
+  scaricaArchivio,
+  type Elenco,
+} from './archivio'
+import { archivioOnline, supabase } from '@/lib/supabase'
 import type {
   ArticoloMagazzino,
   Azienda,
@@ -25,12 +33,37 @@ import type {
 
 const CHIAVE_STORAGE = 'ioriparo:db:v1'
 
+/**
+ * Caratteri per la parte casuale del codice pratica: niente O/0, I/1, S/5,
+ * così non ci sono errori quando il codice viene letto al telefono o ricopiato
+ * dalla ricevuta.
+ */
+const ALFABETO = 'ACDEFHJKLMNPQRTUVWXYZ2346789'
+
+/**
+ * Coda casuale del codice pratica.
+ *
+ * Il progressivo da solo (`#26-0007`) è indovinabile: chiunque potrebbe
+ * scorrere i numeri sulla pagina «Stato riparazione» e vedere dispositivo e
+ * stato di lavorazione di tutti i clienti. Con tre caratteri casuali il codice
+ * resta corto e leggibile, ma tentare a caso non porta da nessuna parte.
+ */
+function suffissoCasuale(lunghezza = 3): string {
+  const valori = new Uint32Array(lunghezza)
+  crypto.getRandomValues(valori)
+  return Array.from(valori, (v) => ALFABETO[v % ALFABETO.length]).join('')
+}
+
 /** Genera un identificativo locale (nessun backend: basta unicità in sessione). */
 export function nuovoId(prefisso: string): string {
   return `${prefisso}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`
 }
 
-function caricaDatabase(): DatabaseGestionale {
+/**
+ * L'archivio salvato nel browser di questo dispositivo. Serve anche al
+ * passaggio all'archivio online, per non lasciare indietro il lavoro già fatto.
+ */
+export function caricaDatabase(): DatabaseGestionale {
   const iniziale = creaDatabaseIniziale()
   if (typeof window === 'undefined') return iniziale
 
@@ -56,8 +89,15 @@ function caricaDatabase(): DatabaseGestionale {
   }
 }
 
+/** Dove stanno i dati in questo momento. */
+export type Sorgente = 'locale' | 'online' | 'caricamento' | 'accesso-richiesto'
+
 interface ContestoGestionale {
   db: DatabaseGestionale
+  /** `locale` = archivio del browser; `online` = archivio condiviso. */
+  sorgente: Sorgente
+  /** Rilegge tutto dall'archivio online. */
+  ricarica: () => Promise<void>
 
   aggiungiCliente: (cliente: Omit<Cliente, 'id' | 'creatoIl'>) => Cliente
   aggiornaCliente: (id: string, modifiche: Partial<Cliente>) => void
@@ -93,7 +133,7 @@ interface ContestoGestionale {
   importaDatabase: (db: DatabaseGestionale) => void
 
   clientePerId: (id: string) => Cliente | undefined
-  /** Prossimo codice riparazione disponibile, es. `#24-0025`. */
+  /** Prossimo codice riparazione disponibile, es. `#26-0025-K7M`. */
   prossimoCodice: () => string
 }
 
@@ -101,42 +141,92 @@ const Contesto = createContext<ContestoGestionale | null>(null)
 
 export function GestionaleProvider({ children }: { children: ReactNode }) {
   const [db, setDb] = useState<DatabaseGestionale>(caricaDatabase)
+  const [sorgente, setSorgente] = useState<Sorgente>(archivioOnline ? 'caricamento' : 'locale')
+
+  /**
+   * Con l'archivio online i dati arrivano dal database, ma solo dopo
+   * l'accesso: le tabelle sono chiuse a chi non è autenticato. Finché non si
+   * entra, il gestionale mostra l'archivio locale e non scrive online.
+   */
+  const ricarica = useCallback(async () => {
+    if (!archivioOnline || !supabase) return
+    const { data } = await supabase.auth.getSession()
+    if (!data.session) {
+      setSorgente('accesso-richiesto')
+      return
+    }
+    setSorgente('caricamento')
+    try {
+      setDb(await scaricaArchivio())
+      setSorgente('online')
+    } catch {
+      setSorgente('accesso-richiesto')
+    }
+  }, [])
 
   useEffect(() => {
+    if (!archivioOnline || !supabase) return
+    void ricarica()
+    const { data } = supabase.auth.onAuthStateChange(() => void ricarica())
+    return () => data.subscription.unsubscribe()
+  }, [ricarica])
+
+  useEffect(() => {
+    // L'archivio locale resta la copia di lavoro finché non si è online.
+    if (sorgente === 'online') return
     try {
       window.localStorage.setItem(CHIAVE_STORAGE, JSON.stringify(db))
     } catch {
       // Quota superata o storage non disponibile: si prosegue solo in memoria.
     }
-  }, [db])
+  }, [db, sorgente])
 
-  /** Applica una modifica parziale all'elemento con `id` di una collezione. */
+  /** Riflette online una modifica già applicata allo stato locale. */
+  const rifletti = useCallback(
+    (azione: () => Promise<void>) => {
+      if (sorgente !== 'online') return
+      void azione().catch((e) => console.error('archivio online:', e))
+    },
+    [sorgente],
+  )
+
+  /**
+   * Applica una modifica parziale all'elemento con `id` di una collezione.
+   *
+   * La voce aggiornata si conosce solo dentro l'aggiornamento di stato, quindi
+   * è da lì che parte la copia online. La scrittura è un `upsert`: ripeterla
+   * non cambia il risultato.
+   */
   const aggiornaIn = useCallback(
-    <C extends keyof DatabaseGestionale, T extends { id: string }>(
+    <C extends Elenco, T extends { id: string }>(
       collezione: C,
       id: string,
       modifiche: Partial<T>,
     ) => {
       setDb((precedente) => ({
         ...precedente,
-        [collezione]: (precedente[collezione] as unknown as T[]).map((voce) =>
-          voce.id === id ? { ...voce, ...modifiche } : voce,
-        ),
+        [collezione]: (precedente[collezione] as unknown as T[]).map((voce) => {
+          if (voce.id !== id) return voce
+          const aggiornata = { ...voce, ...modifiche }
+          rifletti(() => salvaVoce(collezione, aggiornata))
+          return aggiornata
+        }),
       }))
     },
-    [],
+    [rifletti],
   )
 
   const eliminaDa = useCallback(
-    <C extends keyof DatabaseGestionale>(collezione: C, id: string) => {
+    (collezione: Elenco, id: string) => {
       setDb((precedente) => ({
         ...precedente,
         [collezione]: (precedente[collezione] as unknown as { id: string }[]).filter(
           (voce) => voce.id !== id,
         ),
       }))
+      rifletti(() => eliminaVoce(collezione, id))
     },
-    [],
+    [rifletti],
   )
 
   const prossimoCodice = useCallback(() => {
@@ -144,12 +234,14 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       .map((r) => Number.parseInt(r.codice.split('-')[1] ?? '0', 10))
       .filter((n) => !Number.isNaN(n))
     const prossimo = (progressivi.length ? Math.max(...progressivi) : 0) + 1
-    return `${db.azienda.prefissoCodice}${String(prossimo).padStart(4, '0')}`
+    return `${db.azienda.prefissoCodice}${String(prossimo).padStart(4, '0')}-${suffissoCasuale()}`
   }, [db.riparazioni, db.azienda.prefissoCodice])
 
   const valore = useMemo<ContestoGestionale>(
     () => ({
       db,
+      sorgente,
+      ricarica,
 
       aggiungiCliente: (cliente) => {
         const nuovo: Cliente = {
@@ -158,6 +250,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
           creatoIl: new Date().toISOString().slice(0, 10),
         }
         setDb((p) => ({ ...p, clienti: [nuovo, ...p.clienti] }))
+        rifletti(() => salvaVoce('clienti', nuovo))
         return nuovo
       },
       aggiornaCliente: (id, modifiche) => aggiornaIn('clienti', id, modifiche),
@@ -170,6 +263,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
           codice: riparazione.codice ?? prossimoCodice(),
         }
         setDb((p) => ({ ...p, riparazioni: [nuova, ...p.riparazioni] }))
+        rifletti(() => salvaVoce('riparazioni', nuova))
         return nuova
       },
       aggiornaRiparazione: (id, modifiche) => aggiornaIn('riparazioni', id, modifiche),
@@ -181,6 +275,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       aggiungiArticolo: (articolo) => {
         const nuovo: ArticoloMagazzino = { ...articolo, id: nuovoId('art') }
         setDb((p) => ({ ...p, magazzino: [nuovo, ...p.magazzino] }))
+        rifletti(() => salvaVoce('magazzino', nuovo))
         return nuovo
       },
       aggiornaArticolo: (id, modifiche) => aggiornaIn('magazzino', id, modifiche),
@@ -191,6 +286,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       aggiungiScadenza: (scadenza) => {
         const nuova: Scadenza = { ...scadenza, id: nuovoId('sca') }
         setDb((p) => ({ ...p, scadenze: [nuova, ...p.scadenze] }))
+        rifletti(() => salvaVoce('scadenze', nuova))
         return nuova
       },
       aggiornaScadenza: (id, modifiche) => aggiornaIn('scadenze', id, modifiche),
@@ -198,14 +294,23 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
 
       aggiornaImpianto: (id, modifiche) => aggiornaIn('impianti', id, modifiche),
       aggiornaAzienda: (modifiche) =>
-        setDb((p) => ({ ...p, azienda: { ...p.azienda, ...modifiche } })),
+        setDb((p) => {
+          const azienda = { ...p.azienda, ...modifiche }
+          rifletti(() => salvaImpostazioni('azienda', azienda))
+          return { ...p, azienda }
+        }),
       aggiornaUtente: (modifiche) =>
-        setDb((p) => ({ ...p, utente: { ...p.utente, ...modifiche } })),
+        setDb((p) => {
+          const utente = { ...p.utente, ...modifiche }
+          rifletti(() => salvaImpostazioni('utente', utente))
+          return { ...p, utente }
+        }),
       aggiornaPreferenze: (modifiche) =>
-        setDb((p) => ({
-          ...p,
-          utente: { ...p.utente, preferenze: { ...p.utente.preferenze, ...modifiche } },
-        })),
+        setDb((p) => {
+          const utente = { ...p.utente, preferenze: { ...p.utente.preferenze, ...modifiche } }
+          rifletti(() => salvaImpostazioni('utente', utente))
+          return { ...p, utente }
+        }),
 
       ripristinaDemo: () => {
         window.localStorage.removeItem(CHIAVE_STORAGE)
@@ -216,7 +321,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       clientePerId: (id) => db.clienti.find((c) => c.id === id),
       prossimoCodice,
     }),
-    [db, aggiornaIn, eliminaDa, prossimoCodice],
+    [db, sorgente, ricarica, rifletti, aggiornaIn, eliminaDa, prossimoCodice],
   )
 
   return <Contesto.Provider value={valore}>{children}</Contesto.Provider>

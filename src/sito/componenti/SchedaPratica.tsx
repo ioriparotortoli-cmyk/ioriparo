@@ -85,11 +85,18 @@ export function SchedaPratica({
   riparazione,
   azioni,
   vetro,
+  senzaImporti,
 }: {
   riparazione: Riparazione
   azioni?: React.ReactNode
   /** Versione in vetro usata nella sezione di apertura */
   vetro?: boolean
+  /**
+   * Nasconde il totale. Serve alla ricerca pubblica per codice, dove il
+   * database non espone gli importi: mostrare "€ 0,00" sarebbe peggio che
+   * non mostrare nulla.
+   */
+  senzaImporti?: boolean
 }) {
   const stato = ETICHETTA[riparazione.stato]
   const totale = totaleRiparazione(riparazione)
@@ -136,10 +143,23 @@ export function SchedaPratica({
 
       <div className="ticket__foot">
         <div>
-          <div className="faint" style={{ fontSize: '.75rem' }}>
-            {riparazione.acconto ? 'Saldo da versare' : 'Totale'}
-          </div>
-          <div className="ticket__price">{euro(riparazione.acconto ? totale - riparazione.acconto : totale)}</div>
+          {senzaImporti ? (
+            <>
+              <div className="faint" style={{ fontSize: '.75rem' }}>
+                Garanzia
+              </div>
+              <b style={{ fontSize: '.9rem' }}>12 mesi</b>
+            </>
+          ) : (
+            <>
+              <div className="faint" style={{ fontSize: '.75rem' }}>
+                {riparazione.acconto ? 'Saldo da versare' : 'Totale'}
+              </div>
+              <div className="ticket__price">
+                {euro(riparazione.acconto ? totale - riparazione.acconto : totale)}
+              </div>
+            </>
+          )}
         </div>
         {azioni ?? (
           <div style={{ textAlign: 'right' }}>

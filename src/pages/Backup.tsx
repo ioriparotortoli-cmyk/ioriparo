@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
-import { Database, Download, FileSpreadsheet, RotateCcw, Upload } from 'lucide-react'
+import { CloudUpload, Database, Download, FileSpreadsheet, RotateCcw, Upload } from 'lucide-react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { useIntestazione } from '@/components/layout/intestazione'
-import { useGestionale } from '@/data/store'
+import { caricaDatabase, useGestionale } from '@/data/store'
+import { caricaArchivio } from '@/data/archivio'
 import { esportaCsv, esportaJson, nomeFileConData } from '@/lib/esporta'
 import { totaleFattura, totalePreventivo, totaleRiparazione } from '@/lib/calcoli'
 import { formatData } from '@/lib/format'
@@ -17,10 +18,31 @@ export function Backup() {
     sottotitolo: 'Salva una copia dell’archivio o esporta i dati in CSV',
   })
 
-  const { db, importaDatabase, ripristinaDemo } = useGestionale()
+  const { db, sorgente, ricarica, importaDatabase, ripristinaDemo } = useGestionale()
   const inputImport = useRef<HTMLInputElement>(null)
   const [esito, setEsito] = useState<{ tipo: 'ok' | 'errore'; testo: string } | null>(null)
   const [confermaRipristino, setConfermaRipristino] = useState(false)
+
+  const online = sorgente === 'online'
+  const [inCorso, setInCorso] = useState(false)
+
+  /** Copia nell'archivio condiviso quello che era rimasto in questo browser. */
+  async function trasferisci() {
+    setInCorso(true)
+    setEsito(null)
+    try {
+      const voci = await caricaArchivio(caricaDatabase())
+      await ricarica()
+      setEsito({ tipo: 'ok', testo: `Trasferite ${voci} schede nell’archivio online.` })
+    } catch (e) {
+      setEsito({
+        tipo: 'errore',
+        testo: `Trasferimento non riuscito: ${e instanceof Error ? e.message : 'errore sconosciuto'}`,
+      })
+    } finally {
+      setInCorso(false)
+    }
+  }
 
   function esportaTutto() {
     esportaJson(nomeFileConData('ioriparo-backup', 'json'), db)
@@ -235,17 +257,39 @@ export function Backup() {
 
       <Card>
         <CardHeader
-          titolo="Archivio locale"
-          sottotitolo="I dati sono salvati nel browser di questo dispositivo"
+          titolo={online ? 'Archivio online' : 'Archivio locale'}
+          sottotitolo={
+            online
+              ? 'I dati sono nell’archivio condiviso e li vedi da ogni dispositivo'
+              : 'I dati sono salvati nel browser di questo dispositivo'
+          }
         />
-        <p className="mt-3 text-sm text-ink-muted">
-          Il gestionale funziona senza server: ogni modifica resta nel browser corrente. Esporta un
-          backup prima di cambiare dispositivo o di svuotare i dati di navigazione.
-        </p>
-        <Button variante="pericolo" className="mt-4" onClick={() => setConfermaRipristino(true)}>
-          <RotateCcw size={15} />
-          Ripristina dati dimostrativi
-        </Button>
+        {online ? (
+          <>
+            <p className="mt-3 text-sm text-ink-muted">
+              Ogni modifica viene scritta anche nell’archivio condiviso, e il sito legge da lì lo
+              stato delle riparazioni. Se su questo browser era rimasto del lavoro fatto prima del
+              collegamento, puoi trasferirlo ora: le schede già presenti online con lo stesso
+              identificativo vengono aggiornate, non duplicate.
+            </p>
+            <Button className="mt-4" onClick={() => void trasferisci()} disabled={inCorso}>
+              <CloudUpload size={15} />
+              {inCorso ? 'Trasferimento…' : 'Trasferisci l’archivio di questo browser'}
+            </Button>
+          </>
+        ) : (
+          <>
+            <p className="mt-3 text-sm text-ink-muted">
+              Il gestionale sta lavorando senza archivio condiviso: ogni modifica resta nel browser
+              corrente. Esporta un backup prima di cambiare dispositivo o di svuotare i dati di
+              navigazione.
+            </p>
+            <Button variante="pericolo" className="mt-4" onClick={() => setConfermaRipristino(true)}>
+              <RotateCcw size={15} />
+              Ripristina dati dimostrativi
+            </Button>
+          </>
+        )}
       </Card>
 
       <Modal

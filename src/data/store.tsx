@@ -60,6 +60,21 @@ export function nuovoId(prefisso: string): string {
 }
 
 /**
+ * Vero se in questo browser c'è davvero un archivio salvato.
+ *
+ * Serve prima di trasferire i dati online: senza questo controllo, da un
+ * computer che non ha mai usato il gestionale si finirebbe per caricare
+ * nell'archivio vero i clienti e le riparazioni di esempio.
+ */
+export function esisteArchivioLocale(): boolean {
+  try {
+    return Boolean(window.localStorage.getItem(CHIAVE_STORAGE))
+  } catch {
+    return false
+  }
+}
+
+/**
  * L'archivio salvato nel browser di questo dispositivo. Serve anche al
  * passaggio all'archivio online, per non lasciare indietro il lavoro già fatto.
  */

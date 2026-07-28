@@ -4,7 +4,7 @@ import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { useIntestazione } from '@/components/layout/intestazione'
-import { caricaDatabase, useGestionale } from '@/data/store'
+import { caricaDatabase, esisteArchivioLocale, useGestionale } from '@/data/store'
 import { caricaArchivio } from '@/data/archivio'
 import { esportaCsv, esportaJson, nomeFileConData } from '@/lib/esporta'
 import { totaleFattura, totalePreventivo, totaleRiparazione } from '@/lib/calcoli'
@@ -25,9 +25,21 @@ export function Backup() {
 
   const online = sorgente === 'online'
   const [inCorso, setInCorso] = useState(false)
+  // Da trasferire c'è qualcosa solo se questo browser ha un archivio suo.
+  const daTrasferire = online && esisteArchivioLocale()
 
-  /** Copia nell'archivio condiviso quello che era rimasto in questo browser. */
+  /**
+   * Copia nell'archivio condiviso quello che era rimasto in questo browser.
+   * Operazione da fare una volta sola, al passaggio all'archivio online.
+   */
   async function trasferisci() {
+    if (!esisteArchivioLocale()) {
+      setEsito({
+        tipo: 'errore',
+        testo: 'Questo browser non ha un archivio da trasferire: non è mai stato usato per il gestionale.',
+      })
+      return
+    }
     setInCorso(true)
     setEsito(null)
     try {
@@ -268,14 +280,27 @@ export function Backup() {
           <>
             <p className="mt-3 text-sm text-ink-muted">
               Ogni modifica viene scritta anche nell’archivio condiviso, e il sito legge da lì lo
-              stato delle riparazioni. Se su questo browser era rimasto del lavoro fatto prima del
-              collegamento, puoi trasferirlo ora: le schede già presenti online con lo stesso
-              identificativo vengono aggiornate, non duplicate.
+              stato delle riparazioni. Non c’è nulla da salvare a mano.
             </p>
-            <Button className="mt-4" onClick={() => void trasferisci()} disabled={inCorso}>
-              <CloudUpload size={15} />
-              {inCorso ? 'Trasferimento…' : 'Trasferisci l’archivio di questo browser'}
-            </Button>
+            {daTrasferire ? (
+              <>
+                <p className="mt-3 text-sm text-ink-muted">
+                  Su questo browser è rimasto un archivio di prima del collegamento. Puoi portarlo
+                  online adesso: è un’operazione da fare <strong className="text-ink">una volta
+                  sola</strong>, e le schede già presenti con lo stesso identificativo vengono
+                  aggiornate, non duplicate.
+                </p>
+                <Button className="mt-4" onClick={() => void trasferisci()} disabled={inCorso}>
+                  <CloudUpload size={15} />
+                  {inCorso ? 'Trasferimento…' : 'Trasferisci l’archivio di questo browser'}
+                </Button>
+              </>
+            ) : (
+              <p className="mt-3 text-sm text-ink-muted">
+                Questo browser non ha un archivio suo da trasferire: o è già stato portato online, o
+                il gestionale qui non è mai stato usato prima del collegamento.
+              </p>
+            )}
           </>
         ) : (
           <>

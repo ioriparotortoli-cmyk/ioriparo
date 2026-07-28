@@ -69,6 +69,21 @@ const Petalo = () => (
   </svg>
 )
 
+/** Colori della slitta di Natale. Sono gli unici fissi del sito: rosso e
+ *  marrone restano quelli sia in tema chiaro sia in tema scuro. */
+const ROSSO = '#cd3a2f'
+const ORO = '#e0a63c'
+const BIANCO = '#f6f2ea'
+const BORDO = '#cabfab'
+const INCARNATO = '#f0c49a'
+const MANTO = '#8b5e3c'
+const MANTO_SCURO = '#6f4728'
+const MUSO = '#9c6c46'
+const CORNA = '#c49a6c'
+const CUOIO = '#b08a55'
+const PERGAMENA = '#f4e9cf'
+const INCHIOSTRO = '#94764a'
+
 export function Stagione() {
   const stagione = stagioneDi()
   const natale = eNatale()
@@ -138,45 +153,61 @@ export function Stagione() {
 
       {natale && (
         <div className="stagione__slitta">
-          {/* Renne, tiro e slitta con Babbo Natale. È una silhouette: a
-              centocinquanta pixel non c'è spazio per il dettaglio, quindi
-              contano solo le sagome che si riconoscono da lontano — le corna,
-              il pattino ricurvo, il cappello con il pompon. */}
-          {/* La slitta attraversa da sinistra a destra: le renne stanno davanti,
-              a destra, e tirano; la slitta le segue. I tiranti sono spezzati
-              nei due vuoti, perché una riga sola passerebbe da parte a parte
-              dei corpi invece di attaccarsi al tiro. */}
+          {/* Babbo Natale con le renne e la lista, a colori.
+              La slitta attraversa da sinistra a destra: le renne stanno
+              davanti, a destra, e tirano; la slitta le segue. I tiranti sono
+              spezzati nei due vuoti, perché una riga sola passerebbe da parte
+              a parte dei corpi invece di attaccarsi al tiro.
+              I colori stanno scritti qui e non nelle variabili del tema:
+              il rosso del cappotto e il marrone delle renne sono quelli e
+              basta, non cambiano fra tema chiaro e tema scuro. Il bianco
+              (barba, pompon, bordo del berretto) ha un filo di contorno
+              caldo, altrimenti sparisce sul fondo chiaro della fascia. */}
           <svg viewBox="0 0 260 92" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M84 54h20M152 48h20" strokeWidth="2.4" />
+            <path d="M84 54h20M152 48h20" stroke={CUOIO} strokeWidth="2.4" />
 
             <g className="stagione__sacco" transform="translate(14 0)">
               {/* Pattino: la punta ricurva davanti è il segno che dice «slitta». */}
-              <path d="M4 76h64M68 76c9 0 12-8 5-12" strokeWidth="3.6" />
-              <path d="M18 76v-6M56 76v-6" strokeWidth="3" />
+              <path d="M4 76h64M68 76c9 0 12-8 5-12" stroke="#4f5866" strokeWidth="3.6" />
+              <path d="M18 76v-6M56 76v-6" stroke="#4f5866" strokeWidth="3" />
               {/* Scocca: schienale alto dietro, fronte che scende verso il tiro. */}
-              <path d="M6 70V48h40l16 22Z" fill="currentColor" />
-              <path d="M6 48c-1-10-10-12-13-4-3 8 4 13 9 10l2-5c-3 1-4-1-3-3 1-3 5-2 5 2Z" fill="currentColor" />
-              {/* Babbo Natale: pancia, barba, berretto col pompon, mano che saluta. */}
-              <path d="M20 48c0-8 5-13 11-13s11 5 11 13Z" fill="currentColor" />
-              <circle cx="31" cy="31" r="8" fill="currentColor" />
-              <path d="M25 34c1 7 12 7 13 0" strokeWidth="2" />
-              <path d="M40 26L18 12c-2-1-4 1-3 3l7 11Z" fill="currentColor" />
-              <path d="M20 26h21" strokeWidth="3.4" />
-              <circle cx="15" cy="12" r="3.4" fill="currentColor" />
-              {/* Il braccio va tenuto alto: alla stessa inclinazione della
-                  fiancata anteriore i due tratti si fondevano in uno solo. */}
-              <path d="M40 41l9-16" strokeWidth="4" />
+              <path d="M6 70V48h40l16 22Z" fill={ROSSO} />
+              <path d="M6 48c-1-10-10-12-13-4-3 8 4 13 9 10l2-5c-3 1-4-1-3-3 1-3 5-2 5 2Z" fill={ROSSO} />
+              <path d="M8 62h46" stroke={ORO} strokeWidth="2.4" />
+
+              {/* Babbo Natale: cappotto, cintura, faccia, barba, berretto. */}
+              <path d="M20 48c0-8 5-13 11-13s11 5 11 13Z" fill={ROSSO} />
+              <path d="M21 44h20" stroke="#33383f" strokeWidth="3.2" />
+              <path d="M29 44h5" stroke={ORO} strokeWidth="5" />
+              <circle cx="31" cy="31" r="7.5" fill={INCARNATO} />
+              <path d="M24 33c0 8 4 11 7 11s8-3 8-10c-2 3-5 4-8 4s-6-2-7-5Z" fill={BIANCO} stroke={BORDO} strokeWidth=".8" />
+              <path d="M40 26L18 12c-2-1-4 1-3 3l7 11Z" fill={ROSSO} />
+              <path d="M20 26h21" stroke={BIANCO} strokeWidth="4" />
+              <circle cx="15" cy="12" r="3.6" fill={BIANCO} stroke={BORDO} strokeWidth=".8" />
+
+              {/* Il braccio regge la lista: va tenuto alto, perché alla stessa
+                  inclinazione della fiancata i due tratti si fondevano in uno. */}
+              <path d="M40 42l6-9" stroke={ROSSO} strokeWidth="4.5" />
+              <rect x="46" y="21" width="16" height="23" fill={PERGAMENA} />
+              <rect x="43" y="17" width="22" height="5.5" rx="2.75" fill={CUOIO} />
+              <rect x="43" y="42.5" width="22" height="5.5" rx="2.75" fill={CUOIO} />
+              <path d="M49 28h10M49 33h10M49 38h7" stroke={INCHIOSTRO} strokeWidth="1.6" />
             </g>
 
             <g className="stagione__renne">
               {[92, 160].map((dx) => (
+                // La renna di testa — quella davanti, a destra — ha il naso rosso.
                 <g key={dx} transform={`translate(${dx} 0)`}>
-                  <path d="M20 55l-5 17M27 56l-1 16M39 56l2 16M45 54l6 16" strokeWidth="3.4" />
-                  <ellipse cx="32" cy="46" rx="17" ry="10" fill="currentColor" />
-                  <path d="M15 41l-6-5" strokeWidth="3" />
-                  <path d="M44 45l6-12" strokeWidth="9" />
-                  <path d="M47 29c6-4 14-1 14 4 0 4-4 7-8 6l-7-2c-4-1-3-6 1-8Z" fill="currentColor" />
-                  <path d="M50 25v-9m0 4l-6-4m6 1l4-6M57 24v-7m0 3l6-5" strokeWidth="2.2" />
+                  <path d="M20 55l-5 17M27 56l-1 16M39 56l2 16M45 54l6 16" stroke={MANTO_SCURO} strokeWidth="3.4" />
+                  <ellipse cx="32" cy="46" rx="17" ry="10" fill={MANTO} />
+                  <path d="M15 41l-6-5" stroke={MANTO_SCURO} strokeWidth="3" />
+                  <path d="M44 45l6-12" stroke={MANTO} strokeWidth="9" />
+                  <path d="M47 29c6-4 14-1 14 4 0 4-4 7-8 6l-7-2c-4-1-3-6 1-8Z" fill={MUSO} />
+                  <path d="M50 25v-9m0 4l-6-4m6 1l4-6M57 24v-7m0 3l6-5" stroke={CORNA} strokeWidth="2.2" />
+                  <circle cx="60" cy="34" r="2.8" fill={dx === 160 ? '#e2453c' : MANTO_SCURO} />
+                  {/* Collare con il campanello. */}
+                  <path d="M43 38l-2 9" stroke={ROSSO} strokeWidth="2.2" />
+                  <circle cx="41" cy="48" r="2.4" fill={ORO} />
                 </g>
               ))}
             </g>

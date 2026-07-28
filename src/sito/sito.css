@@ -327,13 +327,26 @@ body[data-sito]{
 
 /* Slitta: attraversa il cielo della fascia e sparisce. Passa di rado,
    perche' un passaggio continuo diventerebbe un fastidio. */
+/* Quota di volo: fra le luci e la prima riga di distintivi restano una
+   quarantina di pixel e la slitta ne occupa quasi ottanta, quindi non ci sta
+   comunque. Centrata su quella fascia sfiora le luci sopra e il bordo dei
+   distintivi sotto, invece di attraversarli in pieno come faceva piu' in
+   basso. */
 .stagione__slitta{
-  position:absolute; top:14%; left:0; width:100%; height:80px;
+  position:absolute; top:3.5%; left:0; width:100%; height:80px;
   animation:passa 34s linear infinite;
 }
+/* A differenza delle altre decorazioni la slitta e' a colori, quindi non
+   prende ne' `currentColor` ne' l'opacita' bassa delle sagome: a un terzo di
+   opacita' il rosso diventava rosa slavato. Resta comunque sotto l'uno per
+   non rubare la scena al titolo. */
 .stagione__slitta svg{
-  position:absolute; left:0; width:clamp(140px,15vw,200px); height:auto;
-  color:var(--txt-2); stroke:currentColor; opacity:.34;
+  position:absolute; left:0; width:clamp(150px,17vw,230px); height:auto;
+  opacity:.88;
+  /* `.stagione svg` tinge di blu il contorno di tutte le sagome: qui i colori
+     stanno sui singoli tratti, e il bordo blu ereditato circondava anche le
+     parti piene. */
+  stroke:none;
   animation:sobbalza 2.4s ease-in-out infinite;
 }
 @keyframes passa{
@@ -342,6 +355,13 @@ body[data-sito]{
   55%,100%{transform:translateX(118%)}
 }
 @keyframes sobbalza{50%{transform:translateY(-6px)}}
+/* Con le animazioni ridotte le durate vanno a zero e la slitta salta di colpo
+   alla fine della traversata, cioe' fuori campo: chi ha chiesto meno movimento
+   non la vedrebbe mai. La si parcheggia ferma, in vista. */
+@media (prefers-reduced-motion: reduce){
+  .stagione__slitta{animation:none !important; transform:translateX(20%)}
+  .stagione__slitta svg{animation:none !important}
+}
 
 /* Su schermi stretti tutto resta un accenno: lo spazio serve al testo. */
 @media (max-width: 760px){
@@ -353,9 +373,9 @@ body[data-sito]{
   .stagione__cade:nth-child(2n),.stagione__sale:nth-child(2n){display:none}
   .stagione__luci i{width:7px; height:7px}
   /* Su telefono la fascia non ha bande libere: la slitta passa sopra al
-     titolo, quindi va tenuta al livello di sfondo delle altre decorazioni. */
+     titolo, quindi va smorzata quanto basta a non renderlo faticoso. */
   .stagione__slitta{top:9%}
-  .stagione__slitta svg{opacity:.18}
+  .stagione__slitta svg{opacity:.55}
 }
 .hero__grid{display:grid; gap:clamp(32px,5vw,56px); align-items:center}
 .hero__badges{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}

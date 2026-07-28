@@ -25,7 +25,10 @@ export function Campo({
   className?: string
 }) {
   return (
-    <label className={cn('block', className)}>
+    // `data-errore` e' l'aggancio con cui il modulo porta a schermo il primo
+    // campo mancante: senza, premere "Salva" non produceva alcun segnale
+    // visibile e sembrava che il pulsante non funzionasse.
+    <label className={cn('block', className)} data-errore={errore ? 'true' : undefined}>
       {etichetta && (
         <span className="mb-1.5 flex items-center gap-1 text-xs font-medium text-ink-muted">
           {etichetta}

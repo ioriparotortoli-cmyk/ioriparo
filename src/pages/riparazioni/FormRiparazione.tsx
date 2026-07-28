@@ -266,7 +266,14 @@ export function FormRiparazione({
     setErrori(nuoviErrori)
 
     if (Object.keys(nuoviErrori).length > 0) {
-      document.querySelector('[data-errore="true"]')?.scrollIntoView({ block: 'center' })
+      // Il primo campo mancante va portato a schermo: il modulo e' lungo tre
+      // colonne e sul telefono si sviluppa in verticale, quindi il messaggio
+      // rosso puo' trovarsi molto lontano dal pulsante appena premuto.
+      requestAnimationFrame(() => {
+        document
+          .querySelector('[data-errore="true"]')
+          ?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      })
       return false
     }
     return true
@@ -281,8 +288,25 @@ export function FormRiparazione({
   // Suggerimenti per la coppia tipo + marca: il campo resta comunque libero.
   const modelli = modelliSuggeriti(dati.tipoDispositivo, dati.marca)
 
+  const mancanti = Object.values(errori)
+
   return (
     <div className="space-y-4">
+      {/* Riepilogo accanto al pulsante: dice subito perche' non ha salvato. */}
+      {mancanti.length > 0 && (
+        <div
+          role="alert"
+          className="rounded-card border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+        >
+          <strong className="font-semibold">Non ho salvato: mancano alcuni dati.</strong>
+          <ul className="mt-1 list-disc pl-5">
+            {mancanti.map((messaggio) => (
+              <li key={messaggio}>{messaggio}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button onClick={() => navigate(-1)}>
           <X size={15} />

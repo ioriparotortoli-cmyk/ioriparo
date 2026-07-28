@@ -281,10 +281,59 @@ body[data-sito]{
 .stagione__onda2{animation-delay:-7s !important; opacity:.6}
 @keyframes onda{50%{transform:translateX(-24px)}}
 
-/* Su schermi stretti il sole resta un accenno: lo spazio serve al testo. */
+/* Elementi che cadono o salgono: foglie, fiocchi, petali.
+   La colonna e' alta quanto la fascia, cosi' `translateY(110%)` significa
+   davvero "tutta l'altezza": in percentuale la traslazione si misura
+   sull'elemento stesso, e con una colonna alta 22px i fiocchi si muovevano di
+   venticinque pixel e restavano appesi in cima.
+   Rotazione e ondeggio stanno sul disegno interno: applicati alla colonna
+   l'avrebbero fatta ruotare tutta, spostando il disegno a mezzo schermo. */
+.stagione__cade,.stagione__sale{
+  position:absolute; top:0; width:22px; height:100%;
+  color:var(--blue-bright); opacity:.24;
+  animation-iteration-count:infinite; animation-timing-function:linear;
+}
+.stagione__cade svg,.stagione__sale svg{
+  position:static; width:22px; height:22px; stroke:currentColor; stroke-width:1.4;
+  animation:ondeggia 7s ease-in-out infinite;
+}
+.stagione__cade{animation-name:cadi}
+.stagione__sale{animation-name:sali}
+
+@keyframes cadi{from{transform:translateY(-12%)} to{transform:translateY(112%)}}
+@keyframes sali{from{transform:translateY(112%)} to{transform:translateY(-12%)}}
+/* Due tempi diversi da quello della caduta: uguali darebbero un moto meccanico. */
+@keyframes ondeggia{
+  0%,100%{transform:translateX(0) rotate(0deg)}
+  50%{transform:translateX(18px) rotate(160deg)}
+}
+
+.stagione--autunno .stagione__cade{color:#c2703a; opacity:.3}
+.stagione--primavera .stagione__sale{color:#d98cb3; opacity:.26}
+.stagione--inverno .stagione__cade{color:var(--blue-glow); opacity:.32}
+
+/* Luci di Natale: una filza appesa al bordo alto della fascia. */
+.stagione__luci{position:absolute; inset:0 0 auto 0; height:44px}
+.stagione__luci svg{position:absolute; inset:0; width:100%; height:100%; stroke:var(--line-soft); stroke-width:2}
+.stagione__luci i{
+  position:absolute; top:14px; width:9px; height:9px; margin-left:-4.5px;
+  border-radius:50%; background:var(--blue-glow);
+  box-shadow:0 0 10px 2px color-mix(in srgb,var(--blue-glow) 55%,transparent);
+  animation:lampeggia 3.2s ease-in-out infinite;
+}
+.stagione__luci i:nth-child(3n){background:#e8b04b; box-shadow:0 0 10px 2px rgba(232,176,75,.5)}
+.stagione__luci i:nth-child(3n+1){background:#5fbf8a; box-shadow:0 0 10px 2px rgba(95,191,138,.5)}
+@keyframes lampeggia{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* Su schermi stretti tutto resta un accenno: lo spazio serve al testo. */
 @media (max-width: 760px){
   .stagione__sole{width:130px; opacity:.14}
   .stagione__onde{opacity:.1}
+  .stagione__cade,.stagione__sale{width:16px; opacity:.18}
+  .stagione__cade svg,.stagione__sale svg{width:16px; height:16px}
+  /* Meno elementi in movimento su telefono: batteria e fluidita' prima di tutto. */
+  .stagione__cade:nth-child(2n),.stagione__sale:nth-child(2n){display:none}
+  .stagione__luci i{width:7px; height:7px}
 }
 .hero__grid{display:grid; gap:clamp(32px,5vw,56px); align-items:center}
 .hero__badges{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px}

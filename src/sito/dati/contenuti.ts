@@ -60,8 +60,8 @@ export const GALLERIA: VoceGalleria[] = [
   {
     foto: 'samsung-aperto',
     categoria: 'laboratorio',
-    titolo: 'Samsung aperto sul banco',
-    descrizione: 'Scocca posteriore rimossa, con camere e batteria a vista.',
+    titolo: 'Samsung caduto in acqua',
+    descrizione: 'Aperto e pulito subito dopo la caduta. Il recupero non si può garantire in partenza.',
   },
   {
     foto: 'switch-poe',
@@ -78,8 +78,8 @@ export const GALLERIA: VoceGalleria[] = [
   {
     foto: 'amplificatore-antenna',
     categoria: 'impianti',
-    titolo: 'Distribuzione del segnale d’antenna',
-    descrizione: 'Alimentatore e derivazioni ripartiti dalla scatola a muro.',
+    titolo: 'Impianto TV e antenna',
+    descrizione: 'Amplificatore di segnale e derivazioni rifatti a partire dalla scatola a muro.',
   },
   {
     foto: 'quadro-impianto',

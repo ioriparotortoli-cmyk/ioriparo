@@ -1,13 +1,18 @@
 import type { NomeIcona } from '../componenti/Icona'
 import { AZIENDA, GARANZIA, GOOGLE } from './azienda'
-import type { NomeScena } from '../componenti/Illustrazione'
 
 /* ─────────────── Galleria ─────────────── */
 
 export type CategoriaGalleria = 'laboratorio' | 'impianti' | 'reti'
 
 export interface VoceGalleria {
-  scena: NomeScena
+  /**
+   * Nome del file in `public/foto`, senza estensione. Di ognuno esistono due
+   * misure: `nome-p.jpg` per il riquadro nella griglia e `nome.jpg` per
+   * l'immagine aperta. Caricare la grande anche nella griglia significherebbe
+   * scaricare piu' di un mega di foto per vedere delle miniature.
+   */
+  foto: string
   categoria: CategoriaGalleria
   titolo: string
   descrizione: string
@@ -20,19 +25,68 @@ export const CATEGORIE_GALLERIA: { id: CategoriaGalleria | 'tutti'; etichetta: s
   { id: 'reti', etichetta: 'Reti' },
 ]
 
+/**
+ * Foto di lavori davvero eseguiti in laboratorio e in cantiere.
+ *
+ * Le descrizioni dicono quello che si vede nella foto e niente di piu': non
+ * ci sono numeri, misure o quantita' che non si possano verificare guardando
+ * l'immagine. Prima al loro posto c'erano dei disegni con didascalie inventate
+ * — terabyte recuperati, punti rete certificati, un «team» — e su un sito di
+ * un'attivita' vera quelle cifre le si legge come impegni presi.
+ *
+ * Le foto sono passate da `scripts/foto.py`, che le raddrizza, le rimpicciolisce
+ * e copre i dati dei clienti: nessuna deve mostrare IMEI, numeri di serie,
+ * schede di accettazione o schermi con contenuti personali.
+ */
 export const GALLERIA: VoceGalleria[] = [
-  { scena: 'bench', categoria: 'laboratorio', titolo: 'Banco di microsaldatura', descrizione: 'Stazione ad aria calda e microscopio per interventi su scheda madre.' },
-  { scena: 'phone', categoria: 'laboratorio', titolo: 'Sostituzione display smartphone', descrizione: 'Display originale, calibrazione e test su 18 punti di controllo.' },
-  { scena: 'cam', categoria: 'impianti', titolo: 'Telecamera IP 4K su negozio', descrizione: 'Installazione con staffa antivandalo e cablaggio PoE nascosto.' },
-  { scena: 'net', categoria: 'reti', titolo: 'Armadio rack certificato', descrizione: 'Switch gestito, patch panel ordinato ed etichettatura di ogni porta.' },
-  { scena: 'laptop', categoria: 'laboratorio', titolo: 'Upgrade SSD su notebook', descrizione: 'Clonazione del sistema e sostituzione della pasta termica.' },
-  { scena: 'wifi', categoria: 'reti', titolo: 'Access point in hotel', descrizione: 'Copertura completa sulle camere con roaming trasparente.' },
-  { scena: 'data', categoria: 'laboratorio', titolo: 'Recupero dati da RAID', descrizione: "Ricostruzione dell'array e recupero di 1,8 TB di archivio aziendale." },
-  { scena: 'cable', categoria: 'reti', titolo: 'Cablaggio strutturato Cat.6A', descrizione: '32 punti rete certificati in un ufficio su due piani.' },
-  { scena: 'shop', categoria: 'impianti', titolo: 'Impianto completo per retail', descrizione: 'Videosorveglianza, Wi-Fi ospiti e casse collegate in un unico progetto.' },
-  { scena: 'tablet', categoria: 'laboratorio', titolo: 'Vetro tablet separato', descrizione: 'Sostituzione del solo vetro: costo dimezzato rispetto al modulo completo.' },
-  { scena: 'team', categoria: 'laboratorio', titolo: 'Il team al lavoro', descrizione: 'Tecnici specializzati tra laboratorio e cantiere.' },
-  { scena: 'cam', categoria: 'impianti', titolo: 'Sopralluogo su capannone', descrizione: "Studio delle inquadrature e delle zone d'ombra prima del preventivo." },
+  {
+    foto: 'batteria-iphone-originale',
+    categoria: 'laboratorio',
+    titolo: 'Batteria iPhone sostituita',
+    descrizione: 'A intervento finito il telefono riconosce la batteria, senza l’avviso di parte non originale.',
+  },
+  {
+    foto: 'iphone-vetro-rotto',
+    categoria: 'laboratorio',
+    titolo: 'iPhone con il vetro scheggiato',
+    descrizione: 'Com’è arrivato al banco: angolo scheggiato e crepa che attraversa il display.',
+  },
+  {
+    foto: 'xiaomi-batteria',
+    categoria: 'laboratorio',
+    titolo: 'Sostituzione batteria Xiaomi',
+    descrizione: 'Telefono aperto sul banco per arrivare alla batteria.',
+  },
+  {
+    foto: 'samsung-aperto',
+    categoria: 'laboratorio',
+    titolo: 'Samsung aperto sul banco',
+    descrizione: 'Scocca posteriore rimossa, con camere e batteria a vista.',
+  },
+  {
+    foto: 'switch-poe',
+    categoria: 'reti',
+    titolo: 'Switch PoE in un impianto',
+    descrizione: 'Con il PoE corrente e dati viaggiano sullo stesso cavo: niente presa accanto a ogni telecamera.',
+  },
+  {
+    foto: 'telecamera-esterno',
+    categoria: 'impianti',
+    titolo: 'Telecamera esterna sotto la gronda',
+    descrizione: 'Montata al riparo dalla pioggia, con il cavo che rientra subito nella canalina.',
+  },
+  {
+    foto: 'amplificatore-antenna',
+    categoria: 'impianti',
+    titolo: 'Distribuzione del segnale d’antenna',
+    descrizione: 'Alimentatore e derivazioni ripartiti dalla scatola a muro.',
+  },
+  {
+    foto: 'quadro-impianto',
+    categoria: 'impianti',
+    titolo: 'Quadro di un impianto a muro',
+    descrizione: 'Alimentatore e collegamenti raccolti dentro una cassetta stagna.',
+  },
 ]
 
 /* ─────────────── Recensioni ─────────────── */

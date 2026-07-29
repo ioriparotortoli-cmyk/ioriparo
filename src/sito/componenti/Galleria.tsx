@@ -3,7 +3,6 @@ import { CATEGORIE_GALLERIA, GALLERIA, type CategoriaGalleria, type VoceGalleria
 import { cn } from '../lib/utili'
 import { useEsc } from '../lib/hook'
 import { Icona } from './Icona'
-import { Illustrazione } from './Illustrazione'
 import { Selettore } from './base'
 
 function Riquadro({ voce, indice, onApri }: { voce: VoceGalleria; indice: number; onApri: (i: number) => void }) {
@@ -21,7 +20,14 @@ function Riquadro({ voce, indice, onApri }: { voce: VoceGalleria; indice: number
         }
       }}
     >
-      <Illustrazione scena={voce.scena} ritaglia />
+      {/* Miniatura, non la foto grande: la griglia ne mostra otto insieme.
+          Le prime due stanno gia' a schermo, il resto arriva scorrendo. */}
+      <img
+        src={`/foto/${voce.foto}-p.jpg`}
+        alt={`${voce.titolo}. ${voce.descrizione}`}
+        loading={indice < 2 ? 'eager' : 'lazy'}
+        decoding="async"
+      />
       <figcaption className="gal__cap">
         <span>
           <b>{voce.titolo}</b>
@@ -103,11 +109,9 @@ export function Galleria({ limite, filtrabile }: { limite?: number; filtrabile?:
         {voce && (
           <div className="lb__box">
             <div style={{ position: 'relative' }}>
-              <Illustrazione
-                scena={voce.scena}
-                ritaglia
-                style={{ width: '100%', aspectRatio: '16 / 9', background: 'var(--panel-2)' }}
-              />
+              {/* Intera, non ritagliata: le foto del banco sono verticali e in
+                  un riquadro 16:9 si vedeva solo la fascia centrale. */}
+              <img className="lb__foto" src={`/foto/${voce.foto}.jpg`} alt={voce.titolo} />
               <div className="lb__nav">
                 <button className="iconbtn" onClick={() => scorri(-1)} aria-label="Immagine precedente">
                   <Icona nome="left" />

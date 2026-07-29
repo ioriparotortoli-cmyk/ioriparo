@@ -36,15 +36,9 @@ export const CSS_STAMPA = `
     padding-bottom: 10px;
   }
 
-  .doc-marchio { display: flex; align-items: center; gap: 10px; }
-  .doc-marchio svg { width: 34px; height: 34px; }
-  .doc-marchio-nome { font-size: 16pt; font-weight: 800; letter-spacing: -0.3px; }
-  .doc-marchio-claim {
-    font-size: 6.5pt;
-    letter-spacing: 1.6px;
-    text-transform: uppercase;
-    color: #5d6675;
-  }
+  /* Il marchio e' un'immagine con le proporzioni sue: si fissa la larghezza e
+     l'altezza segue, altrimenti si schiaccia. */
+  .doc-marchio { width: 38mm; height: auto; display: block; }
 
   .doc-azienda { text-align: right; font-size: 8.5pt; color: #4b5563; }
   .doc-azienda strong { color: #14181f; }

@@ -66,5 +66,7 @@ export function NuovaRiparazione() {
     navigate(`/gestionale/riparazioni/${riparazione.id}${stampa ? '?stampa=1' : ''}`)
   }
 
-  return <FormRiparazione iniziali={datiVuoti()} onSalva={salva} />
+  // Una sola bozza per l'accettazione in corso: e' un banco, non se ne aprono
+  // due in parallelo.
+  return <FormRiparazione iniziali={datiVuoti()} chiaveBozza="nuova-riparazione" onSalva={salva} />
 }

@@ -5,6 +5,7 @@ import {
   MessageCircle,
   Plus,
   Printer,
+  RotateCcw,
   ScanLine,
   Search,
   Upload,
@@ -27,6 +28,7 @@ import {
 import { Modal } from '@/components/ui/Modal'
 import { SignaturePad } from '@/components/ui/SignaturePad'
 import { nuovoId, useGestionale } from '@/data/store'
+import { useBozza } from '@/lib/bozza'
 import { formatEuro, oggiISO } from '@/lib/format'
 import {
   MARCHE_PER_TIPO,
@@ -152,22 +154,33 @@ export function datiDaRiparazione(riparazione: Riparazione, cliente?: Cliente): 
 }
 
 /**
+ * Foto e firma sono immagini incorporate: stanno nella bozza in memoria ma non
+ * su disco, dove riempirebbero da sole tutto lo spazio disponibile.
+ */
+const FUORI_DAL_DISCO: (keyof DatiForm)[] = ['foto', 'firmaCliente']
+
+/**
  * Modulo di accettazione, condiviso da «Nuova accettazione» e «Modifica».
  * Il salvataggio è delegato alla pagina che lo ospita.
  */
 export function FormRiparazione({
   iniziali,
+  chiaveBozza,
   etichettaSalva = 'Salva e Stampa',
   onSalva,
 }: {
   iniziali: DatiForm
+  /** Identifica la bozza: una per la nuova accettazione, una per scheda. */
+  chiaveBozza: string
   etichettaSalva?: string
   onSalva: (dati: DatiForm, stampa: boolean) => void
 }) {
   const { db } = useGestionale()
   const navigate = useNavigate()
 
-  const [dati, setDati] = useState<DatiForm>(iniziali)
+  // Quanto si scrive resta anche uscendo dalla pagina: prima bastava aprire
+  // un'altra schermata del gestionale e tornare indietro per perdere tutto.
+  const [dati, setDati, bozza] = useBozza<DatiForm>(chiaveBozza, iniziali, FUORI_DAL_DISCO)
   const [errori, setErrori] = useState<Record<string, string>>({})
   const [sceltaCliente, setSceltaCliente] = useState(false)
   const [ricercaCliente, setRicercaCliente] = useState('')
@@ -281,7 +294,15 @@ export function FormRiparazione({
 
   function salva(stampa: boolean) {
     if (!valida()) return
+    // Da qui in poi la scheda vive nell'archivio: la bozza non serve piu'.
+    bozza.scarta()
     onSalva(dati, stampa)
+  }
+
+  /** Annullare e' una rinuncia esplicita: la bozza va buttata, non conservata. */
+  function annulla() {
+    bozza.scarta()
+    navigate(-1)
   }
 
   const marche = MARCHE_PER_TIPO[dati.tipoDispositivo]
@@ -292,6 +313,25 @@ export function FormRiparazione({
 
   return (
     <div className="space-y-4">
+      {/* Ripresa dichiarata, non silenziosa: ritrovare il modulo gia' pieno
+          senza spiegazione fa dubitare di stare scrivendo sulla scheda giusta. */}
+      {bozza.origine && (
+        <div className="rounded-card border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p>
+              <strong className="font-semibold">Ho ripreso il modulo lasciato a metà.</strong>{' '}
+              {bozza.origine === 'disco'
+                ? 'Il testo è tornato tutto; foto e firma no, quelle non restano alla chiusura del browser.'
+                : 'È tutto com’era, foto e firma comprese.'}
+            </p>
+            <Button dimensione="sm" onClick={bozza.ricomincia}>
+              <RotateCcw className="size-4" />
+              Ricomincia da capo
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Riepilogo accanto al pulsante: dice subito perche' non ha salvato. */}
       {mancanti.length > 0 && (
         <div
@@ -308,7 +348,7 @@ export function FormRiparazione({
       )}
 
       <div className="flex flex-wrap items-center justify-end gap-2">
-        <Button onClick={() => navigate(-1)}>
+        <Button onClick={annulla}>
           <X size={15} />
           Annulla
         </Button>
@@ -813,7 +853,7 @@ export function FormRiparazione({
       </div>
 
       <div className="flex flex-wrap justify-end gap-2">
-        <Button onClick={() => navigate(-1)}>Annulla</Button>
+        <Button onClick={annulla}>Annulla</Button>
         <Button variante="secondario" onClick={() => salva(false)}>
           Salva
         </Button>

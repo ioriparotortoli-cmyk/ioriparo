@@ -19,10 +19,10 @@ const pagina = (carica: () => Promise<Record<string, unknown>>, esporta: string)
 })
 
 /**
- * Il gestionale è escluso dalla build: non ha autenticazione e mostra dati
- * dell'attività, quindi non può stare su un sito pubblico. Il codice resta nel
- * repository e si ricompila con `VITE_GESTIONALE=1` per l'uso interno, quando
- * sarà protetto da un accesso vero.
+ * Il gestionale entra nella build solo con `VITE_GESTIONALE=1`. Mostra i dati
+ * dell'attività, quindi non deve finire per sbaglio in una build del sito: chi
+ * lo vuole online lo chiede esplicitamente, e a quel punto `AppLayout` pretende
+ * l'accesso con le credenziali dell'archivio online.
  */
 const conGestionale = import.meta.env.VITE_GESTIONALE === '1' && import.meta.env.VITE_ANTEPRIMA !== '1'
 

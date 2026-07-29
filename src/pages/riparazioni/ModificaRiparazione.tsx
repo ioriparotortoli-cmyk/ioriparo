@@ -56,6 +56,8 @@ export function ModificaRiparazione() {
   return (
     <FormRiparazione
       iniziali={datiDaRiparazione(riparazione, cliente)}
+      // Una bozza per scheda: modificarne due di seguito non deve mescolarle.
+      chiaveBozza={`riparazione-${riparazione.id}`}
       etichettaSalva="Salva e Stampa"
       onSalva={salva}
     />

@@ -6,7 +6,7 @@ import { Modal } from '@/components/ui/Modal'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { caricaDatabase, esisteArchivioLocale, useGestionale } from '@/data/store'
 import { caricaArchivio } from '@/data/archivio'
-import { esportaCsv, esportaJson, nomeFileConData } from '@/lib/esporta'
+import { esportaCsv, esportaJson, nomeArchivio, nomeFileConData } from '@/lib/esporta'
 import { totaleFattura, totalePreventivo, totaleRiparazione } from '@/lib/calcoli'
 import { formatData } from '@/lib/format'
 import { STATI_FATTURA, STATI_PREVENTIVO, STATI_RIPARAZIONE, TIPI_DISPOSITIVO } from '@/lib/stati'
@@ -57,7 +57,7 @@ export function Backup() {
   }
 
   function esportaTutto() {
-    esportaJson(nomeFileConData('ioriparo-backup', 'json'), db)
+    esportaJson(nomeFileConData(nomeArchivio(db.azienda.nome), 'json'), db)
     setEsito({ tipo: 'ok', testo: 'Backup completo esportato.' })
   }
 
@@ -74,7 +74,7 @@ export function Backup() {
       importaDatabase(dati)
       setEsito({ tipo: 'ok', testo: 'Backup importato correttamente.' })
     } catch {
-      setEsito({ tipo: 'errore', testo: 'File non valido: attesa un’esportazione IO RIPARO.' })
+      setEsito({ tipo: 'errore', testo: 'File non valido: non sembra un backup del gestionale.' })
     }
   }
 

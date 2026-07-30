@@ -7,10 +7,14 @@ import type { Azienda, Cliente, Riparazione } from '@/types'
 /**
  * Condizioni di servizio firmate dal cliente all'accettazione.
  * Testo fornito dall'attività: si riporta alla lettera, senza riassunti.
+ *
+ * Il nome arriva dalle impostazioni invece di stare scritto nel testo: su
+ * un'altra installazione il cliente avrebbe firmato condizioni intestate a
+ * un'altra ditta.
  */
-const CONDIZIONI_SERVIZIO = [
+const condizioniServizio = (nome: string) => [
   'Il preventivo indicato è puramente indicativo e non vincolante. Eventuali variazioni saranno comunicate al cliente e dovranno essere approvate prima dell’esecuzione della riparazione.',
-  'I dati contenuti nel dispositivo non sono oggetto del servizio. Il cliente dichiara di aver effettuato un backup dei propri dati. Io Riparo non risponde della perdita di dati durante le operazioni di riparazione.',
+  `I dati contenuti nel dispositivo non sono oggetto del servizio. Il cliente dichiara di aver effettuato un backup dei propri dati. ${nome} non risponde della perdita di dati durante le operazioni di riparazione.`,
   'La riparazione è garantita 6 mesi con ricambio originale e 3 mesi con ricambio compatibile, secondo quanto indicato in fattura o ricevuta. La garanzia copre esclusivamente il componente sostituito ed è esclusa in caso di cadute, urti, infiltrazioni di liquidi, ossidazione, manomissioni, utilizzo improprio o danni causati da terzi.',
   'Per dispositivi con danni da liquidi o ossidazione, la riparazione ha il solo scopo di ripristinare temporaneamente il funzionamento, senza alcuna garanzia sulla durata nel tempo. Si raccomanda al cliente di effettuare il prima possibile il salvataggio dei propri dati.',
   'Per ricambi ordinati su richiesta del cliente può essere richiesto un acconto. Qualora il cliente rinunci alla riparazione dopo l’ordine del ricambio o prima dello scadere dei 4/5 giorni lavorativi necessari per la consegna del ricambio, l’acconto versato non sarà restituito, salvo i casi previsti dalla legge.',
@@ -262,7 +266,7 @@ export function DocumentoScheda({
       <div className="doc-condizioni">
         <h2>Condizioni di servizio</h2>
         <ol>
-          {CONDIZIONI_SERVIZIO.map((condizione) => (
+          {condizioniServizio(azienda.nome || 'Il centro di assistenza').map((condizione) => (
             <li key={condizione}>{condizione}</li>
           ))}
         </ol>

@@ -379,7 +379,7 @@ export function DettaglioRiparazione() {
 
                 <a
                   href={`https://wa.me/39${cliente.telefono.replace(/\D/g, '')}?text=${encodeURIComponent(
-                    `Salve ${cliente.nome}, la contattiamo da IO RIPARO in merito alla riparazione ${riparazione.codice} (${riparazione.marca} ${riparazione.modello}).`,
+                    `Salve ${cliente.nome}, la contattiamo da ${db.azienda.nome} in merito alla riparazione ${riparazione.codice} (${riparazione.marca} ${riparazione.modello}).`,
                   )}`}
                   target="_blank"
                   rel="noreferrer"

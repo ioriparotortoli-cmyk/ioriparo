@@ -21,7 +21,7 @@ interface ContestoIntestazione {
 
 const Contesto = createContext<ContestoIntestazione | null>(null)
 
-const PREDEFINITA: Intestazione = { titolo: 'IO RIPARO' }
+const PREDEFINITA: Intestazione = { titolo: 'Gestionale' }
 
 export function IntestazioneProvider({ children }: { children: ReactNode }) {
   const [intestazione, setIntestazione] = useState<Intestazione>(PREDEFINITA)
@@ -44,7 +44,10 @@ export function useIntestazione(intestazione: Intestazione) {
 
   useEffect(() => {
     contesto?.setIntestazione(JSON.parse(impronta) as Intestazione)
-    document.title = `${intestazione.titolo} · IO RIPARO`
+    // Il nome dell'attivita' lo mette `AppLayout`, che lo prende dall'archivio:
+    // qui era scritto a mano, e su un'altra installazione sarebbe stato quello
+    // sbagliato. Qui resta solo la pagina.
+    document.title = intestazione.titolo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [impronta])
 }

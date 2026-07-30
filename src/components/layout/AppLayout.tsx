@@ -58,6 +58,34 @@ function useManifestoGestionale() {
 }
 
 /**
+ * Nome e icona della scheda del browser, presi dall'attività.
+ *
+ * Nel guscio HTML non c'è più nulla di riconoscibile — è lo stesso file per
+ * tutte le installazioni — quindi l'identità arriva da qui, cioè dall'archivio.
+ * Chi apre il gestionale trova nella linguetta il proprio nome e il proprio
+ * marchio, non quelli di chi glielo ha installato.
+ */
+function useIdentitaScheda(nome: string, logo?: string) {
+  useEffect(() => {
+    const titoloPrima = document.title
+    if (nome) document.title = `${nome} — Gestionale`
+
+    let icona: HTMLLinkElement | null = null
+    if (logo) {
+      icona = document.createElement('link')
+      icona.rel = 'icon'
+      icona.href = logo
+      document.head.append(icona)
+    }
+
+    return () => {
+      document.title = titoloPrima
+      icona?.remove()
+    }
+  }, [nome, logo])
+}
+
+/**
  * Su un archivio appena creato i dati dell'attività sono vuoti, e senza quelli
  * un documento stampato non vale niente: manca chi lo emette. L'avviso resta
  * finché non sono compilati — non si può chiudere, perché chiuderlo non
@@ -82,6 +110,7 @@ export function AppLayout() {
   const [menuAperto, setMenuAperto] = useState(false)
   const { db, sorgente } = useGestionale()
   useManifestoGestionale()
+  useIdentitaScheda(db.azienda.nome, db.azienda.logo)
 
   // Un gestionale pubblicato senza archivio online non ha alcun accesso da
   // superare: mostrerebbe i dati dell'attività a chiunque conosca l'indirizzo.

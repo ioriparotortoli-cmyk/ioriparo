@@ -34,6 +34,22 @@ export function esportaJson(nomeFile: string, dati: unknown) {
 }
 
 /** Nome file con data odierna, es. `riparazioni-2024-05-18.csv`. */
+/**
+ * Nome del file di backup a partire dall'attività: «Ripara Facile» diventa
+ * `ripara-facile-backup`. Prima era scritto a mano con il nome di Io Riparo, e
+ * su un'altra installazione il cliente si sarebbe ritrovato nella cartella
+ * Download un file col nome di un'altra ditta.
+ */
+export function nomeArchivio(nomeAzienda: string): string {
+  const pulito = nomeAzienda
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+  return pulito ? `${pulito}-backup` : 'backup-gestionale'
+}
+
 export function nomeFileConData(prefisso: string, estensione: string): string {
   return `${prefisso}-${new Date().toISOString().slice(0, 10)}.${estensione}`
 }

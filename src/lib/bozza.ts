@@ -23,7 +23,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
  * modulo viene salvato o annullato.
  */
 
-const PREFISSO = 'ioriparo:bozza:'
+const PREFISSO = 'gestionale:bozza:'
 
 /** Oltre questo tempo la bozza e' roba dimenticata, non lavoro interrotto. */
 const SCADENZA_MS = 24 * 60 * 60 * 1000

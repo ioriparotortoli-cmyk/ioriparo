@@ -421,7 +421,9 @@ export function FormRiparazione({
                   <Input
                     value={dati.citta}
                     onChange={(e) => aggiorna('citta', e.target.value)}
-                    placeholder="Tortolì"
+                    // Il paese dell'attivita': e' li' che abita quasi sempre chi
+                    // porta un telefono al banco.
+                    placeholder={db.azienda.citta.replace(/^\d+\s*/, '') || 'Città'}
                   />
                 </Campo>
                 <Campo etichetta="CAP">

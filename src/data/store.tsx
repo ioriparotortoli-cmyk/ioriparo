@@ -31,7 +31,7 @@ import type {
   Utente,
 } from '@/types'
 
-const CHIAVE_STORAGE = 'ioriparo:db:v1'
+const CHIAVE_STORAGE = 'gestionale:db:v1'
 
 /**
  * Caratteri per la parte casuale del codice pratica: niente O/0, I/1, S/5,

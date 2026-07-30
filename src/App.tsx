@@ -1,8 +1,6 @@
 import { Suspense } from 'react'
-import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { GestionaleProvider } from '@/data/store'
-import { SitoLayout } from '@/sito/SitoLayout'
-import { Home } from '@/sito/pagine/Home'
 
 /**
  * Su hosting statico senza riscrittura degli URL (anteprime, GitHub Pages)
@@ -19,12 +17,24 @@ const pagina = (carica: () => Promise<Record<string, unknown>>, esporta: string)
 })
 
 /**
+ * Con `VITE_SOLO_GESTIONALE=1` il sito pubblico resta fuori: è la build da
+ * pubblicare sul dominio di un'altra attività, che deve trovarsi il gestionale
+ * e nient'altro. Senza, il suo indirizzo mostrerebbe il sito di Io Riparo.
+ *
+ * Implica il gestionale: una build senza sito e senza gestionale non
+ * servirebbe a nulla, e dimenticare la seconda variabile è facile.
+ */
+const soloGestionale = import.meta.env.VITE_SOLO_GESTIONALE === '1'
+
+/**
  * Il gestionale entra nella build solo con `VITE_GESTIONALE=1`. Mostra i dati
  * dell'attività, quindi non deve finire per sbaglio in una build del sito: chi
  * lo vuole online lo chiede esplicitamente, e a quel punto `AppLayout` pretende
  * l'accesso con le credenziali dell'archivio online.
  */
-const conGestionale = import.meta.env.VITE_GESTIONALE === '1' && import.meta.env.VITE_ANTEPRIMA !== '1'
+const conGestionale =
+  (import.meta.env.VITE_GESTIONALE === '1' || soloGestionale) &&
+  import.meta.env.VITE_ANTEPRIMA !== '1'
 
 const rotteGestionale = !conGestionale
   ? []
@@ -63,13 +73,20 @@ const rotteGestionale = !conGestionale
       },
     ]
 
-const router = creaRouter([
+/** Nella build del solo gestionale la radice porta dentro, e basta. */
+const rotteSito = soloGestionale
+  ? [{ path: '*', element: <Navigate to="/gestionale" replace /> }]
+  : [
   /* ─── Sito pubblico ─── */
   {
+    // Caricati a richiesta come tutto il resto. Importati in cima al file
+    // finivano nella build del solo gestionale anche senza essere usati: i
+    // fogli di stile del sito contano come effetto collaterale, quindi il
+    // modulo non si puo' scartare, e con lui entravano i dati di Io Riparo.
     path: '/',
-    element: <SitoLayout />,
+    lazy: pagina(() => import('@/sito/SitoLayout'), 'SitoLayout'),
     children: [
-      { index: true, element: <Home /> },
+      { index: true, lazy: pagina(() => import('@/sito/pagine/Home'), 'Home') },
       { path: 'chi-siamo', lazy: pagina(() => import('@/sito/pagine/ChiSiamo'), 'ChiSiamo') },
       { path: 'servizi', lazy: pagina(() => import('@/sito/pagine/Servizi'), 'Servizi') },
       { path: 'servizi/:id', lazy: pagina(() => import('@/sito/pagine/Servizio'), 'Servizio') },
@@ -87,9 +104,9 @@ const router = creaRouter([
       { path: '*', lazy: pagina(() => import('@/sito/pagine/Legali'), 'NonTrovata') },
     ],
   },
+]
 
-  ...rotteGestionale,
-])
+const router = creaRouter([...rotteSito, ...rotteGestionale])
 
 export function App() {
   return (

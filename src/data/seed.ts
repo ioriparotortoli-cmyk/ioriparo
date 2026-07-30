@@ -9,6 +9,7 @@ import type {
   Preventivo,
   Riparazione,
   Scadenza,
+  PreferenzeUtente,
   StatoRiparazione,
   Utente,
 } from '@/types'
@@ -388,7 +389,7 @@ const SEMI_RIPARAZIONI: SemeRiparazione[] = [
   { cliente: 'cli-024', tipo: 'smartphone', marca: 'Apple', modello: 'iPhone SE 2022', colore: 'Bianco', capacita: '64 GB', imei: '351998877665544', difetto: 'Batteria da sostituire', stato: 'consegnato', accettato: 7, lavorazione: 7, tecnico: 'Antonio', interventi: [{ descrizione: 'Sostituzione batteria', quantita: 1, prezzo: 59, articoloId: 'art-003' }] },
 ]
 
-export const RIPARAZIONI: Riparazione[] = SEMI_RIPARAZIONI.map((seme, indice) => {
+const riparazioniDemo = (): Riparazione[] => SEMI_RIPARAZIONI.map((seme, indice) => {
   const progressivo = String(indice + 1).padStart(4, '0')
   const dataAccettazione = giorniFa(seme.accettato)
   const consegnaPrevista =
@@ -521,7 +522,7 @@ function generaFatture(): Fattura[] {
   return fatture.reverse() // le più recenti per prime
 }
 
-export const FATTURE: Fattura[] = generaFatture()
+// Calcolate su richiesta, non all'importazione: vedi `riparazioniDemo`.
 
 // -------------------------------------------------------- Ordini fornitori
 
@@ -573,6 +574,19 @@ export const AZIENDA: Azienda = {
   prefissoCodice: `#${anno}-`,
 }
 
+/**
+ * Preferenze di partenza. Stanno fuori dall'utente di esempio: prendendole da
+ * `UTENTE.preferenze`, il nome e l'email di chi ha scritto la demo restavano
+ * nella build di ogni installazione.
+ */
+const PREFERENZE_INIZIALI: PreferenzeUtente = {
+  tema: 'sistema',
+  paginaIniziale: '/gestionale',
+  avvisiScadenze: true,
+  avvisiSottoScorta: true,
+  righePerPagina: 25,
+}
+
 /** Profilo di chi usa il gestionale: si modifica dalla pagina Profilo. */
 export const UTENTE: Utente = {
   nome: 'Stefano Pes',
@@ -580,13 +594,7 @@ export const UTENTE: Utente = {
   email: 'ioriparotortoli@gmail.com',
   telefono: '338 435 6603',
   iniziali: 'SP',
-  preferenze: {
-    tema: 'sistema',
-    paginaIniziale: '/gestionale',
-    avvisiScadenze: true,
-    avvisiSottoScorta: true,
-    righePerPagina: 25,
-  },
+  preferenze: PREFERENZE_INIZIALI,
 }
 
 /**
@@ -616,7 +624,7 @@ export function aziendaVuota(): Azienda {
 }
 
 export function utenteVuoto(): Utente {
-  return { nome: '', ruolo: '', email: '', preferenze: { ...UTENTE.preferenze } }
+  return { nome: '', ruolo: '', email: '', preferenze: { ...PREFERENZE_INIZIALI } }
 }
 
 /** I dati senza i quali un documento stampato non è valido. */
@@ -628,12 +636,36 @@ export function datiAziendaMancanti(azienda: Azienda): string[] {
   return mancanti
 }
 
+/** Archivio senza nulla dentro: nessun dato di esempio, nessuna attività. */
+export function databaseVuoto(): DatabaseGestionale {
+  return {
+    clienti: [],
+    riparazioni: [],
+    preventivi: [],
+    fatture: [],
+    magazzino: [],
+    ordini: [],
+    scadenze: [],
+    impianti: [],
+    azienda: aziendaVuota(),
+    utente: utenteVuoto(),
+  }
+}
+
 export function creaDatabaseIniziale(): DatabaseGestionale {
+  // Nella build da consegnare a un'altra attività i dati di esempio non
+  // servono e non devono nemmeno esserci: sono clienti finti con indirizzi di
+  // Tortolì e l'anagrafica di Io Riparo, e finivano dentro al file
+  // JavaScript scaricato dal browser del cliente. Con la condizione risolta
+  // a compilazione, le righe qui sotto restano irraggiungibili e vengono
+  // scartate dalla build.
+  if (import.meta.env.VITE_SOLO_GESTIONALE === '1') return databaseVuoto()
+
   return {
     clienti: CLIENTI,
-    riparazioni: RIPARAZIONI,
+    riparazioni: riparazioniDemo(),
     preventivi: PREVENTIVI,
-    fatture: FATTURE,
+    fatture: generaFatture(),
     magazzino: MAGAZZINO,
     ordini: ORDINI,
     scadenze: SCADENZE,

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase'
-import { creaDatabaseIniziale } from './seed'
+import { aziendaVuota, creaDatabaseIniziale, utenteVuoto } from './seed'
 import type { DatabaseGestionale } from '@/types'
 
 /**
@@ -62,10 +62,18 @@ export async function scaricaArchivio(): Promise<DatabaseGestionale> {
     .select('azienda, utente')
     .eq('id', 1)
     .maybeSingle()
-  if (impostazioni?.azienda && Object.keys(impostazioni.azienda).length)
-    db.azienda = { ...vuoto.azienda, ...impostazioni.azienda }
-  if (impostazioni?.utente && Object.keys(impostazioni.utente).length)
-    db.utente = { ...vuoto.utente, ...impostazioni.utente }
+
+  // Chi non ha ancora salvato le impostazioni parte in bianco, non con i dati
+  // di esempio: quelli sono di Io Riparo, e finirebbero stampati sui documenti
+  // di un'altra attività. Le preferenze si fondono a parte perché sono
+  // annidate e una fusione superficiale le azzererebbe.
+  const utente = impostazioni?.utente as Partial<DatabaseGestionale['utente']> | null
+  db.azienda = { ...aziendaVuota(), ...(impostazioni?.azienda ?? {}) }
+  db.utente = {
+    ...utenteVuoto(),
+    ...(utente ?? {}),
+    preferenze: { ...utenteVuoto().preferenze, ...(utente?.preferenze ?? {}) },
+  }
 
   return db
 }

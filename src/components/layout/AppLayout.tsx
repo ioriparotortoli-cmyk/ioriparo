@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { Link, Outlet, ScrollRestoration } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
 import { IntestazioneProvider } from './intestazione'
 import { Accesso } from '@/components/Accesso'
+import { datiAziendaMancanti } from '@/data/seed'
 import { useGestionale } from '@/data/store'
 import { archivioOnline } from '@/lib/supabase'
 
@@ -56,9 +57,30 @@ function useManifestoGestionale() {
   }, [])
 }
 
+/**
+ * Su un archivio appena creato i dati dell'attività sono vuoti, e senza quelli
+ * un documento stampato non vale niente: manca chi lo emette. L'avviso resta
+ * finché non sono compilati — non si può chiudere, perché chiuderlo non
+ * risolve, e un preventivo stampato senza partita IVA è un problema vero.
+ */
+function DatiDaCompilare({ mancanti }: { mancanti: string[] }) {
+  return (
+    <div
+      role="alert"
+      className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-200 lg:px-6"
+    >
+      <strong className="font-semibold">Manca ancora qualcosa sulla tua attività:</strong>{' '}
+      {mancanti.join(', ')}. Finché non li compili, i documenti stampati escono senza intestazione.{' '}
+      <Link to="/gestionale/impostazioni" className="font-semibold underline underline-offset-2">
+        Vai alle impostazioni
+      </Link>
+    </div>
+  )
+}
+
 export function AppLayout() {
   const [menuAperto, setMenuAperto] = useState(false)
-  const { sorgente } = useGestionale()
+  const { db, sorgente } = useGestionale()
   useManifestoGestionale()
 
   // Un gestionale pubblicato senza archivio online non ha alcun accesso da
@@ -80,6 +102,8 @@ export function AppLayout() {
     )
   }
 
+  const mancanti = datiAziendaMancanti(db.azienda)
+
   return (
     <IntestazioneProvider>
       <div className="min-h-screen bg-base">
@@ -87,6 +111,7 @@ export function AppLayout() {
 
         <div className="lg:pl-64">
           <Topbar onApriMenu={() => setMenuAperto(true)} />
+          {mancanti.length > 0 && <DatiDaCompilare mancanti={mancanti} />}
           <main className="p-4 lg:p-6">
             <Outlet />
           </main>

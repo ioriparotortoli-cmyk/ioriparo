@@ -589,6 +589,45 @@ export const UTENTE: Utente = {
   },
 }
 
+/**
+ * Azienda e utente di un archivio online appena creato.
+ *
+ * Vuoti, non precompilati. Il database di esempio qui sopra contiene i dati di
+ * Io Riparo: un gestionale installato per un'altra attività partirebbe con
+ * quelli, e chi stampasse un preventivo prima di aprire le impostazioni si
+ * ritroverebbe sul foglio nome, indirizzo e partita IVA di qualcun altro. Un
+ * campo vuoto si vede; un campo pieno dei dati sbagliati no.
+ */
+export function aziendaVuota(): Azienda {
+  return {
+    nome: '',
+    claim: '',
+    indirizzo: '',
+    citta: '',
+    telefono: '',
+    email: '',
+    partitaIva: '',
+    // Questi tre non identificano nessuno: sono impostazioni di lavoro, e
+    // partire da un valore sensato risparmia una compilazione.
+    ivaPredefinita: 22,
+    giorniValiditaPreventivo: 30,
+    prefissoCodice: `#${anno}-`,
+  }
+}
+
+export function utenteVuoto(): Utente {
+  return { nome: '', ruolo: '', email: '', preferenze: { ...UTENTE.preferenze } }
+}
+
+/** I dati senza i quali un documento stampato non è valido. */
+export function datiAziendaMancanti(azienda: Azienda): string[] {
+  const mancanti: string[] = []
+  if (!azienda.nome.trim()) mancanti.push('nome dell’attività')
+  if (!azienda.partitaIva.trim()) mancanti.push('partita IVA')
+  if (!azienda.indirizzo.trim()) mancanti.push('indirizzo')
+  return mancanti
+}
+
 export function creaDatabaseIniziale(): DatabaseGestionale {
   return {
     clienti: CLIENTI,

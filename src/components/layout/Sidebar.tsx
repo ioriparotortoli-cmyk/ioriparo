@@ -160,7 +160,7 @@ export function Sidebar({ aperta, onChiudi }: { aperta: boolean; onChiudi: () =>
             <Globe size={14} />
             Vai al sito pubblico
           </NavLink>
-          <Logo compatto className="mb-3" />
+          <Logo compatto senzaTesto className="mb-3" />
           <p className="text-[13px] font-bold text-ink">{azienda.nome}</p>
           <ul className="mt-2 space-y-1.5 text-[11px] leading-tight text-ink-faint">
             <li>

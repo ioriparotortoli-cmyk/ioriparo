@@ -191,6 +191,12 @@ export interface Impianto {
 export interface Azienda {
   nome: string
   claim: string
+  /**
+   * Marchio dell'attività, incorporato come dati e non come percorso a un
+   * file: sta nell'archivio, quindi ogni installazione ha il suo. Assente
+   * finché non viene caricato dalle impostazioni.
+   */
+  logo?: string
   indirizzo: string
   citta: string
   telefono: string

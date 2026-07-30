@@ -2,7 +2,6 @@ import { useState, type FormEvent } from 'react'
 import { KeyRound, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Campo, Input } from '@/components/ui/Form'
-import { Logo } from '@/components/layout/Logo'
 import { supabase } from '@/lib/supabase'
 
 /** Messaggi di Supabase tradotti in italiano comprensibile. */
@@ -48,16 +47,12 @@ export function Accesso() {
   return (
     <div className="grid min-h-screen place-items-center bg-base p-4">
       <div className="w-full max-w-sm">
-        <div className="mb-6 flex justify-center">
-          <Logo />
-        </div>
-
         <form
           onSubmit={entra}
           className="rounded-card border border-line bg-surface p-5 shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
         >
           <h1 className="text-[15px] font-semibold text-ink">Accesso al gestionale</h1>
-          <p className="mt-0.5 text-xs text-ink-faint">Riservato al personale di Io Riparo.</p>
+          <p className="mt-0.5 text-xs text-ink-faint">Riservato al personale autorizzato.</p>
 
           <div className="mt-4 space-y-3">
             <Campo etichetta="E-mail">

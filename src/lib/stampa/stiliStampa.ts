@@ -36,9 +36,17 @@ export const CSS_STAMPA = `
     padding-bottom: 10px;
   }
 
-  /* Il marchio e' un'immagine con le proporzioni sue: si fissa la larghezza e
-     l'altezza segue, altrimenti si schiaccia. */
-  .doc-marchio { width: 38mm; height: auto; display: block; }
+  /* Il marchio e' un'immagine caricata dall'utente, di proporzioni ignote: si
+     limitano sia la larghezza sia l'altezza e si lascia decidere a "contain",
+     cosi' un logo quadrato non diventa una striscia alta mezza pagina. */
+  .doc-marchio { max-width: 45mm; max-height: 20mm; object-fit: contain; display: block; }
+  .doc-marchio-nome { font-size: 16pt; font-weight: 800; letter-spacing: -0.3px; }
+  .doc-marchio-claim {
+    font-size: 6.5pt;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: #5d6675;
+  }
 
   .doc-azienda { text-align: right; font-size: 8.5pt; color: #4b5563; }
   .doc-azienda strong { color: #14181f; }

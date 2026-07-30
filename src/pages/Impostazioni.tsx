@@ -1,11 +1,101 @@
-import { useState } from 'react'
-import { Check, Save } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { Check, Save, Trash2, Upload } from 'lucide-react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Campo, Input } from '@/components/ui/Form'
 import { useIntestazione } from '@/components/layout/intestazione'
 import { useGestionale } from '@/data/store'
+import { ImmagineNonValida, marchioRidotto } from '@/lib/immagine'
 import type { Azienda } from '@/types'
+
+/**
+ * Caricamento del marchio.
+ *
+ * Le due anteprime non sono un vezzo: il marchio compare sulla barra laterale,
+ * che è scura, e sui documenti, che si stampano su carta bianca. Un logo con
+ * le scritte scure sparisce nella prima, uno con le scritte bianche sparisce
+ * nei secondi. Vedendoli affiancati ci si accorge subito di quale versione del
+ * proprio marchio serve caricare.
+ */
+function CampoMarchio({
+  logo,
+  onCambia,
+}: {
+  logo?: string
+  onCambia: (logo: string | undefined) => void
+}) {
+  const input = useRef<HTMLInputElement>(null)
+  const [errore, setErrore] = useState('')
+
+  async function scegli(files: FileList | null) {
+    if (!files?.length) return
+    setErrore('')
+    try {
+      onCambia(await marchioRidotto(files[0]))
+    } catch (e) {
+      setErrore(e instanceof ImmagineNonValida ? e.message : 'Non riesco a usare questa immagine.')
+    }
+  }
+
+  return (
+    <div>
+      {logo ? (
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { fondo: 'bg-[#12151b]', nota: 'Nel menu (sfondo scuro)' },
+            { fondo: 'bg-white', nota: 'Sui documenti stampati' },
+          ].map((v) => (
+            <div key={v.nota}>
+              <div
+                className={`flex h-24 items-center justify-center rounded-card border border-line p-3 ${v.fondo}`}
+              >
+                <img src={logo} alt="Marchio caricato" className="max-h-full max-w-full object-contain" />
+              </div>
+              <p className="mt-1 text-[11px] text-ink-faint">{v.nota}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="rounded-card border border-dashed border-line-soft bg-surface-2 px-4 py-6 text-center text-xs text-ink-faint">
+          Nessun marchio caricato. I documenti stampati riportano il nome dell’attività scritto.
+        </p>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Button onClick={() => input.current?.click()}>
+          <Upload size={15} />
+          {logo ? 'Sostituisci' : 'Carica marchio'}
+        </Button>
+        {logo && (
+          <Button variante="fantasma" onClick={() => onCambia(undefined)}>
+            <Trash2 size={15} />
+            Rimuovi
+          </Button>
+        )}
+        <input
+          ref={input}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            void scegli(e.target.files)
+            e.target.value = ''
+          }}
+        />
+      </div>
+
+      {errore && (
+        <p role="alert" className="mt-2 text-xs text-rose-400">
+          {errore}
+        </p>
+      )}
+      <p className="mt-2 text-[11px] text-ink-faint">
+        PNG con lo sfondo trasparente è la scelta migliore. L’immagine viene rimpicciolita e salvata
+        nel tuo archivio: ricordati di premere «Salva impostazioni».
+      </p>
+    </div>
+  )
+}
 
 export function Impostazioni() {
   useIntestazione({
@@ -70,6 +160,10 @@ export function Impostazioni() {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </Campo>
+            <div className="sm:col-span-2">
+              <span className="mb-1.5 block text-xs font-medium text-ink-muted">Marchio</span>
+              <CampoMarchio logo={form.logo} onCambia={(logo) => setForm({ ...form, logo })} />
+            </div>
             <Campo etichetta="Partita IVA" className="sm:col-span-2">
               <Input
                 value={form.partitaIva}

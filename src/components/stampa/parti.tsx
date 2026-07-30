@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { ALTEZZA_MARCHIO, LARGHEZZA_MARCHIO, MARCHIO_STAMPA } from '@/lib/stampa/marchio'
 import type { Azienda } from '@/types'
 
 /** Elementi condivisi dai documenti stampabili. */
@@ -7,15 +6,18 @@ import type { Azienda } from '@/types'
 export function TestataDocumento({ azienda }: { azienda: Azienda }) {
   return (
     <header className="doc-testata">
-      {/* Il marchio vero, non un disegno che gli somiglia. Porta gia' dentro
-          il nome e il claim, quindi accanto non si ripetono a parole. */}
-      <img
-        className="doc-marchio"
-        src={MARCHIO_STAMPA}
-        width={LARGHEZZA_MARCHIO}
-        height={ALTEZZA_MARCHIO}
-        alt={`${azienda.nome} — ${azienda.claim}`}
-      />
+      {/* Il marchio arriva dalle impostazioni dell'attivita', incorporato nel
+          documento perche' questo si puo' scaricare e stampare da disco, dove
+          un collegamento al sito non risolve. Senza marchio caricato resta il
+          nome scritto: meglio di un'intestazione presa in prestito. */}
+      {azienda.logo ? (
+        <img className="doc-marchio" src={azienda.logo} alt={azienda.nome} />
+      ) : (
+        <div className="doc-marchio-testo">
+          <div className="doc-marchio-nome">{azienda.nome}</div>
+          <div className="doc-marchio-claim">{azienda.claim}</div>
+        </div>
+      )}
 
       <div className="doc-azienda">
         <strong>{azienda.indirizzo}</strong>

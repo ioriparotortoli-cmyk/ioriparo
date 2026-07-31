@@ -22,7 +22,7 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
     intro:
       'Display rotto, batteria che non tiene, connettore che non carica, telefono caduto in acqua: sono gli interventi che facciamo ogni giorno. La diagnosi è gratuita e il preventivo viene scritto prima di aprire il dispositivo, con il tipo di ricambio dichiarato.',
     interventi: [
-      'Sostituzione display e vetro su tutte le marche, con ricambi originali o compatibili di qualità, scritti nel preventivo',
+      'Sostituzione display e vetro su tutte le marche: OLED sugli iPhone, originale consigliato sui Samsung, compatibile quando il telefono non vale la spesa',
       'Sostituzione batteria con misurazione preventiva di capacità residua e cicli',
       'Riparazione o sostituzione del connettore di ricarica, spesso solo da pulire',
       'Pulizia da caduta in acqua a ultrasuoni con alcool isopropilico: 50 €, che si pagano anche se il telefono non si recupera',
@@ -40,6 +40,11 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
         domanda: 'Perdo i dati durante la riparazione?',
         risposta:
           'No, gli interventi più comuni non toccano la memoria. Consigliamo comunque un backup prima di consegnarlo: se non sai come farlo lo prepariamo insieme in negozio, gratuitamente.',
+      },
+      {
+        domanda: 'Meglio un display originale o compatibile?',
+        risposta:
+          'Sugli iPhone montiamo OLED quando il modello è nato con l’OLED: la copia LCD costa meno ma si riconosce, soprattutto sui neri e sui colori. Sui Samsung consigliamo l’originale, perché è lì che la differenza si vede di più. Il compatibile ha senso quando il telefono ha già i suoi anni e la riparazione rischia di costare quanto vale: in quel caso te lo diciamo. Quello che montiamo è scritto nel preventivo, insieme alla garanzia — 6 mesi sull’originale, 3 mesi sul compatibile — e la scelta finale è tua.',
       },
       {
         domanda: 'Il telefono è caduto in acqua: quanto costa?',

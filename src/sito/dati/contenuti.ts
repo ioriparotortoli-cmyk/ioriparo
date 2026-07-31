@@ -155,7 +155,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Usate ricambi originali?',
     risposta:
-      'Quando disponibili sì, e lo scriviamo nel preventivo. Per molti modelli proponiamo anche ricambi compatibili di qualità, che costano meno. La differenza sta anche nella garanzia: 6 mesi sul ricambio originale, 3 mesi sul compatibile. La scelta resta tua, con prezzi e durata di entrambe le opzioni sotto gli occhi.',
+      'Dipende dal modello e da quanto vale la pena ripararlo: la scelta la facciamo insieme, prima di aprire il telefono. Sugli iPhone montiamo display OLED quando il modello è nato con l’OLED — le copie LCD costano meno ma si vedono, soprattutto sui neri. Sui Samsung consigliamo l’originale: è lì che la differenza pesa di più. Se il telefono ha i suoi anni e la riparazione rischia di costare quanto vale il telefono, proponiamo un compatibile e ti diciamo perché. Quello che montiamo è sempre scritto nel preventivo, con la garanzia che ne consegue: 6 mesi sull’originale, 3 mesi sul compatibile. L’ultima parola è tua.',
   },
   {
     domanda: 'I miei dati sono al sicuro durante la riparazione?',

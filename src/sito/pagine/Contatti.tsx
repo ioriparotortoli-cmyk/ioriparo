@@ -231,6 +231,14 @@ export function Contatti() {
                   </div>
                 </div>
               )}
+
+              {/* La battuta dice anche una cosa vera: all'ora di chiusura il
+                  telefono spesso non lo prendiamo. Meglio che chi legge sappia
+                  cosa fare invece di riprovare a vuoto. */}
+              <p className="faint" style={{ marginTop: 14, fontSize: '.82rem', lineHeight: 1.55 }}>
+                Se ci chiamate alle 13 in punto e non rispondiamo, siamo al sushi 🍣 Scriveteci su
+                WhatsApp: vi rispondiamo appena rientriamo, alle 16.
+              </p>
             </div>
           </div>
 

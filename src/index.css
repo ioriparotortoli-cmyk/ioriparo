@@ -201,3 +201,37 @@
     color: #111 !important;
   }
 }
+
+/* ---------- frase del giorno ---------- */
+
+/*
+  Le parole compaiono una dopo l'altra, non la riga intera in un colpo.
+  Ognuna occupa il suo spazio fin da subito e cambia solo opacita': cosi' il
+  testo non si allunga mentre appare e le schede sotto non si spostano. Il
+  testo completo resta nel documento, quindi chi usa un lettore di schermo lo
+  sente tutto insieme senza aspettare la comparsa.
+*/
+.frase-parola {
+  display: inline-block;
+  opacity: 0;
+  animation: frase-appare 0.5s ease forwards;
+}
+
+@keyframes frase-appare {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Chi ha chiesto meno movimento la trova gia' scritta. */
+@media (prefers-reduced-motion: reduce) {
+  .frase-parola {
+    opacity: 1;
+    animation: none;
+  }
+}

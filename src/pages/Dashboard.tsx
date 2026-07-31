@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
   ArrowRight,
@@ -70,9 +70,23 @@ export function Dashboard() {
           cosa qui dentro che non chiede di fare niente. */}
       <figure className="m-0 border-l-2 border-brand/50 pl-4">
         <blockquote className="text-[15px] leading-snug text-balance text-ink-muted italic">
-          {citazione.testo}
+          {/* Una parola per elemento, ognuna con il suo ritardo: e' il modo
+              piu' semplice di farle comparire in fila senza che il testo si
+              allunghi mentre appare. */}
+          {citazione.testo.split(' ').map((parola, i) => (
+            // Lo spazio sta fuori dallo `span`: dentro a un elemento
+            // `inline-block` verrebbe scartato e le parole si attaccherebbero.
+            <Fragment key={i}>
+              <span className="frase-parola" style={{ animationDelay: `${i * 55}ms` }}>
+                {parola}
+              </span>{' '}
+            </Fragment>
+          ))}
         </blockquote>
-        <figcaption className="mt-1 text-[11px] text-ink-faint">
+        <figcaption
+          className="frase-parola mt-1 text-[11px] text-ink-faint"
+          style={{ animationDelay: `${citazione.testo.split(' ').length * 55 + 150}ms` }}
+        >
           Steve Jobs · {citazione.fonte}
         </figcaption>
       </figure>

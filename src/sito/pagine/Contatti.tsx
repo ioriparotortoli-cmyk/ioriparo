@@ -236,7 +236,7 @@ export function Contatti() {
                   telefono spesso non lo prendiamo. Meglio che chi legge sappia
                   cosa fare invece di riprovare a vuoto. */}
               <p className="faint" style={{ marginTop: 14, fontSize: '.82rem', lineHeight: 1.55 }}>
-                Se ci chiamate alle 13 in punto e non rispondiamo, siamo al sushi 🍣 Scriveteci su
+                Se ci chiamate dopo le 13 🕐 e non rispondiamo, siamo al sushi 🍣 Scriveteci su
                 WhatsApp: vi rispondiamo appena rientriamo, alle 16.
               </p>
             </div>

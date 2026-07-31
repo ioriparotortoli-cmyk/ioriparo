@@ -35,9 +35,18 @@ const MANIFESTO_NEUTRO = {
 }
 
 function pluginSoloGestionale(): Plugin {
+  // La cartella vera in cui Vite sta scrivendo. Non e' sempre `dist`: basta un
+  // `--outDir` diverso. Scritta a mano, la pulizia finiva su una cartella e i
+  // file di Io Riparo restavano nell'altra — cioe' proprio dentro alla
+  // consegna del cliente.
+  let uscita = ''
+
   return {
     name: 'io-riparo:solo-gestionale',
     apply: 'build',
+    configResolved(config) {
+      uscita = path.resolve(config.root, config.build.outDir)
+    },
     transformIndexHtml: {
       // `pre`, cioe' prima che Vite inserisca i suoi tag: la sostituzione
       // svuota la testa da un capo all'altro, e in coda a tutto si sarebbe
@@ -53,22 +62,21 @@ function pluginSoloGestionale(): Plugin {
       },
     },
     closeBundle() {
-      const dist = path.resolve(import.meta.dirname, 'dist')
-      if (!fs.existsSync(dist)) return
+      if (!uscita || !fs.existsSync(uscita)) return
 
       // Il marchio e le foto dei lavori sono di Io Riparo: sul dominio di un
       // altro non ci devono nemmeno arrivare. Il gestionale non li usa — il
       // logo dell'attività sta nel suo archivio, non in questi file.
       for (const via of ['marchio', 'foto', 'sitemap.xml', 'site.webmanifest']) {
-        fs.rmSync(path.join(dist, via), { recursive: true, force: true })
+        fs.rmSync(path.join(uscita, via), { recursive: true, force: true })
       }
 
       fs.writeFileSync(
-        path.join(dist, 'robots.txt'),
+        path.join(uscita, 'robots.txt'),
         '# Gestionale: area riservata, fuori dai motori di ricerca.\nUser-agent: *\nDisallow: /\n',
       )
       fs.writeFileSync(
-        path.join(dist, 'gestionale.webmanifest'),
+        path.join(uscita, 'gestionale.webmanifest'),
         JSON.stringify(MANIFESTO_NEUTRO, null, 2) + '\n',
       )
     },

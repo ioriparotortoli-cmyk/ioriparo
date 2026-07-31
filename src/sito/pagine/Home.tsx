@@ -3,6 +3,7 @@ import { BottoneChiama, BottoneWhatsapp } from '../componenti/Contatto'
 import { CampoSegnale } from '../componenti/CampoSegnale'
 import { schemaFaq } from '../componenti/Faq'
 import { Icona } from '../componenti/Icona'
+import { FraseDelGiorno } from '../componenti/FraseDelGiorno'
 import { SchedaPratica } from '../componenti/SchedaPratica'
 import { Stagione } from '../componenti/Stagione'
 import { GrigliaServizi } from '../componenti/Servizi'
@@ -132,6 +133,7 @@ export function Home() {
                   }
                 />
               )}
+              <FraseDelGiorno />
             </div>
           </div>
         </div>

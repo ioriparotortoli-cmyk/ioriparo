@@ -524,6 +524,32 @@ body.paused .marquee__track{animation-play-state:paused}
 }
 .lb__altrui{top:14px; left:14px}
 
+/* ---------- frase del giorno ---------- */
+
+.frase{
+  margin:18px 0 0; padding:16px 0 0;
+  border-top:1px solid var(--line);
+}
+.frase blockquote{
+  margin:0; font-size:.94rem; line-height:1.5; font-style:italic;
+  color:var(--txt-2); text-wrap:balance;
+}
+.frase figcaption{margin-top:7px; font-size:.72rem; color:var(--txt-3)}
+
+/* Una parola per volta: ognuna e' gia' al suo posto e cambia solo opacita',
+   cosi' il testo non si allunga mentre appare e la pagina non si sposta. */
+.frase__parola{
+  display:inline-block; opacity:0;
+  animation:frase-appare .5s ease forwards;
+}
+@keyframes frase-appare{
+  from{opacity:0; transform:translateY(2px)}
+  to{opacity:1; transform:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .frase__parola{opacity:1; animation:none}
+}
+
 /* ---------- recensioni ---------- */
 .revs{position:relative; overflow:hidden}
 .revs__track{display:flex; transition:transform .7s var(--ease)}

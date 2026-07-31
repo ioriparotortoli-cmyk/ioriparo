@@ -36,6 +36,7 @@ import {
   nomeAbbreviato,
   scadenzaRelativa,
 } from '@/lib/format'
+import { citazioneDelGiorno } from '@/lib/citazioni'
 import { TIPI_SCADENZA } from '@/lib/stati'
 import { cn } from '@/lib/cn'
 
@@ -61,8 +62,21 @@ export function Dashboard() {
   const ultime = useMemo(() => ultimeRiparazioni(db, 5), [db])
   const scadenze = useMemo(() => scadenzeImminenti(db, 3), [db])
 
+  const citazione = citazioneDelGiorno()
+
   return (
     <div className="space-y-4 lg:space-y-5">
+      {/* Una frase al giorno, prima dei numeri. Sta in disparte: e' l'unica
+          cosa qui dentro che non chiede di fare niente. */}
+      <figure className="m-0 border-l-2 border-brand/50 pl-4">
+        <blockquote className="text-[15px] leading-snug text-balance text-ink-muted italic">
+          {citazione.testo}
+        </blockquote>
+        <figcaption className="mt-1 text-[11px] text-ink-faint">
+          Steve Jobs · {citazione.fonte}
+        </figcaption>
+      </figure>
+
       {/* Riepiloghi principali */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         <StatCard

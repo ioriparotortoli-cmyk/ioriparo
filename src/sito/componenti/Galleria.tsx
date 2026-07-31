@@ -28,6 +28,9 @@ function Riquadro({ voce, indice, onApri }: { voce: VoceGalleria; indice: number
         loading={indice < 2 ? 'eager' : 'lazy'}
         decoding="async"
       />
+      {/* Sempre visibile, non solo al passaggio del cursore come la didascalia:
+          senza, chi scorre la griglia legge questi impianti come nostri. */}
+      {voce.preesistente && <span className="gal__altrui">Lavoro di altri</span>}
       <figcaption className="gal__cap">
         <span>
           <b>{voce.titolo}</b>
@@ -112,6 +115,7 @@ export function Galleria({ limite, filtrabile }: { limite?: number; filtrabile?:
               {/* Intera, non ritagliata: le foto del banco sono verticali e in
                   un riquadro 16:9 si vedeva solo la fascia centrale. */}
               <img className="lb__foto" src={`/foto/${voce.foto}.jpg`} alt={voce.titolo} />
+              {voce.preesistente && <span className="gal__altrui lb__altrui">Lavoro di altri</span>}
               <div className="lb__nav">
                 <button className="iconbtn" onClick={() => scorri(-1)} aria-label="Immagine precedente">
                   <Icona nome="left" />

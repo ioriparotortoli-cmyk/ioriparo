@@ -513,6 +513,17 @@ body.paused .marquee__track{animation-play-state:paused}
 .gal__cap b{font-size:.85rem; font-weight:600}
 .gal__cap span{font-size:.72rem; opacity:.7}
 
+/* Impianti non nostri: il bollo sta sopra alla foto e non si nasconde, perche'
+   serve proprio a chi guarda di sfuggita. */
+.gal__altrui{
+  position:absolute; top:10px; left:10px; z-index:2;
+  padding:4px 9px; border-radius:999px;
+  background:rgba(2,5,12,.78); color:#fff; backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.22);
+  font-size:.66rem; font-weight:600; letter-spacing:.04em;
+}
+.lb__altrui{top:14px; left:14px}
+
 /* ---------- recensioni ---------- */
 .revs{position:relative; overflow:hidden}
 .revs__track{display:flex; transition:transform .7s var(--ease)}

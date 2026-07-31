@@ -16,6 +16,12 @@ export interface VoceGalleria {
   categoria: CategoriaGalleria
   titolo: string
   descrizione: string
+  /**
+   * Impianto trovato già montato, non installato da noi: quasi sempre è un
+   * sopralluogo su un lavoro da rifare. Va segnato, altrimenti la galleria si
+   * prende il merito — o la colpa — del lavoro di qualcun altro.
+   */
+  preesistente?: boolean
 }
 
 export const CATEGORIE_GALLERIA: { id: CategoriaGalleria | 'tutti'; etichetta: string }[] = [
@@ -72,8 +78,10 @@ export const GALLERIA: VoceGalleria[] = [
   {
     foto: 'telecamera-esterno',
     categoria: 'impianti',
-    titolo: 'Telecamera esterna sotto la gronda',
-    descrizione: 'Montata al riparo dalla pioggia, con il cavo che rientra subito nella canalina.',
+    titolo: 'Telecamera da rifare',
+    descrizione:
+      'Trovata così durante un sopralluogo: snodo arrugginito e cavi a vista, senza canalina. Va sostituita.',
+    preesistente: true,
   },
   {
     foto: 'amplificatore-antenna',

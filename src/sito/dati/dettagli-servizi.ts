@@ -25,7 +25,7 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
       'Sostituzione display e vetro su tutte le marche, con ricambi originali o compatibili di grado AAA',
       'Sostituzione batteria con misurazione preventiva di capacità residua e cicli',
       'Riparazione o sostituzione del connettore di ricarica, spesso solo da pulire',
-      'Trattamento dei danni da liquidi con lavaggio a ultrasuoni e asciugatura controllata',
+      'Pulizia da caduta in acqua con alcool isopropilico: 50 €, che si pagano anche se il telefono non si recupera',
       'Fotocamere, altoparlanti, microfoni, tasti e vetro posteriore',
       'Microsaldatura su scheda madre per telefoni che non si accendono',
     ],
@@ -33,13 +33,18 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
       { titolo: 'Diagnosi', testo: 'Verifichiamo il guasto davanti a te quando possibile: in molti casi bastano dieci minuti.' },
       { titolo: 'Preventivo', testo: 'Prezzo fisso, tempi certi e tipo di ricambio scritti prima dell’intervento.' },
       { titolo: 'Riparazione', testo: 'Se il ricambio è a magazzino display e batterie si sostituiscono in un’ora.' },
-      { titolo: 'Collaudo', testo: 'Diciotto punti di controllo: touch, luminosità, prossimità, audio, ricarica, fotocamere.' },
+      { titolo: 'Collaudo', testo: 'Si controlla quello che l’intervento poteva toccare: touch, luminosità, prossimità, audio, ricarica, fotocamere.' },
     ],
     domande: [
       {
         domanda: 'Perdo i dati durante la riparazione?',
         risposta:
           'No, gli interventi più comuni non toccano la memoria. Consigliamo comunque un backup prima di consegnarlo: se non sai come farlo lo prepariamo insieme in negozio, gratuitamente.',
+      },
+      {
+        domanda: 'Il telefono è caduto in acqua: quanto costa?',
+        risposta:
+          'La pulizia costa 50 € e si pagano in ogni caso, anche se il telefono non riparte: il lavoro di apertura, pulizia con alcool isopropilico e asciugatura viene fatto comunque. Sul risultato non possiamo dare garanzie né prima né dopo — l’ossido continua a lavorare e un telefono che riparte oggi può fermarsi fra un mese. Preferiamo dirlo prima: se il telefono non ti serve abbastanza da rischiare 50 €, è giusto saperlo.',
       },
       {
         domanda: 'Conviene riparare o cambiare telefono?',

@@ -51,7 +51,7 @@ export function tappeRiparazione(r: Riparazione): Tappa[] {
     { titolo: 'Riparazione in corso', nota: r.difettoSegnalato },
     {
       titolo: 'Collaudo finale',
-      nota: r.stato === 'non_riparabile' ? 'Intervento non risolutivo: dispositivo non riparabile' : 'Verifica su 18 punti di controllo',
+      nota: r.stato === 'non_riparabile' ? 'Intervento non risolutivo: dispositivo non riparabile' : 'Verifica del funzionamento prima della riconsegna',
     },
     {
       titolo: 'Pronto al ritiro',

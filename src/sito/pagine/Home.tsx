@@ -15,7 +15,7 @@ import { dataEstesa, numero } from '../lib/utili'
 
 
 const GARANZIE = [
-  'Ricambi originali e compatibili AAA',
+  'Ricambi originali e compatibili di qualità',
   'Riparazioni in giornata',
   'Garanzia sul componente sostituito',
   'Recupero dati eseguito internamente',

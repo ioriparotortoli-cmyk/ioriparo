@@ -22,7 +22,7 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
     intro:
       'Display rotto, batteria che non tiene, connettore che non carica, telefono caduto in acqua: sono gli interventi che facciamo ogni giorno. La diagnosi è gratuita e il preventivo viene scritto prima di aprire il dispositivo, con il tipo di ricambio dichiarato.',
     interventi: [
-      'Sostituzione display e vetro su tutte le marche, con ricambi originali o compatibili di grado AAA',
+      'Sostituzione display e vetro su tutte le marche, con ricambi originali o compatibili di qualità, scritti nel preventivo',
       'Sostituzione batteria con misurazione preventiva di capacità residua e cicli',
       'Riparazione o sostituzione del connettore di ricarica, spesso solo da pulire',
       'Pulizia da caduta in acqua a ultrasuoni con alcool isopropilico: 50 €, che si pagano anche se il telefono non si recupera',

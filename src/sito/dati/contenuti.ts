@@ -155,7 +155,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Usate ricambi originali?',
     risposta:
-      'Quando disponibili sì, e lo scriviamo nel preventivo. Per molti modelli proponiamo anche compatibili di grado AAA selezionati, che costano meno. La differenza sta anche nella garanzia: 6 mesi sul ricambio originale, 3 mesi sul compatibile. La scelta resta tua, con prezzi e durata di entrambe le opzioni sotto gli occhi.',
+      'Quando disponibili sì, e lo scriviamo nel preventivo. Per molti modelli proponiamo anche ricambi compatibili di qualità, che costano meno. La differenza sta anche nella garanzia: 6 mesi sul ricambio originale, 3 mesi sul compatibile. La scelta resta tua, con prezzi e durata di entrambe le opzioni sotto gli occhi.',
   },
   {
     domanda: 'I miei dati sono al sicuro durante la riparazione?',
@@ -195,7 +195,7 @@ export interface Motivo {
 export const MOTIVI: Motivo[] = [
   { icona: 'tool', titolo: 'Esperienza', testo: 'Laboratorio attrezzato: microsaldatura, riball, diagnosi a livello di componente.' },
   { icona: 'clock', titolo: 'Rapidità', testo: 'Gran parte delle riparazioni si chiude entro 24 ore. Display e batterie spesso in un’ora.' },
-  { icona: 'box', titolo: 'Ricambi di qualità', testo: 'Componenti originali o compatibili di grado AAA, sempre dichiarati nel preventivo.' },
+  { icona: 'box', titolo: 'Ricambi di qualità', testo: 'Componenti originali o compatibili di qualità, sempre dichiarati nel preventivo.' },
   { icona: 'shield', titolo: 'Garanzia', testo: 'Sei mesi sul ricambio originale, tre sul compatibile: la durata è scritta sulla ricevuta, non promessa a voce.' },
   { icona: 'chat', titolo: 'Assistenza', testo: 'Un tecnico dedicato ti aggiorna su ogni passaggio via WhatsApp o e-mail.' },
   { icona: 'euro', titolo: 'Preventivi trasparenti', testo: 'Costo fisso comunicato prima dell’intervento. Se non ripariamo, non paghi la diagnosi.' },

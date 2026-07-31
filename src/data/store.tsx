@@ -55,6 +55,29 @@ function suffissoCasuale(lunghezza = 3): string {
 }
 
 /** Genera un identificativo locale (nessun backend: basta unicità in sessione). */
+/** Le collezioni dell'archivio, per le operazioni che le attraversano tutte. */
+const ELENCHI_ARCHIVIO = [
+  'clienti',
+  'riparazioni',
+  'preventivi',
+  'fatture',
+  'magazzino',
+  'ordini',
+  'scadenze',
+  'impianti',
+] as const satisfies readonly Elenco[]
+
+/**
+ * Codice del dato di esempio: prefisso e sole cifre, come `cli-001` o
+ * `rip-0001`. Il seme ne usa tre per gli elenchi scritti a mano e quattro per
+ * quelli generati, quindi non basta contarne tre.
+ *
+ * Non puo' collidere con un codice vero: quelli portano l'istante di creazione
+ * in base 36 piu' quattro caratteri a caso — `rip-ms5zplm76n0m` — e sono lunghi
+ * il triplo.
+ */
+const E_ESEMPIO = /^[a-z]+-\d{2,6}$/
+
 export function nuovoId(prefisso: string): string {
   return `${prefisso}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`
 }
@@ -136,6 +159,11 @@ interface ContestoGestionale {
   aggiungiScadenza: (scadenza: Omit<Scadenza, 'id'>) => Scadenza
   aggiornaScadenza: (id: string, modifiche: Partial<Scadenza>) => void
   eliminaScadenza: (id: string) => void
+
+  /** Quante voci di esempio restano nell'archivio. */
+  contaDatiDiEsempio: () => number
+  /** Le toglie tutte, senza toccare quelle create dal gestionale. */
+  eliminaDatiDiEsempio: () => void
 
   aggiornaImpianto: (id: string, modifiche: Partial<Impianto>) => void
   aggiornaAzienda: (modifiche: Partial<Azienda>) => void
@@ -244,6 +272,31 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
     [rifletti],
   )
 
+  /**
+   * I dati di esempio hanno il codice progressivo del seme — `cli-003`,
+   * `fat-012` — mentre quelli creati dal gestionale portano l'istante di
+   * creazione: `rip-ms5zplm76n0m`. Tre cifre e nient'altro non capitano mai
+   * per caso, quindi la distinzione e' netta e non serve chiedere conferma
+   * elemento per elemento.
+   */
+  const contaDatiDiEsempio = useCallback(() => {
+    let quanti = 0
+    for (const collezione of ELENCHI_ARCHIVIO) {
+      quanti += (db[collezione] as unknown as { id: string }[]).filter((v) => E_ESEMPIO.test(v.id))
+        .length
+    }
+    return quanti
+  }, [db])
+
+  /** Toglie i dati di esempio, dall'archivio in memoria e da quello online. */
+  const eliminaDatiDiEsempio = useCallback(() => {
+    for (const collezione of ELENCHI_ARCHIVIO) {
+      for (const voce of db[collezione] as unknown as { id: string }[]) {
+        if (E_ESEMPIO.test(voce.id)) eliminaDa(collezione, voce.id)
+      }
+    }
+  }, [db, eliminaDa])
+
   const prossimoCodice = useCallback(() => {
     const progressivi = db.riparazioni
       .map((r) => Number.parseInt(r.codice.split('-')[1] ?? '0', 10))
@@ -304,6 +357,9 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
         rifletti(() => salvaVoce('scadenze', nuova))
         return nuova
       },
+      contaDatiDiEsempio,
+      eliminaDatiDiEsempio,
+
       aggiornaScadenza: (id, modifiche) => aggiornaIn('scadenze', id, modifiche),
       eliminaScadenza: (id) => eliminaDa('scadenze', id),
 
@@ -336,7 +392,7 @@ export function GestionaleProvider({ children }: { children: ReactNode }) {
       clientePerId: (id) => db.clienti.find((c) => c.id === id),
       prossimoCodice,
     }),
-    [db, sorgente, ricarica, rifletti, aggiornaIn, eliminaDa, prossimoCodice],
+    [db, sorgente, ricarica, rifletti, aggiornaIn, eliminaDa, prossimoCodice, contaDatiDiEsempio, eliminaDatiDiEsempio],
   )
 
   return <Contesto.Provider value={valore}>{children}</Contesto.Provider>

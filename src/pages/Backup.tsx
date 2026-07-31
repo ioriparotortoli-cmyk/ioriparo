@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { CloudUpload, Database, Download, FileSpreadsheet, RotateCcw, Upload } from 'lucide-react'
+import { CloudUpload, Database, Download, FileSpreadsheet, RotateCcw, Trash2, Upload } from 'lucide-react'
 import { Card, CardHeader } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
@@ -18,10 +18,13 @@ export function Backup() {
     sottotitolo: 'Salva una copia dell’archivio o esporta i dati in CSV',
   })
 
-  const { db, sorgente, ricarica, importaDatabase, ripristinaDemo } = useGestionale()
+  const { db, sorgente, ricarica, importaDatabase, ripristinaDemo, contaDatiDiEsempio, eliminaDatiDiEsempio } =
+    useGestionale()
   const inputImport = useRef<HTMLInputElement>(null)
   const [esito, setEsito] = useState<{ tipo: 'ok' | 'errore'; testo: string } | null>(null)
   const [confermaRipristino, setConfermaRipristino] = useState(false)
+  const [confermaPulizia, setConfermaPulizia] = useState(false)
+  const diEsempio = contaDatiDiEsempio()
 
   const online = sorgente === 'online'
   const [inCorso, setInCorso] = useState(false)
@@ -316,6 +319,55 @@ export function Backup() {
           </>
         )}
       </Card>
+
+      {diEsempio > 0 && (
+        <Card>
+          <CardHeader
+            titolo="Dati di esempio"
+            sottotitolo="Clienti, riparazioni, preventivi e fatture arrivati con la dimostrazione"
+          />
+          <p className="mt-3 text-sm text-ink-muted">
+            Nell’archivio ci sono <strong className="text-ink">{diEsempio}</strong> voci di esempio:
+            non sono lavori tuoi, sono i dati con cui il gestionale è stato provato. Si riconoscono
+            dal codice — <span className="font-mono text-xs">cli-003</span>,{' '}
+            <span className="font-mono text-xs">fat-012</span> — mentre quelle che crei tu portano
+            l’istante in cui sono nate. Togliendole non si tocca nulla del tuo.
+          </p>
+          <Button variante="pericolo" className="mt-4" onClick={() => setConfermaPulizia(true)}>
+            <Trash2 size={15} />
+            Elimina le {diEsempio} voci di esempio
+          </Button>
+        </Card>
+      )}
+
+      <Modal
+        aperta={confermaPulizia}
+        titolo="Eliminare i dati di esempio?"
+        onChiudi={() => setConfermaPulizia(false)}
+        larghezza="sm"
+        piede={
+          <>
+            <Button onClick={() => setConfermaPulizia(false)}>Annulla</Button>
+            <Button
+              variante="pericolo"
+              onClick={() => {
+                eliminaDatiDiEsempio()
+                setConfermaPulizia(false)
+                setEsito({ tipo: 'ok', testo: `Eliminate ${diEsempio} voci di esempio.` })
+              }}
+            >
+              <Trash2 size={15} />
+              Elimina
+            </Button>
+          </>
+        }
+      >
+        <p className="text-sm text-ink-muted">
+          Vengono tolte {diEsempio} voci fra clienti, riparazioni, preventivi, fatture, ricambi,
+          ordini, scadenze e impianti. Restano tutte quelle che hai creato tu. L’operazione non si
+          annulla: se vuoi una copia di sicurezza, esporta il backup prima.
+        </p>
+      </Modal>
 
       <Modal
         aperta={confermaRipristino}

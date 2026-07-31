@@ -145,7 +145,7 @@ export const FAQ: Domanda[] = [
   {
     domanda: 'Quanto tempo serve per riparare uno smartphone?',
     risposta:
-      'Display e batterie sono interventi da 45–90 minuti, se il ricambio è a magazzino: puoi aspettare in sede. Guasti alla scheda madre o danni da liquidi richiedono 24–72 ore, fra pulizia, asciugatura e prove ripetute.',
+      'Display e batterie sono interventi da 45–90 minuti, se il ricambio è a magazzino: puoi aspettare in sede. Guasti alla scheda madre o danni da liquidi richiedono 24–72 ore, fra lavaggio a ultrasuoni, asciugatura e prove ripetute.',
   },
   {
     domanda: 'Il preventivo è gratuito?',

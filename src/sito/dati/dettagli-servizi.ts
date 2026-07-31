@@ -25,7 +25,7 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
       'Sostituzione display e vetro su tutte le marche, con ricambi originali o compatibili di grado AAA',
       'Sostituzione batteria con misurazione preventiva di capacità residua e cicli',
       'Riparazione o sostituzione del connettore di ricarica, spesso solo da pulire',
-      'Pulizia da caduta in acqua con alcool isopropilico: 50 €, che si pagano anche se il telefono non si recupera',
+      'Pulizia da caduta in acqua a ultrasuoni con alcool isopropilico: 50 €, che si pagano anche se il telefono non si recupera',
       'Fotocamere, altoparlanti, microfoni, tasti e vetro posteriore',
       'Microsaldatura su scheda madre per telefoni che non si accendono',
     ],
@@ -44,7 +44,7 @@ export const DETTAGLI: Record<string, DettaglioServizio> = {
       {
         domanda: 'Il telefono è caduto in acqua: quanto costa?',
         risposta:
-          'La pulizia costa 50 € e si pagano in ogni caso, anche se il telefono non riparte: il lavoro di apertura, pulizia con alcool isopropilico e asciugatura viene fatto comunque. Sul risultato non possiamo dare garanzie né prima né dopo — l’ossido continua a lavorare e un telefono che riparte oggi può fermarsi fra un mese. Preferiamo dirlo prima: se il telefono non ti serve abbastanza da rischiare 50 €, è giusto saperlo.',
+          'La pulizia costa 50 € e si pagano in ogni caso, anche se il telefono non riparte: il lavoro di apertura, lavaggio a ultrasuoni con alcool isopropilico e asciugatura viene fatto comunque. Sul risultato non possiamo dare garanzie né prima né dopo — l’ossido continua a lavorare e un telefono che riparte oggi può fermarsi fra un mese. Preferiamo dirlo prima: se il telefono non ti serve abbastanza da rischiare 50 €, è giusto saperlo.',
       },
       {
         domanda: 'Conviene riparare o cambiare telefono?',

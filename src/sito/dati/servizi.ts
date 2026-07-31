@@ -213,7 +213,7 @@ export const STIME_PREVENTIVO: Record<string, { da?: number; fisso?: number; not
   },
   'smartphone|liquidi': {
     fisso: 50,
-    nota: 'Pulizia con alcool isopropilico. Il costo è lo stesso anche se il dispositivo non si recupera, e sull’esito non c’è garanzia',
+    nota: 'Lavaggio a ultrasuoni con alcool isopropilico. Il costo è lo stesso anche se il dispositivo non si recupera, e sull’esito non c’è garanzia',
   },
 }
 

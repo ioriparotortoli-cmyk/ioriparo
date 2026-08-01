@@ -38,8 +38,11 @@ export const CSS_STAMPA = `
 
   /* Il marchio e' un'immagine caricata dall'utente, di proporzioni ignote: si
      limitano sia la larghezza sia l'altezza e si lascia decidere a "contain",
-     cosi' un logo quadrato non diventa una striscia alta mezza pagina. */
-  .doc-marchio { max-width: 45mm; max-height: 20mm; object-fit: contain; display: block; }
+     cosi' un logo quadrato non diventa una striscia alta mezza pagina.
+     Un logo con la scritta sotto al simbolo e' largo poco piu' di quanto e'
+     alto: con 20 mm di altezza finiva sotto ai 31 mm di larghezza, cioe' un
+     sesto della riga, e sul foglio spariva. */
+  .doc-marchio { max-width: 62mm; max-height: 28mm; object-fit: contain; display: block; }
   .doc-marchio-nome { font-size: 16pt; font-weight: 800; letter-spacing: -0.3px; }
   .doc-marchio-claim {
     font-size: 6.5pt;

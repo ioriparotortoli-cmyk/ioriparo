@@ -11,9 +11,9 @@
 const PESO_MASSIMO = 12 * 1024 * 1024
 
 /**
- * Lato lungo del marchio salvato. Nell'intestazione dei documenti è largo
- * 38 mm: a 560 px si superano i 350 dpi, che in stampa non si distinguono
- * dall'originale.
+ * Lato lungo del marchio salvato. Nell'intestazione dei documenti arriva al
+ * massimo a 62 mm: a 560 px restano oltre 220 dpi, che in stampa non si
+ * distinguono dall'originale.
  */
 const LATO = 560
 

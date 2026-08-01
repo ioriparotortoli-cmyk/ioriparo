@@ -1,4 +1,4 @@
-import { eNatale, stagioneDi } from '../lib/stagione'
+import { eNatale, eSettimanaRagno, stagioneDi } from '../lib/stagione'
 
 /**
  * Dettaglio decorativo dell'apertura, diverso a ogni stagione.
@@ -84,7 +84,81 @@ const CUOIO = '#b08a55'
 const PERGAMENA = '#f4e9cf'
 const INCHIOSTRO = '#94764a'
 
-export function Stagione() {
+/* ── Settimana della ragnatela ────────────────────────────────────────────
+   Ragnatele negli angoli in alto e un ragno appeso al filo. Sono forme
+   generiche — ragno e ragnatela non sono di nessuno — e restano nel blu del
+   sito: niente rosso e blu da costume, niente maschera, nessun nome. Quella
+   è roba registrata di altri, e su un sito che vende servizi si chiama uso
+   commerciale del marchio. */
+
+/** Angoli dei raggi della tela, dallo spigolo verso l'interno. */
+const RAGGI_TELA = [0, 22.5, 45, 67.5, 90]
+/** Distanze dallo spigolo a cui passano i fili trasversali. */
+const ANELLI_TELA = [34, 62, 92, 124]
+
+const puntoTela = (distanza: number, gradi: number) => {
+  const a = (gradi * Math.PI) / 180
+  return [+(distanza * Math.cos(a)).toFixed(1), +(distanza * Math.sin(a)).toFixed(1)] as const
+}
+
+/**
+ * Il disegno della tela d'angolo, costruito invece che scritto a mano: sono
+ * quattro raggi e sedici tratti, e a mano sarebbero venti coordinate sbagliate.
+ * Si calcola dentro al componente e non a bordo file: una chiamata a livello di
+ * modulo conta come effetto e terrebbe in piedi tutto il file anche nella build
+ * del gestionale, dove il sito non c'è.
+ */
+function disegnoTela() {
+  const tratti: string[] = []
+
+  // I raggi partono dallo spigolo e sbordano oltre l'ultimo anello.
+  for (const g of RAGGI_TELA) {
+    const [x, y] = puntoTela(ANELLI_TELA[ANELLI_TELA.length - 1] + 12, g)
+    tratti.push(`M0 0L${x} ${y}`)
+  }
+
+  // I fili trasversali fanno la pancia verso lo spigolo, come quelli veri.
+  for (const r of ANELLI_TELA) {
+    for (let i = 0; i < RAGGI_TELA.length - 1; i++) {
+      const [x1, y1] = puntoTela(r, RAGGI_TELA[i])
+      const [x2, y2] = puntoTela(r, RAGGI_TELA[i + 1])
+      const [cx, cy] = puntoTela(r * 0.84, (RAGGI_TELA[i] + RAGGI_TELA[i + 1]) / 2)
+      tratti.push(`M${x1} ${y1}Q${cx} ${cy} ${x2} ${y2}`)
+    }
+  }
+
+  return tratti.join('')
+}
+
+function Ragnatele() {
+  const tela = disegnoTela()
+
+  return (
+    <div className="stagione stagione--ragno" aria-hidden="true">
+      {/* Stesso disegno nei due angoli: quello di destra è specchiato. */}
+      <svg className="stagione__tela stagione__tela--sx" viewBox="0 0 150 150" fill="none">
+        <path d={tela} />
+      </svg>
+      <svg className="stagione__tela stagione__tela--dx" viewBox="0 0 150 150" fill="none">
+        <path d={tela} />
+      </svg>
+
+      {/* Il filo è una riga in CSS sopra al ragno: deve allungarsi fino al
+          bordo mentre lui scende, e in SVG avrebbe altezza fissa. */}
+      <span className="stagione__ragno">
+        <svg viewBox="0 0 28 34" fill="none" strokeLinecap="round">
+          <path d="M11 19c-4-1-6-4-7-7M11 21c-4 0-7-1-9-3M11 23c-4 1-6 3-8 6M11 25c-3 2-4 4-4 7" />
+          <path d="M17 19c4-1 6-4 7-7M17 21c4 0 7-1 9-3M17 23c4 1 6 3 8 6M17 25c3 2 4 4 4 7" />
+          <circle className="stagione__ragno-corpo" cx="14" cy="17.5" r="3.6" />
+          <ellipse className="stagione__ragno-corpo" cx="14" cy="25" rx="5.5" ry="6.5" />
+        </svg>
+      </span>
+    </div>
+  )
+}
+
+/** La decorazione della stagione in corso, senza gli eventi a tempo. */
+function Sfondo() {
   const stagione = stagioneDi()
   const natale = eNatale()
 
@@ -221,5 +295,19 @@ export function Stagione() {
         </span>
       ))}
     </div>
+  )
+}
+
+/**
+ * La stagione, più le decorazioni a tempo che ci si aggiungono sopra.
+ * Si sommano invece di sostituirsi: ad agosto restano sole e onde, e le
+ * ragnatele stanno negli angoli che il resto lascia liberi.
+ */
+export function Stagione() {
+  return (
+    <>
+      <Sfondo />
+      {eSettimanaRagno() && <Ragnatele />}
+    </>
   )
 }

@@ -16,6 +16,25 @@ export function eNatale(adesso = new Date()): boolean {
   return mese === 12 || (mese === 1 && adesso.getDate() <= 6)
 }
 
+/**
+ * Settimana della ragnatela: una decorazione a tempo, che si aggiunge alla
+ * stagione invece di sostituirla.
+ *
+ * La data di fine è scritta qui dentro apposta: passata quella sparisce da
+ * sola. Se dipendesse da qualcuno che si ricorda di toglierla resterebbe su
+ * fino a Natale — è così che finiscono tutte le decorazioni a tempo.
+ *
+ * Estremi compresi, in formato AAAA-MM-GG.
+ */
+export const SETTIMANA_RAGNO = { dal: '2026-08-01', al: '2026-08-08' }
+
+export function eSettimanaRagno(adesso = new Date()): boolean {
+  const g = `${adesso.getFullYear()}-${String(adesso.getMonth() + 1).padStart(2, '0')}-${String(
+    adesso.getDate(),
+  ).padStart(2, '0')}`
+  return g >= SETTIMANA_RAGNO.dal && g <= SETTIMANA_RAGNO.al
+}
+
 export function stagioneDi(adesso = new Date()): Stagione {
   const mese = adesso.getMonth() + 1
   if (mese >= 3 && mese <= 5) return 'primavera'

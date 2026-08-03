@@ -209,6 +209,12 @@ export interface Azienda {
    * finché non viene caricato dalle impostazioni.
    */
   logo?: string
+  /**
+   * Versione del marchio per fondi scuri — il menu laterale. Quasi tutti i
+   * loghi hanno la scritta nera: sul fondo del menu sparisce. Se manca si usa
+   * comunque `logo`, che è meglio di niente.
+   */
+  logoChiaro?: string
   indirizzo: string
   citta: string
   telefono: string

@@ -24,11 +24,16 @@ export function Logo({
   const { db } = useGestionale()
   const altezza = compatto ? 30 : 42
 
-  if (db.azienda.logo) {
+  // Il fondo qui e' scuro: si preferisce la versione chiara, se e' stata
+  // caricata. Senza, si usa quella normale — meglio un marchio poco leggibile
+  // che nessun marchio.
+  const marchio = db.azienda.logoChiaro || db.azienda.logo
+
+  if (marchio) {
     return (
       <span className={cn('flex items-center', className)}>
         <img
-          src={db.azienda.logo}
+          src={marchio}
           alt={db.azienda.nome || 'Marchio dell’attività'}
           style={{ height: altezza, width: 'auto', maxWidth: 190, objectFit: 'contain' }}
         />

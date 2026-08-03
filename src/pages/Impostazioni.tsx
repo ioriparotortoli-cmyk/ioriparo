@@ -19,13 +19,22 @@ import type { Azienda } from '@/types'
  */
 function CampoMarchio({
   logo,
+  fondo,
+  nota,
+  ripiego,
   onCambia,
 }: {
   logo?: string
+  /** Su cosa verra' appoggiato: decide il colore dell'anteprima. */
+  fondo: 'chiaro' | 'scuro'
+  nota: string
+  /** Marchio usato al posto di questo finche' non ne viene caricato uno. */
+  ripiego?: string
   onCambia: (logo: string | undefined) => void
 }) {
   const input = useRef<HTMLInputElement>(null)
   const [errore, setErrore] = useState('')
+  const mostrato = logo ?? ripiego
 
   async function scegli(files: FileList | null) {
     if (!files?.length) return
@@ -39,21 +48,22 @@ function CampoMarchio({
 
   return (
     <div>
-      {logo ? (
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { fondo: 'bg-[#12151b]', nota: 'Nel menu (sfondo scuro)' },
-            { fondo: 'bg-white', nota: 'Sui documenti stampati' },
-          ].map((v) => (
-            <div key={v.nota}>
-              <div
-                className={`flex h-24 items-center justify-center rounded-card border border-line p-3 ${v.fondo}`}
-              >
-                <img src={logo} alt="Marchio caricato" className="max-h-full max-w-full object-contain" />
-              </div>
-              <p className="mt-1 text-[11px] text-ink-faint">{v.nota}</p>
-            </div>
-          ))}
+      {mostrato ? (
+        <div>
+          <div
+            className={`flex h-24 items-center justify-center rounded-card border border-line p-3 ${
+              fondo === 'scuro' ? 'bg-[#12151b]' : 'bg-white'
+            }`}
+          >
+            <img
+              src={mostrato}
+              alt="Marchio caricato"
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
+          <p className="mt-1 text-[11px] text-ink-faint">
+            {logo ? nota : `${nota} — al momento si usa il marchio principale.`}
+          </p>
         </div>
       ) : (
         <p className="rounded-card border border-dashed border-line-soft bg-surface-2 px-4 py-6 text-center text-xs text-ink-faint">
@@ -160,9 +170,29 @@ export function Impostazioni() {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </Campo>
+            {/* Due marchi e non uno: quello dei documenti finisce su carta
+                bianca, quello del menu su fondo scuro. Con la sola versione
+                scura, nel menu si vedeva un rettangolo bianco. */}
             <div className="sm:col-span-2">
               <span className="mb-1.5 block text-xs font-medium text-ink-muted">Marchio</span>
-              <CampoMarchio logo={form.logo} onCambia={(logo) => setForm({ ...form, logo })} />
+              <CampoMarchio
+                logo={form.logo}
+                fondo="chiaro"
+                nota="Sui documenti stampati"
+                onCambia={(logo) => setForm({ ...form, logo })}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <span className="mb-1.5 block text-xs font-medium text-ink-muted">
+                Marchio per sfondi scuri
+              </span>
+              <CampoMarchio
+                logo={form.logoChiaro}
+                fondo="scuro"
+                nota="Nel menu del gestionale"
+                ripiego={form.logo}
+                onCambia={(logoChiaro) => setForm({ ...form, logoChiaro })}
+              />
             </div>
             <Campo etichetta="Partita IVA" className="sm:col-span-2">
               <Input

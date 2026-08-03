@@ -199,6 +199,25 @@ export function DettaglioRiparazione() {
             </p>
 
             <div className="mt-4 grid grid-cols-1 gap-4 border-t border-line pt-4 sm:grid-cols-2">
+              {/* Prima di tutto il resto: dice se l'apparecchio e' qui o no,
+                  cioe' se c'e' qualcosa da cercare sullo scaffale. */}
+              <div>
+                <p className="text-[10px] font-bold tracking-wider text-ink-faint uppercase">
+                  Dov’è il dispositivo
+                </p>
+                <p
+                  className={
+                    (riparazione.custodia ?? 'negozio') === 'negozio'
+                      ? 'mt-1 text-sm text-emerald-300'
+                      : 'mt-1 text-sm text-amber-300'
+                  }
+                >
+                  {(riparazione.custodia ?? 'negozio') === 'negozio'
+                    ? 'Lasciato in negozio'
+                    : 'Il cliente lo tiene'}
+                </p>
+              </div>
+
               <div>
                 <p className="text-[10px] font-bold tracking-wider text-ink-faint uppercase">
                   Condizioni esterne

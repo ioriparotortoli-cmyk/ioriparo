@@ -40,6 +40,7 @@ import {
 import type {
   CondizioneEsterna,
   Cliente,
+  Custodia,
   Riparazione,
   RigaIntervento,
   StatoRiparazione,
@@ -71,6 +72,7 @@ export interface DatiForm {
   noteCondizioni: string
 
   accessori: Riparazione['accessori']
+  custodia: Custodia
   foto: string[]
   firmaCliente?: string
 
@@ -83,6 +85,11 @@ export interface DatiForm {
   acconto: string
   noteInterne: string
 }
+
+const CUSTODIE: Array<{ valore: Custodia; label: string; classeAttiva: string }> = [
+  { valore: 'negozio', label: 'Lasciato in negozio', classeAttiva: 'border-emerald-500 bg-emerald-500/15 text-emerald-300' },
+  { valore: 'cliente', label: 'Il cliente lo tiene', classeAttiva: 'border-amber-500 bg-amber-500/15 text-amber-300' },
+]
 
 const CONDIZIONI: Array<{ valore: CondizioneEsterna; label: string; classeAttiva: string }> = [
   { valore: 'ottime', label: 'Ottime', classeAttiva: 'border-emerald-500 bg-emerald-500/15 text-emerald-300' },
@@ -110,6 +117,7 @@ export function datiVuoti(): DatiForm {
     condizioniEsterne: undefined,
     noteCondizioni: '',
     accessori: { scatola: false, cover: false, caricabatterie: false, cavoUsb: false, altro: '', note: '' },
+    custodia: 'negozio',
     foto: [],
     stato: 'in_attesa',
     dataAccettazione: oggiISO(),
@@ -141,6 +149,7 @@ export function datiDaRiparazione(riparazione: Riparazione, cliente?: Cliente): 
     condizioniEsterne: riparazione.condizioniEsterne,
     noteCondizioni: riparazione.noteCondizioni ?? '',
     accessori: { altro: '', note: '', ...riparazione.accessori },
+    custodia: riparazione.custodia ?? 'negozio',
     foto: riparazione.foto ?? [],
     firmaCliente: riparazione.firmaCliente,
     stato: riparazione.stato,
@@ -447,6 +456,19 @@ export function FormRiparazione({
                 </p>
               )}
             </div>
+          </SezioneForm>
+
+          <SezioneForm titolo="Dov'è il dispositivo">
+            <GruppoSegmenti
+              valore={dati.custodia}
+              opzioni={CUSTODIE}
+              onChange={(valore) => aggiorna('custodia', valore)}
+            />
+            <p className="mt-2 text-[11px] text-ink-faint">
+              {dati.custodia === 'cliente'
+                ? 'Finisce sulla scheda stampata: nessuno consegna niente, il cliente riporta l’apparecchio quando lo chiami.'
+                : 'L’apparecchio resta qui e la scheda vale come ricevuta di consegna.'}
+            </p>
           </SezioneForm>
 
           <SezioneForm titolo="Condizioni esterne">

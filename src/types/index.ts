@@ -22,6 +22,9 @@ export type TipoDispositivo =
 
 export type CondizioneEsterna = 'ottime' | 'buone' | 'sufficienti' | 'danneggiato'
 
+/** Chi ha il dispositivo mentre la pratica è aperta. */
+export type Custodia = 'negozio' | 'cliente'
+
 export type TipoCliente = 'privato' | 'azienda'
 
 export interface Cliente {
@@ -73,6 +76,15 @@ export interface Riparazione {
   condizioniEsterne?: CondizioneEsterna
   noteCondizioni?: string
   accessori: AccessoriConsegnati
+  /**
+   * Dove sta il dispositivo. Non tutte le pratiche nascono con l'apparecchio
+   * sul banco: capita il preventivo al volo, o il ricambio da ordinare con il
+   * cliente che intanto il telefono se lo tiene.
+   *
+   * Le pratiche vecchie non ce l'hanno e valgono `negozio`: prima di questo
+   * campo il dispositivo restava sempre qui.
+   */
+  custodia?: Custodia
   stato: StatoRiparazione
   dataAccettazione: string
   consegnaPrevista?: string

@@ -21,6 +21,7 @@ export function riparazioneDaForm(dati: DatiForm, clienteId: string): Omit<Ripar
     condizioniEsterne: dati.condizioniEsterne,
     noteCondizioni: dati.noteCondizioni.trim() || undefined,
     accessori: dati.accessori,
+    custodia: dati.custodia,
     stato: dati.stato,
     dataAccettazione: dati.dataAccettazione,
     consegnaPrevista: dati.consegnaPrevista || undefined,

@@ -35,6 +35,9 @@ export function DocumentoScheda({
 }) {
   const totale = totaleRiparazione(riparazione)
   const iva = azienda.ivaPredefinita
+  // Le schede fatte prima che esistesse questo campo sono tutte di dispositivi
+  // lasciati qui: allora non c'era altro modo di aprire una pratica.
+  const daNoi = (riparazione.custodia ?? 'negozio') === 'negozio'
 
   const accessori = [
     riparazione.accessori.scatola && 'Scatola',
@@ -48,9 +51,15 @@ export function DocumentoScheda({
     <article className="doc">
       <TestataDocumento azienda={azienda} />
 
-      <h1 className="doc-titolo">Scheda di accettazione</h1>
+      {/* Se il dispositivo non e' rimasto qui, questo foglio non e' una presa
+          in carico e non deve dirlo: nessuno ci ha consegnato niente. */}
+      <h1 className="doc-titolo">
+        {daNoi ? 'Scheda di accettazione' : 'Scheda di preventivo'}
+      </h1>
       <p className="doc-sottotitolo">
-        Documento di presa in carico del dispositivo — copia per il cliente
+        {daNoi
+          ? 'Documento di presa in carico del dispositivo — copia per il cliente'
+          : 'Il dispositivo resta al cliente — copia per il cliente'}
       </p>
 
       <dl className="doc-meta">
@@ -103,6 +112,10 @@ export function DocumentoScheda({
               valore={[riparazione.colore, riparazione.capacita].filter(Boolean).join(' · ') || undefined}
             />
             <Campo etichetta="IMEI / Seriale" valore={riparazione.imei} />
+            <Campo
+              etichetta="Dispositivo"
+              valore={daNoi ? 'Lasciato in negozio' : 'Trattenuto dal cliente'}
+            />
             <Campo
               etichetta="Condizioni esterne"
               valore={
@@ -231,8 +244,13 @@ export function DocumentoScheda({
         </div>
       </div>
 
+      {/* Il tagliando serve a ritirare una cosa che sta qui. Se il dispositivo
+          e' rimasto al cliente non c'e' niente da ritirare: al suo posto va
+          quello che gli serve davvero, cioe' quando riportarlo. */}
       <div className="doc-tagliando">
-        <span className="doc-pastiglia">Tagliando di ritiro</span>
+        <span className="doc-pastiglia">
+          {daNoi ? 'Tagliando di ritiro' : 'Promemoria per il cliente'}
+        </span>
         <div className="doc-griglia" style={{ marginTop: 8 }}>
           <div className="doc-campi">
             <Campo etichetta="Numero scheda" valore={riparazione.codice} />
@@ -240,12 +258,15 @@ export function DocumentoScheda({
             <Campo etichetta="Dispositivo" valore={`${riparazione.marca} ${riparazione.modello}`} />
           </div>
           <div className="doc-campi">
-            <Campo etichetta="Consegna prevista" valore={formatData(riparazione.consegnaPrevista)} />
             <Campo
-              etichetta="Da saldare al ritiro"
+              etichetta={daNoi ? 'Consegna prevista' : 'Da riportare in negozio'}
+              valore={formatData(riparazione.consegnaPrevista)}
+            />
+            <Campo
+              etichetta={daNoi ? 'Da saldare al ritiro' : 'Preventivo di massima'}
               valore={
                 totale > 0
-                  ? formatEuro(saldoRiparazione(riparazione))
+                  ? formatEuro(daNoi ? saldoRiparazione(riparazione) : totale)
                   : riparazione.acconto
                     ? `Da definire — acconto ${formatEuro(riparazione.acconto)}`
                     : 'Da definire'

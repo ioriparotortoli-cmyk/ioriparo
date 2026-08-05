@@ -94,6 +94,41 @@ chiude con il saldo al ritiro. Senza chiavi email le prenotazioni vengono
 comunque registrate e compaiono nel pannello: in console si vede il messaggio
 che sarebbe partito.
 
+## Metterlo online
+
+### Su Vercel
+
+Il sito vive in una sottocartella di questo repository, quindi va creato un
+progetto **nuovo e separato** da quello di Io Riparo:
+
+1. Su Vercel, «Add New… → Project» e scegliete questo repository.
+2. **Root Directory: `concessionaria`** — è il passaggio che si dimentica.
+   Senza, Vercel compila il sito in radice e non questo.
+3. Framework: Next.js, rilevato da solo. Nessun comando da personalizzare.
+4. Variabili d'ambiente: almeno `PANNELLO_PASSWORD` e `PANNELLO_SEGRETO`,
+   altrimenti il pannello risponde che non è configurato. Per il segreto:
+   `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+> **Attenzione al deposito dei dati.** Su Vercel il disco è di sola lettura:
+> senza `DATABASE_URL` il sito funziona e il pannello si apre, ma ogni
+> modifica sparisce al riavvio dell'istanza. Per un sito vero serve un
+> PostgreSQL — Neon, Supabase e Vercel Postgres vanno tutti bene, basta
+> incollare la stringa di connessione in `DATABASE_URL` e installare `pg`.
+> Con il deposito su file va invece benissimo un server proprio (una VPS, un
+> container) dove la cartella `dati-locali/` è scrivibile e persistente.
+
+### In locale, per provarlo
+
+```bash
+git clone -b claude/dealership-website-build-dmwl6j https://github.com/stepp8989/ioriparo
+cd ioriparo/concessionaria
+npm install
+npm run immagini      # genera le fotografie segnaposto
+npm run dev           # http://localhost:3000
+```
+
+Il pannello è su `/admin`: in sviluppo la password è `aurora`.
+
 ## Dove finiscono i dati
 
 L'archivio ha due depositi intercambiabili, scelti automaticamente:

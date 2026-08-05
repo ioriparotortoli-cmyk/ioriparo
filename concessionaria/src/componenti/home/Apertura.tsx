@@ -111,7 +111,7 @@ export function Apertura({ video }: { video: SorgenteVideo[] }) {
             style={{ animationDelay: '0.1s' }}
           >
             Passione per i motori.
-            <span className="mt-2 block testo-blu">Qualità senza compromessi.</span>
+            <span className="mt-2 block testo-accento">Qualità senza compromessi.</span>
           </h1>
 
           <p

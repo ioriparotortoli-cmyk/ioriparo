@@ -62,7 +62,7 @@ export function FasciaNoleggio({ veicoli }: { veicoli: Veicolo[] }) {
               <>
                 Il mezzo giusto,
                 <br />
-                <span className="testo-blu">per il tempo che serve</span>
+                <span className="testo-accento">per il tempo che serve</span>
               </>
             }
             sottotitolo={`Una flotta di ${AZIENDA.numeri.veicoliFlotta} veicoli recenti fra utilitarie, SUV, scooter e maxi enduro. Prenotate online, ritirate in sede o fatevelo portare dove siete.`}
@@ -129,7 +129,7 @@ export function FasciaDetailing() {
               <>
                 La cura che fa la
                 <br />
-                <span className="testo-blu">differenza negli anni</span>
+                <span className="testo-accento">differenza negli anni</span>
               </>
             }
             sottotitolo="Non un autolavaggio veloce: una cabina dedicata, illuminazione a temperatura controllata e tempi di lavorazione veri. Con fotografie del prima e del dopo."

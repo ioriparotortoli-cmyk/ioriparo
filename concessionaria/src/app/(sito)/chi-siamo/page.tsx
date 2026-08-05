@@ -32,7 +32,7 @@ export default function PaginaChiSiamo() {
           <>
             Un’officina diventata
             <br />
-            <span className="testo-blu">concessionaria</span>
+            <span className="testo-accento">concessionaria</span>
           </>
         }
         sottotitolo="Abbiamo cominciato con una fossa e un compressore preso a rate. Oggi occupiamo duemila metri quadri fra salone, officina e reparto estetico, ma il modo di lavorare è rimasto quello."
@@ -50,7 +50,7 @@ export default function PaginaChiSiamo() {
                 <>
                   Vendere veicoli che
                   <br />
-                  <span className="testo-blu">terremmo per noi</span>
+                  <span className="testo-accento">terremmo per noi</span>
                 </>
               }
               allineamento="sinistra"
@@ -184,7 +184,7 @@ export default function PaginaChiSiamo() {
           soprattitolo="La squadra"
           titolo={
             <>
-              Le persone che <span className="testo-blu">incontrerete</span>
+              Le persone che <span className="testo-accento">incontrerete</span>
             </>
           }
           sottotitolo="Quattordici in tutto fra salone, officina, reparto estetico e amministrazione. Questi sono i responsabili."

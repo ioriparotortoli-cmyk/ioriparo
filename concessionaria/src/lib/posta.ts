@@ -83,17 +83,17 @@ function testoSicuro(valore: string): string {
 function modello(titolo: string, corpo: string): string {
   return `<!doctype html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
-<body style="margin:0;padding:32px 16px;background:#0b0d12;font-family:Arial,Helvetica,sans-serif;color:#e8ecf4">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#12151d;border:1px solid #232936;border-radius:16px">
-    <tr><td style="padding:32px 32px 24px;border-bottom:1px solid #232936;text-align:center">
+<body style="margin:0;padding:32px 16px;background:#0a0705;font-family:Arial,Helvetica,sans-serif;color:#f5efe7">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#16110c;border:1px solid #2c231a;border-radius:16px">
+    <tr><td style="padding:32px 32px 24px;border-bottom:1px solid #2c231a;text-align:center">
       <p style="margin:0;font-size:22px;letter-spacing:8px;text-transform:uppercase;color:#ffffff">${AZIENDA.nome}</p>
-      <p style="margin:8px 0 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#3d8bff">Motori</p>
+      <p style="margin:8px 0 0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#e59243">Motori</p>
     </td></tr>
     <tr><td style="padding:32px">
       <h1 style="margin:0 0 20px;font-size:22px;font-weight:600;color:#ffffff">${titolo}</h1>
       ${corpo}
     </td></tr>
-    <tr><td style="padding:24px 32px;border-top:1px solid #232936;font-size:12px;color:#8b94a7">
+    <tr><td style="padding:24px 32px;border-top:1px solid #2c231a;font-size:12px;color:#a49686">
       <p style="margin:0 0 4px">${AZIENDA.ragioneSociale} — ${INDIRIZZO_COMPLETO}</p>
       <p style="margin:0">${AZIENDA.telefono} · ${AZIENDA.email}</p>
     </td></tr>
@@ -104,13 +104,13 @@ function modello(titolo: string, corpo: string): string {
 /** Riga «etichetta: valore» usata dentro il corpo delle email. */
 function riga(etichetta: string, valore: string): string {
   return `<tr>
-    <td style="padding:8px 0;font-size:13px;color:#8b94a7;width:42%">${etichetta}</td>
-    <td style="padding:8px 0;font-size:14px;color:#e8ecf4;font-weight:600">${testoSicuro(valore)}</td>
+    <td style="padding:8px 0;font-size:13px;color:#a49686;width:42%">${etichetta}</td>
+    <td style="padding:8px 0;font-size:14px;color:#f5efe7;font-weight:600">${testoSicuro(valore)}</td>
   </tr>`
 }
 
 function tabella(righe: string[]): string {
-  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #232936">${righe.join('')}</table>`
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #2c231a">${righe.join('')}</table>`
 }
 
 /* ── Noleggi ─────────────────────────────────────────────────────────────── */
@@ -134,11 +134,11 @@ export async function confermaNoleggio(noleggio: Noleggio): Promise<boolean> {
     oggetto: `Noleggio confermato — codice ${noleggio.codice}`,
     html: modello(
       `Gentile ${testoSicuro(noleggio.nome)}, il noleggio è confermato`,
-      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#b6bfd0">
+      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#c9bcab">
          Grazie per aver scelto ${AZIENDA.nomeCompleto}. Conservate il codice: serve al ritiro,
          insieme a patente e documento d’identità in corso di validità.
        </p>${righe}
-       <p style="margin:24px 0 0;font-size:13px;line-height:1.7;color:#8b94a7">
+       <p style="margin:24px 0 0;font-size:13px;line-height:1.7;color:#a49686">
          Per modificare o annullare il noleggio scriveteci o chiamate lo ${AZIENDA.telefono}.
        </p>`,
     ),
@@ -193,7 +193,7 @@ export async function confermaRichiesta(richiesta: Richiesta): Promise<boolean> 
     oggetto: `Richiesta ricevuta — codice ${richiesta.codice}`,
     html: modello(
       `Gentile ${testoSicuro(richiesta.nome)}, abbiamo ricevuto la richiesta`,
-      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#b6bfd0">
+      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#c9bcab">
          Un consulente vi risponde entro un giorno lavorativo. Se preferite parlarne subito,
          chiamate lo ${AZIENDA.telefono}: il codice qui sotto ci fa trovare la pratica in un attimo.
        </p>${tabella(righe)}`,
@@ -228,7 +228,7 @@ export async function confermaAppuntamento(appuntamento: Appuntamento): Promise<
     oggetto: `Appuntamento ricevuto — codice ${appuntamento.codice}`,
     html: modello(
       `Gentile ${testoSicuro(appuntamento.nome)}, abbiamo segnato l’appuntamento`,
-      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#b6bfd0">
+      `<p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#c9bcab">
          Vi confermiamo l’orario per telefono entro poche ore, dopo aver verificato la
          disponibilità della cabina.
        </p>${tabella([
@@ -271,11 +271,11 @@ export async function benvenutoCliente(nome: string, email: string): Promise<boo
     oggetto: `Benvenuto in ${AZIENDA.nomeCompleto}`,
     html: modello(
       `Benvenuto, ${testoSicuro(nome)}`,
-      `<p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#b6bfd0">
+      `<p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#c9bcab">
          Il vostro account è attivo. Dall’area riservata potete seguire noleggi e appuntamenti,
          rivedere le richieste inviate e scaricare documenti e fatture.
        </p>
-       <p style="margin:0;font-size:13px;line-height:1.7;color:#8b94a7">
+       <p style="margin:0;font-size:13px;line-height:1.7;color:#a49686">
          Se non siete stati voi a registrarvi, ignorate questo messaggio o scriveteci a ${AZIENDA.email}.
        </p>`,
     ),

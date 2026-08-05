@@ -77,7 +77,7 @@ export default async function PaginaContatti() {
         soprattitolo="Contatti"
         titolo={
           <>
-            Parliamone: <span className="testo-blu">siamo qui</span>
+            Parliamone: <span className="testo-accento">siamo qui</span>
           </>
         }
         sottotitolo={`Salone, officina e reparto detailing in ${INDIRIZZO_COMPLETO}. Chiamate, scrivete o passate: il caffè è buono.`}
@@ -161,7 +161,7 @@ export default async function PaginaContatti() {
               soprattitolo="Preventivo"
               titolo={
                 <>
-                  Richiedete un <span className="testo-blu">preventivo</span>
+                  Richiedete un <span className="testo-accento">preventivo</span>
                 </>
               }
               sottotitolo="Diteci cosa cercate: veicolo, budget, formula di pagamento. Vi rispondiamo con una proposta concreta, non con un listino."

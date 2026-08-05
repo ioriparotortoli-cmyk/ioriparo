@@ -3,12 +3,17 @@
  *
  * Il progetto non scarica fotografie da servizi esterni: le immagini vengono
  * composte qui con `sharp` a partire da gradienti profondi, silhouette di
- * veicoli, scie di luce blu e una grana leggera, così ogni scheda ha
- * un'immagine coerente con la palette del sito e le prestazioni restano sotto
- * controllo.
+ * veicoli, scie di luce e una grana leggera, così ogni scheda ha un'immagine
+ * riconoscibile e le prestazioni restano sotto controllo.
  *
  * Quando arrivano le fotografie vere basta sovrascrivere i file dentro
  * `public/immagini/` mantenendo gli stessi nomi: nessuna modifica al codice.
+ *
+ * Nota sulle tinte: le palette qui sotto sono ancora quelle fredde della prima
+ * versione del sito, mentre l'interfaccia è passata al rame. È una scelta
+ * consapevole — le fotografie verranno sostituite da scatti veri, quindi
+ * rifare i segnaposto sarebbe lavoro buttato. Per allinearle basta cambiare i
+ * colori di `PALETTE` e lanciare `npm run immagini -- --tutto`.
  *
  *   node scripts/genera-immagini.mjs            rigenera solo i file mancanti
  *   node scripts/genera-immagini.mjs --tutto    rigenera tutto
@@ -431,11 +436,11 @@ function svgMarchio(dimensione = 512) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="${dimensione}" height="${dimensione}">
   <defs>
     <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4d8bff"/>
-      <stop offset="100%" stop-color="#0a53f0"/>
+      <stop offset="0%" stop-color="#e59243"/>
+      <stop offset="100%" stop-color="#9c5416"/>
     </linearGradient>
   </defs>
-  <rect width="40" height="40" rx="9" fill="#05070c"/>
+  <rect width="40" height="40" rx="9" fill="#0d0805"/>
   <path d="M20 2.5 34.5 8v12.6c0 8.2-5.9 14.4-14.5 16.9C11.4 35 5.5 28.8 5.5 20.6V8z" fill="url(#s)"/>
   <path d="M20 11.5 27.5 28h-4.2L20 20l-3.3 8h-4.2z" fill="#fff"/>
   <path d="M13.5 23.5h13" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
@@ -447,16 +452,16 @@ function svgLogo() {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48">
   <defs>
     <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4d8bff"/>
-      <stop offset="100%" stop-color="#0a53f0"/>
+      <stop offset="0%" stop-color="#e59243"/>
+      <stop offset="100%" stop-color="#9c5416"/>
     </linearGradient>
   </defs>
   <g transform="translate(4 4) scale(1)">
     <path d="M20 2.5 34.5 8v12.6c0 8.2-5.9 14.4-14.5 16.9C11.4 35 5.5 28.8 5.5 20.6V8z" fill="url(#s)"/>
     <path d="M20 11.5 27.5 28h-4.2L20 20l-3.3 8h-4.2z" fill="#fff"/>
   </g>
-  <text x="52" y="27" font-family="Sora, Inter, Arial, sans-serif" font-size="17" font-weight="600" letter-spacing="3.4" fill="#0a0c12">AURORA</text>
-  <text x="53" y="39" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="500" letter-spacing="5" fill="#565f77">MOTORI</text>
+  <text x="52" y="27" font-family="Sora, Inter, Arial, sans-serif" font-size="17" font-weight="600" letter-spacing="3.4" fill="#14100c">AURORA</text>
+  <text x="53" y="39" font-family="Inter, Arial, sans-serif" font-size="8" font-weight="500" letter-spacing="5" fill="#6a5f53">MOTORI</text>
 </svg>`
 }
 

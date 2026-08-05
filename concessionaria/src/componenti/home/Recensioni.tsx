@@ -50,7 +50,7 @@ export function Recensioni({ recensioni }: { recensioni: Recensione[] }) {
           <>
             {valutazione.toLocaleString('it-IT')} su 5,
             <br />
-            <span className="testo-blu">da {totale} recensioni</span>
+            <span className="testo-accento">da {totale} recensioni</span>
           </>
         }
         sottotitolo="Sono le recensioni pubblicate su Google e Facebook, riportate integralmente."

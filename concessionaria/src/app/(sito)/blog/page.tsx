@@ -42,7 +42,7 @@ export default async function PaginaBlog() {
           <>
             Guide, consigli e
             <br />
-            <span className="testo-blu">novità automotive</span>
+            <span className="testo-accento">novità automotive</span>
           </>
         }
         sottotitolo="Quello che spieghiamo ogni giorno di persona, scritto una volta per tutte. Nessun contenuto sponsorizzato."

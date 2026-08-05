@@ -15,8 +15,8 @@ export function Simbolo({ className = 'size-9' }: { className?: string }) {
     <svg viewBox="0 0 40 40" className={className} aria-hidden focusable="false">
       <defs>
         <linearGradient id="marchio-sfumatura" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--blu-2)" />
-          <stop offset="100%" stopColor="var(--blu-1)" />
+          <stop offset="0%" stopColor="var(--accento-2)" />
+          <stop offset="100%" stopColor="var(--accento-1)" />
         </linearGradient>
       </defs>
       {/* Scudo stondato: il contenitore del marchio. */}

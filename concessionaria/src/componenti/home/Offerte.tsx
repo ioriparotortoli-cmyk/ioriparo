@@ -27,7 +27,7 @@ export function Offerte({ offerte }: { offerte: Offerta[] }) {
         soprattitolo="Promozioni"
         titolo={
           <>
-            Offerte <span className="testo-blu">in corso</span>
+            Offerte <span className="testo-accento">in corso</span>
           </>
         }
         sottotitolo="Valide fino a esaurimento dei veicoli in promozione. Chiedeteci la simulazione della rata: è gratuita e non impegna."

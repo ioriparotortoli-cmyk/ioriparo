@@ -18,8 +18,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',
-    background_color: '#06080e',
-    theme_color: '#06080e',
+    background_color: '#0a0705',
+    theme_color: '#0a0705',
     categories: ['business', 'shopping', 'travel'],
     icons: [
       { src: '/marchio/icona.svg', sizes: 'any', type: 'image/svg+xml' },

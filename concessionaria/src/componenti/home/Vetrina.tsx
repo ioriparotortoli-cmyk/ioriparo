@@ -30,7 +30,7 @@ export function Vetrina({ veicoli }: { veicoli: Veicolo[] }) {
           soprattitolo="In pronta consegna"
           titolo={
             <>
-              Le proposte <span className="testo-blu">del momento</span>
+              Le proposte <span className="testo-accento">del momento</span>
             </>
           }
           sottotitolo="Ogni veicolo è controllato in centoventi punti, con chilometraggio certificato e garanzia inclusa."

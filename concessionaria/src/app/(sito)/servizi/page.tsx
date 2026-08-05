@@ -34,7 +34,7 @@ export default function PaginaServizi() {
           <>
             Dodici servizi,
             <br />
-            <span className="testo-blu">un solo interlocutore</span>
+            <span className="testo-accento">un solo interlocutore</span>
           </>
         }
         sottotitolo="Dalla scelta del veicolo alla cura che merita negli anni. Tutto sotto lo stesso tetto significa che chi vi vende l’auto può chiedere a chi ci ha messo le mani, e la risposta arriva nello stesso pomeriggio."

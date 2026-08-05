@@ -25,7 +25,7 @@ export default function PaginaAreaClienti() {
         soprattitolo="Area riservata"
         titolo={
           <>
-            La vostra <span className="testo-blu">area clienti</span>
+            La vostra <span className="testo-accento">area clienti</span>
           </>
         }
         sottotitolo="Noleggi, appuntamenti, richieste, storico degli acquisti, documenti e fatture: tutto in un posto solo, sempre disponibile."

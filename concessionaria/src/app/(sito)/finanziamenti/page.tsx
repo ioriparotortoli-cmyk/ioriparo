@@ -86,7 +86,7 @@ export default function PaginaFinanziamenti() {
           <>
             La rata giusta,
             <br />
-            <span className="testo-blu">non la prima che capita</span>
+            <span className="testo-accento">non la prima che capita</span>
           </>
         }
         sottotitolo="Lavoriamo con più istituti di credito e confrontiamo le proposte al posto vostro. Simulate la rata qui sotto e ricevete il preventivo firmato entro ventiquattro ore."
@@ -100,7 +100,7 @@ export default function PaginaFinanziamenti() {
           soprattitolo="Simulatore"
           titolo={
             <>
-              Calcolate la <span className="testo-blu">vostra rata</span>
+              Calcolate la <span className="testo-accento">vostra rata</span>
             </>
           }
           sottotitolo={`TAN fisso ${percentuale(AZIENDA.finanziamento.tanPredefinito)}, TAEG ${percentuale(AZIENDA.finanziamento.taegPredefinito)}. Muovete i cursori: il risultato si aggiorna mentre scegliete.`}
@@ -155,7 +155,7 @@ export default function PaginaFinanziamenti() {
                 <>
                   Quanto vale
                   <br />
-                  <span className="testo-blu">il vostro usato</span>
+                  <span className="testo-accento">il vostro usato</span>
                 </>
               }
               sottotitolo="Valutazione gratuita entro quarantotto ore, basata sulle quotazioni di mercato. Ritiriamo anche in conto vendita, se preferite aspettare l’offerta giusta."

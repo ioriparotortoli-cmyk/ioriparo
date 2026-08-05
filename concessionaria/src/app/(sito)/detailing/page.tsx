@@ -44,7 +44,7 @@ export default async function PaginaDetailing() {
           <>
             La cura del veicolo,
             <br />
-            <span className="testo-blu">fatta come si deve</span>
+            <span className="testo-accento">fatta come si deve</span>
           </>
         }
         sottotitolo="Cabina dedicata, illuminazione a temperatura controllata, prodotti professionali e tempi di lavorazione veri. Ogni intervento è documentato con fotografie del prima e del dopo."
@@ -58,7 +58,7 @@ export default async function PaginaDetailing() {
           soprattitolo="I trattamenti"
           titolo={
             <>
-              Dieci lavorazioni, <span className="testo-blu">un solo standard</span>
+              Dieci lavorazioni, <span className="testo-accento">un solo standard</span>
             </>
           }
           sottotitolo="Prezzi di partenza per una vettura di segmento medio in condizioni normali. Il preventivo definitivo arriva dopo aver visto il veicolo, mai dopo il lavoro."
@@ -124,7 +124,7 @@ export default async function PaginaDetailing() {
           soprattitolo="Galleria"
           titolo={
             <>
-              Prima e <span className="testo-blu">dopo</span>
+              Prima e <span className="testo-accento">dopo</span>
             </>
           }
           sottotitolo="Trascinate il cursore per vedere la differenza. Sono lavorazioni eseguite nella nostra cabina, senza ritocchi alle fotografie."
@@ -212,7 +212,7 @@ export default async function PaginaDetailing() {
           soprattitolo="Appuntamento"
           titolo={
             <>
-              Portateci il <span className="testo-blu">vostro veicolo</span>
+              Portateci il <span className="testo-accento">vostro veicolo</span>
             </>
           }
           sottotitolo="Scegliete il trattamento e il giorno che preferite: vi confermiamo l’orario per telefono entro poche ore."

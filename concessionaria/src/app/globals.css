@@ -8,10 +8,15 @@
  * questo modo `bg-sfondo` o `text-accento` funzionano in entrambi i temi senza
  * scrivere due classi.
  *
- * La palette è quella richiesta dal marchio: nero opaco, blu elettrico, bianco
- * e grigio antracite. Le due tonalità profonde (`--notte`, `--antracite`)
- * restano scure anche nel tema chiaro, perché alcune fasce — apertura, invito
- * finale, piè di pagina — sono sempre scure per scelta grafica.
+ * La palette è rame e arancio bruciato su nero caldo, con bianco avorio e
+ * grigio antracite. Il blu elettrico è stato deliberatamente evitato: è il
+ * colore di Io Riparo, che vive nello stesso repository, e due marchi con lo
+ * stesso accento non si distinguono. Per la stessa ragione si sta lontani
+ * dall'oro del Ristorante Aurea.
+ *
+ * Le due tonalità profonde (`--notte`, `--antracite`) restano scure anche nel
+ * tema chiaro, perché alcune fasce — apertura, invito finale, piè di pagina —
+ * sono sempre scure per scelta grafica.
  */
 
 @custom-variant scuro (&:where(.scuro, .scuro *));
@@ -19,77 +24,77 @@
 :root {
   color-scheme: light;
 
-  /* Superfici */
-  --sfondo: #f4f6fa;
-  --sfondo-alt: #e9edf5;
+  /* Superfici: bianchi caldi, non freddi, per accordarsi al rame. */
+  --sfondo: #faf7f4;
+  --sfondo-alt: #f2ece5;
   --superficie: #ffffff;
-  --superficie-alt: #f7f9fd;
-  --bordo: #dee4ef;
-  --bordo-forte: #c2cadb;
+  --superficie-alt: #fbf8f5;
+  --bordo: #e8ded3;
+  --bordo-forte: #cdbeae;
 
   /* Testo */
-  --testo: #0a0c12;
-  --testo-tenue: #565f77;
-  --testo-inverso: #f7f9fd;
+  --testo: #14100c;
+  --testo-tenue: #6a5f53;
+  --testo-inverso: #fbf8f5;
 
   /*
-   * Blu elettrico.
-   * Nel tema chiaro è volutamente saturo e profondo: un azzurro più brillante
-   * su fondo bianco non raggiungerebbe il contrasto 4.5:1 richiesto dalle WCAG
+   * Rame.
+   * Nel tema chiaro è volutamente scuro e bruciato: un rame più brillante su
+   * fondo avorio non raggiungerebbe il contrasto 4.5:1 richiesto dalle WCAG
    * per il testo piccolo, e qui l'accento è anche colore dei collegamenti,
    * delle soprattitoli e dei pulsanti.
    */
-  --accento: #0a53f0;
-  --accento-forte: #0039b8;
-  --accento-tenue: #b9cdff;
+  --accento: #9c5416;
+  --accento-forte: #7a3f0e;
+  --accento-tenue: #f0cfae;
 
-  /* Estremi della sfumatura dei titoli (utilità `testo-blu`). */
-  --blu-1: #0a53f0;
-  --blu-2: #3d86ff;
+  /* Estremi della sfumatura dei titoli (utilità `testo-accento`). */
+  --accento-1: #9c5416;
+  --accento-2: #cf7a2c;
 
   /* Tonalità profonde: identiche nei due temi. */
-  --notte: #05070c;
-  --antracite: #171b24;
-  --grigio: #2c323f;
+  --notte: #0d0805;
+  --antracite: #1f170f;
+  --grigio: #362c22;
 
   /* Vetro: fondo e bordo delle superfici traslucide. */
   --vetro-fondo: rgb(255 255 255 / 0.68);
   --vetro-bordo: rgb(255 255 255 / 0.75);
 
   /* Ombre morbide, mai nette */
-  --ombra-bassa: 0 1px 2px rgb(10 12 18 / 0.04), 0 6px 18px rgb(10 12 18 / 0.06);
-  --ombra-alta: 0 2px 8px rgb(10 12 18 / 0.06), 0 24px 60px rgb(10 12 18 / 0.14);
-  --ombra-accento: 0 12px 34px rgb(10 83 240 / 0.28);
+  --ombra-bassa: 0 1px 2px rgb(20 16 12 / 0.04), 0 6px 18px rgb(20 16 12 / 0.06);
+  --ombra-alta: 0 2px 8px rgb(20 16 12 / 0.06), 0 24px 60px rgb(20 16 12 / 0.14);
+  --ombra-accento: 0 12px 34px rgb(156 84 22 / 0.28);
 }
 
 .scuro {
   color-scheme: dark;
 
-  --sfondo: #06080e;
-  --sfondo-alt: #0a0d16;
-  --superficie: #10141f;
-  --superficie-alt: #161b28;
-  --bordo: #222939;
-  --bordo-forte: #333c52;
+  --sfondo: #0a0705;
+  --sfondo-alt: #0f0b07;
+  --superficie: #16110c;
+  --superficie-alt: #1d1711;
+  --bordo: #2c231a;
+  --bordo-forte: #3f3427;
 
-  --testo: #eef1f8;
-  --testo-tenue: #98a2b9;
-  --testo-inverso: #06080e;
+  --testo: #f5efe7;
+  --testo-tenue: #a49686;
+  --testo-inverso: #0a0705;
 
-  /* Sul fondo scuro il blu può tornare luminoso. */
-  --accento: #4d8bff;
-  --accento-forte: #7fa9ff;
-  --accento-tenue: #1c3565;
+  /* Sul fondo scuro il rame può tornare luminoso. */
+  --accento: #e59243;
+  --accento-forte: #f3b273;
+  --accento-tenue: #4d2c0e;
 
-  --blu-1: #7fa9ff;
-  --blu-2: #3d86ff;
+  --accento-1: #f3b273;
+  --accento-2: #e59243;
 
-  --vetro-fondo: rgb(18 22 32 / 0.62);
+  --vetro-fondo: rgb(26 20 14 / 0.62);
   --vetro-bordo: rgb(255 255 255 / 0.09);
 
   --ombra-bassa: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 18px rgb(0 0 0 / 0.4);
   --ombra-alta: 0 2px 8px rgb(0 0 0 / 0.5), 0 24px 60px rgb(0 0 0 / 0.6);
-  --ombra-accento: 0 12px 34px rgb(77 139 255 / 0.32);
+  --ombra-accento: 0 12px 34px rgb(229 146 67 / 0.32);
 }
 
 @theme inline {
@@ -239,7 +244,7 @@
   -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
 
-/* Filetto decorativo blu usato sotto le soprattitoli. */
+/* Filetto decorativo ramato usato sotto le soprattitoli. */
 @utility filetto {
   display: inline-block;
   width: 2.5rem;
@@ -247,9 +252,9 @@
   background: linear-gradient(90deg, transparent, var(--accento));
 }
 
-/* Testo con sfumatura blu: solo per titoli brevi. */
-@utility testo-blu {
-  background: linear-gradient(100deg, var(--blu-1), var(--blu-2), var(--blu-1));
+/* Testo con sfumatura ramata: solo per titoli brevi. */
+@utility testo-accento {
+  background: linear-gradient(100deg, var(--accento-1), var(--accento-2), var(--accento-1));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

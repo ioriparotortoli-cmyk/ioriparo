@@ -116,12 +116,19 @@ file non deve installarlo.
 
 Il progetto non scarica immagini da servizi esterni. `npm run immagini` le
 compone con `sharp`: gradienti profondi, silhouette di veicoli in controluce,
-scie di luce blu e una grana leggera, tutto coerente con la palette del sito.
-Sono segnaposto dichiarati, non fotografie vere.
+scie di luce e una grana leggera. Sono segnaposto dichiarati, non fotografie
+vere.
 
 Quando arrivano gli scatti veri basta sovrascrivere i file dentro
 `public/immagini/` mantenendo gli stessi nomi: nessuna modifica al codice. Lo
 script segnala da solo se un veicolo del catalogo è rimasto senza fotografie.
+
+**Le tinte dei segnaposto sono ancora fredde**, mentre l'interfaccia è passata
+al rame: si nota soprattutto nell'apertura della home. È una scelta
+consapevole — quelle immagini verranno sostituite da fotografie vere, quindi
+rifarle sarebbe lavoro buttato. Per allinearle basta cambiare i colori di
+`PALETTE` in `scripts/genera-immagini.mjs` e lanciare
+`npm run immagini -- --tutto`.
 
 L'apertura della home usa un filmato se lo trova in `public/video/apertura.mp4`
 (o `.webm`); altrimenti alterna tre immagini con una dissolvenza lenta. Il video
@@ -155,6 +162,25 @@ src/
 scripts/             generatore delle immagini
 public/              immagini, marchio, service worker, pagina offline
 ```
+
+## La palette
+
+Rame e arancio bruciato su nero caldo, con avorio e grigio antracite. Tutti i
+colori stanno in `src/app/globals.css`, dichiarati due volte — come variabili
+CSS che cambiano fra tema chiaro e scuro, e come token Tailwind che puntano a
+quelle variabili. Cambiare marchio significa toccare quel file e nient'altro.
+
+La scelta non è arbitraria: questo repository ospita altri due siti, e ognuno
+deve restare riconoscibile.
+
+| Sito | Accento |
+| --- | --- |
+| Io Riparo | blu elettrico `#2563eb` su nero `#05070c` |
+| Ristorante Aurea | oro caldo `#7f5c20` su crema |
+| Aurora Motori | rame `#9c5416` su nero caldo `#0d0805` |
+
+Il brief iniziale chiedeva il blu elettrico: è stato scartato proprio perché
+coincideva quasi esattamente con quello di Io Riparo, fondo compreso.
 
 ## Scelte tecniche
 
@@ -193,8 +219,8 @@ fotografie stanno tutti sul dominio del sito.
 
 ## Accessibilità
 
-Contrasti verificati sulle soglie WCAG AA in entrambi i temi; il blu del tema
-chiaro è volutamente profondo per reggere il testo piccolo. Ogni campo ha
+Contrasti verificati sulle soglie WCAG AA in entrambi i temi; il rame del tema
+chiaro è volutamente bruciato per reggere il testo piccolo. Ogni campo ha
 un'etichetta collegata, le icone decorative sono nascoste ai lettori di schermo,
 i grafici del pannello hanno una tabella equivalente. Il carosello delle
 recensioni si ferma al passaggio del puntatore e quando un elemento riceve il

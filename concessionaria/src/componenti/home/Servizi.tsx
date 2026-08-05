@@ -24,7 +24,7 @@ export function Servizi() {
           <>
             Un solo interlocutore,
             <br />
-            <span className="testo-blu">dodici servizi</span>
+            <span className="testo-accento">dodici servizi</span>
           </>
         }
         sottotitolo="Dalla scelta del veicolo alla cura che merita negli anni: vendita, noleggio, detailing, finanziamenti e officina sotto lo stesso tetto."

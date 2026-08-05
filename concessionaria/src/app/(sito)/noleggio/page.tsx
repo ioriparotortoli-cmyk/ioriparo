@@ -89,7 +89,7 @@ export default async function PaginaNoleggio({
           <>
             Un mezzo pronto,
             <br />
-            <span className="testo-blu">da un giorno a un anno</span>
+            <span className="testo-accento">da un giorno a un anno</span>
           </>
         }
         sottotitolo={`Flotta di ${AZIENDA.numeri.veicoliFlotta} veicoli recenti, assicurazione e soccorso stradale sempre inclusi. A partire da ${prezzo(tariffaMinima)} al giorno.`}
@@ -103,7 +103,7 @@ export default async function PaginaNoleggio({
           soprattitolo="La flotta"
           titolo={
             <>
-              Veicoli <span className="testo-blu">disponibili</span>
+              Veicoli <span className="testo-accento">disponibili</span>
             </>
           }
           sottotitolo="Tariffe già comprensive di assicurazione, manutenzione e bollo. L’unica cosa che aggiungete è il carburante."
@@ -219,7 +219,7 @@ export default async function PaginaNoleggio({
           soprattitolo="Prenotazione online"
           titolo={
             <>
-              Prenotate in <span className="testo-blu">due minuti</span>
+              Prenotate in <span className="testo-accento">due minuti</span>
             </>
           }
           sottotitolo="Scegliete veicolo e periodo sul calendario: le date già impegnate sono segnate. Confermiamo per email, di solito entro un’ora."

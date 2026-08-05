@@ -57,7 +57,7 @@ export default async function PaginaCatalogo({
           <>
             {visibili.length} veicoli in piazzale,
             <br />
-            tutti <span className="testo-blu">garantiti</span>
+            tutti <span className="testo-accento">garantiti</span>
           </>
         }
         sottotitolo="Auto e moto nuove, a chilometri zero, aziendali e usate. Filtrate come volete: prezzo, alimentazione, cambio, chilometri, potenza. Quello che vedete è quello che c’è."

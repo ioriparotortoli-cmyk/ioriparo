@@ -7,8 +7,16 @@ import { Icona } from './Icona'
 import { Bottone } from './base'
 import { useNotifica } from './Notifiche'
 
-/** Istruzioni per Safari, che non ha un pulsante da premere per noi. */
-const ISTRUZIONI_IOS = 'Tocca Condividi in basso, poi «Aggiungi alla schermata Home».'
+/**
+ * Istruzioni per iPhone, dove nessun sito può installarsi da solo: Apple non
+ * offre un pulsante da premere per conto del cliente.
+ *
+ * Da iOS 26 Safari ha nascosto Condividi dentro il menu `≡` della barra in
+ * basso; sulle versioni precedenti è l'icona con la freccia in su. Il testo
+ * nomina entrambi, perché non sappiamo quale Safari ha in mano il cliente.
+ */
+const ISTRUZIONI_IOS =
+  'Tocca ≡ nella barra di Safari (oppure l’icona Condividi ⬆︎), poi «Condividi» e «Aggiungi alla schermata Home».'
 
 /**
  * Riquadro «Installa l'app», da mettere dove serve davvero: sulla tessera e

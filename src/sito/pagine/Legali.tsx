@@ -201,6 +201,7 @@ export function MappaSito() {
         ['Prenotazione appuntamenti', '/prenota'],
         ['Stato riparazione', '/stato-riparazione'],
         ['Area clienti', '/area-clienti'],
+        ['Tessera fedeltà', '/tessera'],
       ],
     ],
     ['Servizi', SERVIZI.map((s) => [s.titolo, `/servizi/${s.id}`] as [string, string])],

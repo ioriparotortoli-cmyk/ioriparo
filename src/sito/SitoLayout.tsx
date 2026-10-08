@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import './sito.css'
 import { Chat } from './componenti/Chat'
+import { InvitoApp } from './componenti/InstallaApp'
 import { Icona, SpriteIcone } from './componenti/Icona'
 import { SpriteIllustrazioni } from './componenti/Illustrazione'
 import { ProviderNotifiche, useNotifica } from './componenti/Notifiche'
@@ -171,6 +172,8 @@ function Contenuto() {
         <Ricerca aperta={ricerca} onChiudi={() => setRicerca(false)} />
         <Chat aperta={chat} onChiudi={() => setChat(false)} />
         <BannerCookie visibile={cookie} onSalva={salvaConsenso} apertoDaPreferenze={preferenze} />
+        {/* Mai insieme al banner dei cookie: due riquadri in fondo allo schermo sono troppi. */}
+        {!cookie && <InvitoApp />}
       </div>
     </>
   )

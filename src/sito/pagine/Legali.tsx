@@ -138,9 +138,6 @@ export function CookiePolicy() {
               <b>ioriparo_consent</b> — memoria della scelta espressa sul banner. Durata 6 mesi.
             </li>
             <li>
-              <b>ioriparo_theme</b> — tema chiaro o scuro selezionato. Durata 12 mesi.
-            </li>
-            <li>
               <b>ioriparo_session</b> — sessione dell’area clienti, cifrata e con flag Secure, HttpOnly e SameSite=Lax.
               Durata: sessione.
             </li>

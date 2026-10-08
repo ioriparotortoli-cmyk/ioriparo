@@ -19,6 +19,7 @@ import { Tabella, TabellaHead, Td, Th, Tr } from '@/components/ui/Tabella'
 import { AnteprimaStampa } from '@/components/stampa/AnteprimaStampa'
 import { DocumentoScheda } from '@/components/stampa/DocumentoScheda'
 import { useIntestazione } from '@/components/layout/intestazione'
+import { FedeltaRiparazione } from '@/components/fedelta/TesseraCliente'
 import { useGestionale, nuovoId } from '@/data/store'
 import { imponibile, saldoRiparazione, scorporoIva, totaleRiparazione } from '@/lib/calcoli'
 import { formatData, formatEuro, oggiISO } from '@/lib/format'
@@ -412,6 +413,8 @@ export function DettaglioRiparazione() {
               <p className="mt-3 text-sm text-ink-faint">Cliente non disponibile.</p>
             )}
           </Card>
+
+          <FedeltaRiparazione riparazione={riparazione} />
 
           {riparazione.foto && riparazione.foto.length > 0 && (
             <Card>
